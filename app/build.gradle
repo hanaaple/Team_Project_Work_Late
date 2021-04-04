@@ -30,6 +30,8 @@ android {
 }
 
 dependencies {
+    implementation 'com.auth0:java-jwt:3.8.3'
+    implementation 'io.jsonwebtoken:jjwt-api:0.10.7'
     implementation group: 'com.kakao.sdk', name: 'usermgmt', version: '1.30.5'
     implementation group: 'com.kakao.sdk', name: 'kakaotalk', version: '1.30.5'
 
