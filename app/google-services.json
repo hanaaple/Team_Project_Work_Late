@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "983126838785",
+    "project_id": "worklate-69638",
+    "storage_bucket": "worklate-69638.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:983126838785:android:048c964dea0b047aa27a00",
+        "android_client_info": {
+          "package_name": "com.example.team_project_work_late"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "983126838785-cbfo020p152mkdv55m6g0l0rgn6bncq5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB_MQdFk5IgFwWxe_EBxnSBO6RiaH-DH50"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "983126838785-cbfo020p152mkdv55m6g0l0rgn6bncq5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
