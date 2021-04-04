@@ -65,11 +65,6 @@ public class MainActivity extends AppCompatActivity {
         btn_custom_login_out = (Button) findViewById(R.id.btn_custom_login_out);
 
         mAuth = FirebaseAuth.getInstance();
-
-        // 카카오맵용 해시키 받아오기
-//        getHashKey();
-//        fragment_map = new Fragment_Map();
-//        setFrag(0);
     }
 
 
@@ -81,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
         //AuthCredential credential = OAuthProvider.newCredentialBuilder("Kakao").setIdToken(Long.toString(kakaoResult.getUserId())).setAccessToken(Long.toString(kakaoResult.getUserId())).build();
 
         //sign - 회원가입 or 로그인
+
         //Jwts.builder()
         mAuth.signInWithCustomToken("").addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
@@ -234,26 +230,4 @@ public class MainActivity extends AppCompatActivity {
 
         super.onActivityResult(requestCode, resultCode, data);
     }
-
-    // 해시키 받아오는 메소드
-//    private void getHashKey(){
-//        PackageInfo packageInfo = null;
-//        try {
-//            packageInfo = getPackageManager().getPackageInfo(getPackageName(), PackageManager.GET_SIGNATURES);
-//        } catch (PackageManager.NameNotFoundException e) {
-//            e.printStackTrace();
-//        }
-//        if (packageInfo == null)
-//            Log.e("KeyHash", "KeyHash:null");
-//
-//        for (Signature signature : packageInfo.signatures) {
-//            try {
-//                MessageDigest md = MessageDigest.getInstance("SHA");
-//                md.update(signature.toByteArray());
-//                Log.d("KeyHash", Base64.encodeToString(md.digest(), Base64.DEFAULT));
-//            } catch (NoSuchAlgorithmException e) {
-//                Log.e("KeyHash", "Unable to get MessageDigest. signature=" + signature, e);
-//            }
-//        }
-//    }
 }
