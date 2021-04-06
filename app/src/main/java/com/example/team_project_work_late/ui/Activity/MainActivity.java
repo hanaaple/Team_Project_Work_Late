@@ -2,80 +2,47 @@ package com.example.team_project_work_late.ui.Activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 
 import com.example.team_project_work_late.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-public class MainActivity extends AppCompatActivity
-{
-    private BottomNavigationView bottomNavigationView; // 바텀 네비게이션 뷰
-    private FragmentManager fm;
-    private FragmentTransaction ft;
-    private Frag1 frag1;
-    private Frag2 frag2;
-    private Frag3 frag3;
+public class MainActivity extends AppCompatActivity {
+    private static final String TAG = "Main_Activity";
+
+    private BottomNavigationView mBottomNavigationView;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        bottomNavigationView = findViewById(R.id.bottomNavi);
-        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener()
-        {
+        mBottomNavigationView=findViewById(R.id.bottom_navigation);
+
+        //첫 화면 띄우기
+        getSupportFragmentManager().beginTransaction().add(R.id.frame_container,new Frag1()).commit();
+
+        //case 함수를 통해 클릭 받을 때마다 화면 변경하기
+        mBottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem)
-            {
-                switch (menuItem.getItemId())
-                {
-                    case R.id.action_1:
-                        setFrag(0);
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()){
+                    case R.id.action_1 :
+                        getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,new Frag1()).commit();
                         break;
                     case R.id.action_2:
-                        setFrag(1);
+                        getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,new Frag2()).commit();
                         break;
                     case R.id.action_3:
-                        setFrag(2);
+                        getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,new Frag3()).commit();
                         break;
+
                 }
                 return true;
             }
         });
-
-        frag1=new Frag1();
-        frag2=new Frag2();
-        frag3=new Frag3();
-        setFrag(0); // 첫 플래그먼트 화면 지정
-    }
-
-    // 플래그먼트 교체
-    private void setFrag(int n)
-    {
-        fm = getSupportFragmentManager();
-        ft= fm.beginTransaction();
-
-        switch (n)
-        {
-            case 0:
-                ft.replace(R.id.Main_Frame,frag1);
-                ft.commit();
-                break;
-
-            case 1:
-                ft.replace(R.id.Main_Frame,frag2);
-                ft.commit();
-                break;
-
-            case 2:
-                ft.replace(R.id.Main_Frame,frag3);
-                ft.commit();
-                break;
-        }
     }
 }
