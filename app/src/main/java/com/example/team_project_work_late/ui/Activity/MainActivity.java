@@ -5,31 +5,21 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.net.wifi.hotspot2.pps.Credential;
 import android.os.Bundle;
-import android.util.JsonToken;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.algorithms.Algorithm;
 import com.example.team_project_work_late.R;
 import com.example.team_project_work_late.service.SessionCallBack;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.api.AuthProvider;
 import com.google.firebase.FirebaseApp;
-import com.google.firebase.FirebaseOptions;
-import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.OAuthCredential;
-import com.google.firebase.auth.OAuthProvider;
-import com.google.firebase.auth.PhoneAuthProvider;
-import com.google.firebase.firestore.auth.FirebaseAuthCredentialsProvider;
+import com.kakao.auth.ApiResponseCallback;
 import com.kakao.auth.ApiResponseCallback;
 import com.kakao.auth.AuthService;
 import com.kakao.auth.AuthType;
@@ -39,9 +29,25 @@ import com.kakao.network.ErrorResult;
 import com.kakao.usermgmt.UserManagement;
 import com.kakao.usermgmt.callback.LogoutResponseCallback;
 
+import java.security.Key;
+import java.security.interfaces.RSAKey;
+import java.util.Base64;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
+import javax.crypto.spec.SecretKeySpec;
+
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
+
+import static io.jsonwebtoken.SignatureAlgorithm.RS256;
+import static io.jsonwebtoken.SignatureAlgorithm.forSigningKey;
+
 
 public class MainActivity extends AppCompatActivity {
     private Button btn_custom_login;
@@ -74,14 +80,37 @@ public class MainActivity extends AppCompatActivity {
 
     public void log(AccessTokenInfoResponse kakaoResult){
         //AuthCredential credential = OAuthProvider.newCredentialBuilder("Kakao").setIdToken(Long.toString(kakaoResult.getUserId())).setAccessToken(Long.toString(kakaoResult.getUserId())).build();
-
+        Date cur_time = new Date();
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.SECOND, 3600);
+        Date exp_time = calendar.getTime();
+        Map<String, Object> header = new HashMap<>();
+        header.put("typ", "JWT");
+        header.put("alg", RS256);
+        //claim.put("uid", UUID.fromString(Long.toString(kakaoResult.getUserId())).toString().replace("-",""));
+        //claim.put("uid", FirebaseAuth.getInstance().getCurrentUser().getUid());
+        String token = Jwts.builder()
+                .setHeader(header)
+                .setIssuer("firebase-adminsdk-ek0z0@worklate-69638.iam.gserviceaccount.com")
+                .setSubject("firebase-adminsdk-ek0z0@worklate-69638.iam.gserviceaccount.com")
+                .setAudience("https://identitytoolkit.googleapis.com/google.identity.identitytoolkit.v1.IdentityToolkit")
+                .setIssuedAt(cur_time)
+                .setExpiration(exp_time)
+                .setId(Long.toString(kakaoResult.getUserId()))
+                .signWith(Keys.hmacShaKeyFor("\\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDNqHCIJtUzUyc5\\n0FXEpGJUQvC811fHHdf+Bc34AJCSkTKNbKpaJjh8+sdxkYpFmgvPJZgh2w8pcRMr\\n4lYxLgPMLgMRKFIVjFquJPgTZfMapp/bQV+xerLeGncgTt5HjcdI3Xi+FAayFaUe\\nX5ZTf5rk9VtcK4c54KgcXqweX0/+nOSX5cCGefNPiIl2hSMT+KoyXbbElNQdl7dh\\nVVLgx1h7Y1C4OB9XbGl3wfeDULVZ4xS5Eh0z4+yTs0Cb6VtB334hJhrOmbn9lBLU\\nocNALTLQoRPbXTrNHFm7nwVxVRNbp+7HBm09TOTxm6PlsLHw5T8FPjBlzwjNDMv7\\njJgFWCXtAgMBAAECggEAG5XAxlpjFXfNVqFdp7se30t9S+8cfH5BxvZTWrUEr0wf\\nej29mcrvn7/peY+6erx/YgEaZ0whO/9JQYUh54XTB5OSYL5GSFKjpSEbT0rI8WWx\\nInEh20XocQcevGwnv3RCa0EdnW1FOqTRmYHbwYZnqddJMlM6V6aNFgUS1B4XtkBq\\nicM4US+KZ3OYnHyitRdTDBnNHlq+yVEGOc5Jw+5b+KcZc+m6VVGYM+Tmpv7Pr9GM\\nwtkqi26U79kvw+ikcpkT/PccY0bJ4OB9jMS0Trb3CfeL3f1NSKJN85y74g1Yy+JL\\nRgqCqXyCBDLaCWhE6YjB5cKltdY+nnxp7erwuNjGcQKBgQDsmKAB1+fw9cVY7P0k\\nvD8uMuS1qinl0iFsZ9h2V/eL/WECpPfFU8eKRLuBmWF+fQbjE2xyncy6tSO9Dd+L\\nIou9KnzpDt9LGuwRaGTsKuUf/dsmKmfa4wI5cQLnnWLNDblLeJL6JEGrz7QSt6En\\nnxPO/mOBYDdv3Klks4x7QOXvuQKBgQDehkL2Gr/cFYde1t98aB6X11E+9FvXY2RA\\nFnbNTAtXn7dP1jSm3eOWEsxf7fCXoeyWZhb4T5xgB8PfX/R0twKaEcGh29OAwv1S\\nVOr14eMgyhtVqDAQE9E3QcBQ088DCiW0JNsiQRjAG8c0kDVrT13tATt5ABbgv32s\\nnKX5gaO51QKBgQCjodNYMwj5QCGjJRTXKVLREuXXNr8Pccsn/JJbFu/gY/eKKqoq\\nUY059dtxALHLF5GBz1c71iNYJht3j3bB9byLsiz9ywloGlCWoYrbQ7d/7sR4mu+F\\nFWfebmjB47oHc6xppBSS6Cx7NYWnRFUy3/SFPq93NSJiPUzylrNcM0BUEQKBgHEJ\\nTLyNbAaVXRWdGxusHFZPhzLumDS6hXNUtfaleWGCfXDtxAM71d8nH3BfgwbTt0XT\\nCDoM3sedSi+PI7OiP40aFf1tmGvhISOQhWZv35uJbwc9D2UrW+yw1st4PMEzh2GS\\nE0q8PKFhuviFhM1FHNZG+PoHRJfYTjO/w0QSSaQdAoGBAKZuv3ALN90f8iETWyiP\\njqAKMup0Ldde0gKqajA5JCl3Qkcj8Tbo11tI366sy6Ogci9tPo9jW+fVJTlRrF9j\\nQOMFVPSF/h1xpMjm1ldphp0sZh60/pHjBN1T3pN4wqXeeVyAhU9zhj+GQ0DRRmHv\\nhsF1FgPxemDoaj26wMU9BwQ9\\n".getBytes()))
+                .compact();
         //sign - 회원가입 or 로그인
-
-        //Jwts.builder()
-        mAuth.signInWithCustomToken("").addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+        mAuth.signInWithCustomToken(token).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-
+                if (task.isSuccessful()) {
+                    FirebaseUser user = mAuth.getCurrentUser();
+                    System.out.println("파이어베이스 로그인 성공");
+                } else {
+                    System.out.println("파이어베이스 로그인 실패");
+                    Toast.makeText(MainActivity.this, "Authentication failed.",
+                            Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -195,7 +224,7 @@ public class MainActivity extends AppCompatActivity {
         btn_custom_login_out.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mAuth.signOut();
+                //mAuth.signOut();
                 UserManagement.getInstance()
                         .requestLogout(new LogoutResponseCallback() {
                             @Override

@@ -30,13 +30,15 @@ android {
 }
 
 dependencies {
-    implementation 'com.auth0:java-jwt:3.8.3'
-    implementation 'io.jsonwebtoken:jjwt-api:0.10.7'
+    api 'io.jsonwebtoken:jjwt-api:0.11.2'
+    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.2'
+    runtimeOnly('io.jsonwebtoken:jjwt-orgjson:0.11.2') {
+        exclude group: 'org.json', module: 'json' //provided by Android natively
+    }
     implementation group: 'com.kakao.sdk', name: 'usermgmt', version: '1.30.5'
     implementation group: 'com.kakao.sdk', name: 'kakaotalk', version: '1.30.5'
-
-    implementation 'com.google.firebase:firebase-firestore'
     implementation 'com.google.firebase:firebase-auth'
+    implementation 'com.google.firebase:firebase-firestore'
     implementation platform('com.google.firebase:firebase-bom:26.8.0')
     implementation 'com.google.firebase:firebase-analytics'
     implementation 'androidx.appcompat:appcompat:1.2.0'
