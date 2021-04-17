@@ -3,12 +3,21 @@ package com.example.team_project_work_late.ui.Activity;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.team_project_work_late.R;
@@ -32,7 +41,28 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
 
-public class MainActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
+public class MainActivity extends AppCompatActivity {
+    private Button Locationbutton;
+    private TextView textView;
+
+
+
+    void CheckLocation(Location location){
+        double longitude = location.getLongitude();     //위도
+        System.out.println(textView);
+        double latitude = location.getLatitude();       //경도
+        double altitude = location.getAltitude();       //고도
+        textView.setText("위도 : " + longitude + "\n" +
+                "경도 : " + latitude + "\n" +
+                "고도 : " + altitude);
+    }
+
+
+
+
+
+
+
     private SignInButton btn_google_login;
     private Button btn_google_logout;
     private GoogleSignInClient googleSignInClient;
@@ -42,6 +72,41 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        final LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);;
+        Locationbutton = (Button)findViewById(R.id.LocationButton);
+        textView = (TextView)findViewById(R.id.LocationText);
+
+
+        //위도가 바뀔때마다 사용되는 Listioner
+        LocationListener locationListener = new LocationListener() {
+            @Override
+            public void onLocationChanged(@NonNull Location location) {
+                CheckLocation(location);
+            }
+        };
+
+        Locationbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 0);
+                } else {
+                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1, locationListener);
+                    if(locationManager != null){
+                        Log.d("GPSTracker", "LocationManger is Enable");
+                        Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                        if(location != null){
+                            CheckLocation(location);
+//                            System.out.println(location);
+//                            System.out.println("요거임");
+                        }
+                    }
+                        //locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 1, locationListener);
+                }
+            }
+        });
+
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
@@ -144,9 +209,4 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 //            }
 //        });
 //    }
-
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
-    }
 }
