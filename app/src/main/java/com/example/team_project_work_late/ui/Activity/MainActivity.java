@@ -42,26 +42,20 @@ import com.google.firebase.auth.GoogleAuthProvider;
 
 
 public class MainActivity extends AppCompatActivity {
+
+//gps
     private Button Locationbutton;
     private TextView textView;
 
-
-
     void CheckLocation(Location location){
         double longitude = location.getLongitude();     //위도
-        System.out.println(textView);
         double latitude = location.getLatitude();       //경도
         double altitude = location.getAltitude();       //고도
         textView.setText("위도 : " + longitude + "\n" +
                 "경도 : " + latitude + "\n" +
                 "고도 : " + altitude);
     }
-
-
-
-
-
-
+//
 
     private SignInButton btn_google_login;
     private Button btn_google_logout;
@@ -73,10 +67,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+        //gps
         final LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);;
         Locationbutton = (Button)findViewById(R.id.LocationButton);
         textView = (TextView)findViewById(R.id.LocationText);
-
 
         //위도가 바뀔때마다 사용되는 Listioner
         LocationListener locationListener = new LocationListener() {
@@ -98,14 +93,13 @@ public class MainActivity extends AppCompatActivity {
                         Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
                         if(location != null){
                             CheckLocation(location);
-//                            System.out.println(location);
-//                            System.out.println("요거임");
                         }
                     }
-                        //locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 1, locationListener);
                 }
             }
         });
+//
+
 
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -164,49 +158,4 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
     }
-
-
-//    private void ResultLogin(GoogleSignInAccount account) {
-//        AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
-//        mAuth.signInWithCredential(credential)
-//                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<AuthResult> task) {
-//                        if (task.isSuccessful()) {
-//                            //파이어베이스 연동 성공
-//                            Toast.makeText(MainActivity.this, "파이어베이스 연동 성공", Toast.LENGTH_SHORT).show();
-//                        } else {
-//                            Toast.makeText(MainActivity.this, "파이어베이스 연동 실패", Toast.LENGTH_SHORT).show();
-//                        }
-//                    }
-//                });
-//    }
-
-//    @Override
-//    public void onStart(){
-//        super.onStart();
-
-
-//        btn_test.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//            }
-//        });
-//
-//        btn_custom_login.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                //Intent intent = Auth.GoogleSignInApi.getSignInIntent(googleApiClient);
-//                //startActivityForResult(intent, REQ_SIGN_GOOGLE);
-//            }
-//        });
-//
-//        btn_custom_login_out.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//            }
-//        });
-//    }
 }
