@@ -21,6 +21,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.team_project_work_late.R;
+import com.example.team_project_work_late.application.RetrofitAPI;
+import com.example.team_project_work_late.model.Data;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -33,10 +35,19 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 
 public class LoginActivity extends AppCompatActivity {
 
+    public static Data data; // 파싱용 데아터
     //gps
     private Button Locationbutton;
     private TextView textView;
@@ -62,6 +73,8 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // 파싱을 위한 설정
+        parsingStart();
 
         //gps
         final LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
@@ -154,5 +167,32 @@ public class LoginActivity extends AppCompatActivity {
                         }
                     }
                 });
+    }
+
+    private void parsingStart(){
+        Gson gson = new GsonBuilder()
+                .setLenient()
+                .create();
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://api.data.go.kr/")
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .build();
+
+        RetrofitAPI retrofitAPI = retrofit.create(RetrofitAPI.class);
+        retrofitAPI.getData().enqueue(new Callback<Data>() {
+            @Override
+            public void onResponse(Call<Data> call, Response<Data> response) {
+                data = response.body();
+                Log.e("TEST","성공성공");
+                Log.e("Test", data.getResponse().getBody().getItems().get(0).getLatitude()+"");
+            }
+
+            @Override
+            public void onFailure(Call<Data> call, Throwable t) {
+                Log.e("Test","실패실패");
+                t.printStackTrace();
+            }
+        });
     }
 }
