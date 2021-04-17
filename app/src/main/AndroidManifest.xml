@@ -13,7 +13,7 @@
         <meta-data
             android:name="com.kakao.sdk.AppKey"
             android:value="a24f72d3b75e1336b80b326699764bb4" />
-        <activity android:name=".ui.Activity.MainActivity">
+        <activity android:name=".ui.Activity.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
