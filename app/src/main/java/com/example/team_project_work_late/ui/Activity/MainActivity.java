@@ -7,6 +7,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.net.wifi.hotspot2.pps.Credential;
 import android.os.Bundle;
+
+import android.util.Log;
+import android.view.MenuItem;
 import android.util.JsonToken;
 import android.util.Log;
 import android.view.View;
@@ -16,6 +19,8 @@ import android.widget.Toast;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.example.team_project_work_late.R;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
 import com.example.team_project_work_late.service.SessionCallBack;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -44,9 +49,13 @@ import java.util.Map;
 import io.jsonwebtoken.Jwts;
 
 public class MainActivity extends AppCompatActivity {
+
+public class MainActivity extends AppCompatActivity {
+    private static final String TAG = "Main_Activity";
+
+    private BottomNavigationView mBottomNavigationView;
     private Button btn_custom_login;
     private Button btn_custom_login_out;
-    private Button btn_test;
 
     private SessionCallBack sessionCallBack = new SessionCallBack();
     private FirebaseAuth mAuth;
@@ -55,6 +64,32 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        
+      mBottomNavigationView=findViewById(R.id.bottom_navigation);
+
+        //첫 화면 띄우기
+        getSupportFragmentManager().beginTransaction().add(R.id.frame_container,new Frag1()).commit();
+
+        //case 함수를 통해 클릭 받을 때마다 화면 변경하기
+        mBottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()){
+                    case R.id.action_1 :
+                        getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,new Frag1()).commit();
+                        break;
+                    case R.id.action_2:
+                        getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,new Frag2()).commit();
+                        break;
+                    case R.id.action_3:
+                        getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,new Frag3()).commit();
+                        break;
+
+                }
+                return true;
+            }
+        });
+      
         FirebaseApp.initializeApp(this);
 
         //토큰 가져오는 버튼
