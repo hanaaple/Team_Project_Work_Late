@@ -41,6 +41,14 @@ public class LoginActivity extends AppCompatActivity {
     private Button Locationbutton;
     private TextView textView;
 
+    private SignInButton btn_google_login;
+    private Button btn_google_logout;
+    private GoogleSignInClient googleSignInClient;
+    private FirebaseAuth mAuth;
+    private static final int REQ_SIGN_GOOGLE = 100;
+
+
+    // 받은 location을 체크하여 텍스트뷰에 보여주는 함수
     void CheckLocation(Location location) {
         double longitude = location.getLongitude();     //위도
         double latitude = location.getLatitude();       //경도
@@ -49,13 +57,7 @@ public class LoginActivity extends AppCompatActivity {
                 "경도 : " + latitude + "\n" +
                 "고도 : " + altitude);
     }
-//
 
-    private SignInButton btn_google_login;
-    private Button btn_google_logout;
-    private GoogleSignInClient googleSignInClient;
-    private FirebaseAuth mAuth;
-    private static final int REQ_SIGN_GOOGLE = 100;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,13 +65,15 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
-        //gps
-        final LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        ;
-        Locationbutton = (Button) findViewById(R.id.LocationButton);
-        textView = (TextView) findViewById(R.id.LocationText);
+        //1-1. 위치 버튼, 텍스트뷰 할당
+        Locationbutton = (Button) findViewById(R.id.locationButton);
+        textView = (TextView) findViewById(R.id.locationText);
 
-        //위도가 바뀔때마다 사용되는 Listioner
+        //1-2. LocationManager 설정
+        final LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
+
+        //2. 위도가 바뀔때마다 사용되는 Listioner 만들고 CheckLocation 함수 실행(location을 업데이트하여 텍스트뷰에 보여줌)
         LocationListener locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(@NonNull Location location) {
@@ -77,6 +81,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         };
 
+        //3. 버튼을 누르면 Location 매니저를 이용해 위치 정보를 얻고 CheckLocation 함수 실행(location을 업데이트하여 텍스트뷰에 보여줌)
         Locationbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -94,38 +99,39 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         });
-//
 
 
+        //1-1. 로그인 로그아웃 버튼 할당
+        btn_google_login = (SignInButton) findViewById(R.id.google_login);
+        btn_google_logout = (Button) findViewById(R.id.google_Logout);
+
+        //2-1. 구글 로그인 설정 및 파이어 베이스 연동 설정
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
         googleSignInClient = GoogleSignIn.getClient(this, gso);
-        btn_google_login = (SignInButton) findViewById(R.id.google_login);
-        btn_google_logout = (Button) findViewById(R.id.google_Logout);
         mAuth = FirebaseAuth.getInstance();
 
-    }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
+        //3-1. 로그인 버튼 Listener 구글 로그인 설정 및 성공 시 파이어베이스 연동
         btn_google_login.setOnClickListener(v -> {
             Intent signInIntent = googleSignInClient.getSignInIntent();
             startActivityForResult(signInIntent, REQ_SIGN_GOOGLE);
         });
+
+        //3-2. 로그아웃 버튼 Listener 설정
         btn_google_logout.setOnClickListener(v -> {
             googleSignInClient.signOut();
         });
+
     }
 
-
+    //4. 구글 로그인을 실행하는 함수이며 성공 시 파이어베이스 연동함수를 실행
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        //여기서 resultCode가 0 or -1로 나오며 오류가 뜨는데 없어도 파이어베이스에 성공적으로 연동된다. 내 3시간 ㅇㄷ?
         //if(resultCode == REQ_SIGN_GOOGLE){
         System.out.println("구글 성공");
         Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
@@ -140,6 +146,7 @@ public class LoginActivity extends AppCompatActivity {
 //        }
     }
 
+    //5. 파이어베이스에 연동하는 함수
     private void firebaseAuthWithGoogle(String idToken) {
         AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
         mAuth.signInWithCredential(credential)
