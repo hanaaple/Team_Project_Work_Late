@@ -60,10 +60,11 @@ public class Fragment_bookMark extends Fragment {
             bookMarkItem.setRepairStandY(LoginActivity.data.getResponse().getBody().getItems().get(index).getRepairStandY());
             bookMarkItem.setPhoneNumber(LoginActivity.data.getResponse().getBody().getItems().get(index).getPhoneNumber());
 
+            mAdapter.addItem(bookMarkItem);
             mDBHelper.insertBookMark(bookMarkItem.getBcyclLendNm(),bookMarkItem.getBcyclLendSe(),bookMarkItem.getLnmadr(),bookMarkItem.getLnmadr(),
                     bookMarkItem.getLatitude(),bookMarkItem.getLongitude(),bookMarkItem.getOperOpenHm(),bookMarkItem.getOperCloseHm(),bookMarkItem.getRstde(),
                     bookMarkItem.getChrgeSe(),bookMarkItem.getBcyclUseCharge(),bookMarkItem.getAirInjectorYn(),bookMarkItem.getRepairStandY(),bookMarkItem.getPhoneNumber());
-            mAdapter.addItem(bookMarkItem);
+            mRv_bookMark.smoothScrollToPosition(0);
 
             index += 1;
         });
