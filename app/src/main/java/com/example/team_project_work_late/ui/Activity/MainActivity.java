@@ -2,24 +2,32 @@ package com.example.team_project_work_late.ui.Activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import com.example.team_project_work_late.R;
+import com.example.team_project_work_late.model.BcyclDpstryData;
+import com.example.team_project_work_late.model.BcyclLendData;
 import com.example.team_project_work_late.ui.Fragment.Fragment_Kakao;
 import com.example.team_project_work_late.ui.Fragment.Fragment_bookMark;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 
 public class MainActivity extends AppCompatActivity {
+
     private static final String TAG = "Main_Activity";
 
+    private BcyclLendData bcyclLendData;     // 대여소 파싱용 데아터
+    private BcyclDpstryData bcyclDpstryData; // 보관소 파싱용 데이터
     private BottomNavigationView mBottomNavigationView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        
-      mBottomNavigationView=findViewById(R.id.bottom_navigation);
+
+        init();
 
         //첫 화면 띄우기
         getSupportFragmentManager().beginTransaction().add(R.id.frame_container,new Fragment_Kakao()).commit();
@@ -33,7 +41,12 @@ public class MainActivity extends AppCompatActivity {
                         getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,new Fragment_Kakao()).commit();
                         break;
                     case R.id.action_2:
-                        getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,new Fragment_bookMark()).commit();
+                        Fragment_bookMark fragment_bookMark = new Fragment_bookMark();
+                        Bundle bundle = new Bundle();
+                        fragment_bookMark.setArguments(bundle);
+                        bundle.putSerializable("bcyclLendData",bcyclLendData);
+                        bundle.putSerializable("bcyclDpstryData",bcyclDpstryData);
+                        getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,fragment_bookMark).commit();
                         break;
                     case R.id.action_3:
                         getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,new Frag3()).commit();
@@ -43,6 +56,15 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
+    }
+
+    private void init(){
+        mBottomNavigationView=findViewById(R.id.bottom_navigation);
+
+        Intent intent = getIntent();
+        Bundle bundle = intent.getExtras();
+        bcyclLendData = (BcyclLendData) bundle.getSerializable("bcyclLendData");
+        bcyclDpstryData = (BcyclDpstryData) bundle.getSerializable("bcyclDpstryData");
     }
 
 

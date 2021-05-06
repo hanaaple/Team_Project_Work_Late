@@ -21,8 +21,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.team_project_work_late.R;
+import com.example.team_project_work_late.application.NetRetrofit;
 import com.example.team_project_work_late.application.RetrofitAPI;
-import com.example.team_project_work_late.model.Data;
+import com.example.team_project_work_late.model.BcyclDpstryData;
+import com.example.team_project_work_late.model.BcyclLendData;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -47,7 +49,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class LoginActivity extends AppCompatActivity {
 
-    public static Data data; // 파싱용 데아터
+    private BcyclLendData bcyclLendData;      // 대여소 파싱용 데아터
+    private BcyclDpstryData bcyclDpstryData;  // 보관소 파싱용 데이터
     //gps
     private Button Locationbutton;
     private TextView textView;
@@ -106,6 +109,10 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 }
                 Intent intent = new Intent(LoginActivity.this,MainActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("bcyclLendData",bcyclLendData);
+                bundle.putSerializable("bcyclDpstryData",bcyclDpstryData);
+                intent.putExtras(bundle);
                 startActivity(intent);
             }
         });
@@ -172,27 +179,29 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void parsingStart(){
-        Gson gson = new GsonBuilder()
-                .setLenient()
-                .create();
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://api.data.go.kr/")
-                .addConverterFactory(GsonConverterFactory.create(gson))
-                .build();
-
-        RetrofitAPI retrofitAPI = retrofit.create(RetrofitAPI.class);
-        retrofitAPI.getData().enqueue(new Callback<Data>() {
+        NetRetrofit.getInstance().getAPI().getLendData().enqueue(new Callback<BcyclLendData>() {
             @Override
-            public void onResponse(Call<Data> call, Response<Data> response) {
-                data = response.body();
+            public void onResponse(Call<BcyclLendData> call, Response<BcyclLendData> response) {
+                bcyclLendData = response.body();
                 Log.e("TEST","성공성공");
-                Log.e("Test", data.getResponse().getBody().getItems().get(0).getLatitude()+"");
             }
 
             @Override
-            public void onFailure(Call<Data> call, Throwable t) {
+            public void onFailure(Call<BcyclLendData> call, Throwable t) {
                 Log.e("Test","실패실패");
+                t.printStackTrace();
+            }
+        });
+        NetRetrofit.getInstance().getAPI().getDpstryData().enqueue(new Callback<BcyclDpstryData>() {
+            @Override
+            public void onResponse(Call<BcyclDpstryData> call, Response<BcyclDpstryData> response) {
+                bcyclDpstryData = response.body();
+                Log.e("TEST2","성공성공");
+            }
+
+            @Override
+            public void onFailure(Call<BcyclDpstryData> call, Throwable t) {
+                Log.e("Test2","실패실패");
                 t.printStackTrace();
             }
         });
