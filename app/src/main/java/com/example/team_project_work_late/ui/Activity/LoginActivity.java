@@ -79,8 +79,8 @@ public class LoginActivity extends AppCompatActivity {
         //gps
         final LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         ;
-        Locationbutton = (Button) findViewById(R.id.locationButton);
-        textView = (TextView) findViewById(R.id.locationText);
+        Locationbutton = (Button) findViewById(R.id.LocationButton);
+        textView = (TextView) findViewById(R.id.LocationText);
 
         //위도가 바뀔때마다 사용되는 Listioner
         LocationListener locationListener = new LocationListener() {
