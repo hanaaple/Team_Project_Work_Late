@@ -71,14 +71,14 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_main);
 
         // 파싱을 위한 설정
         parsingStart();
 
         //gps
         final LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-
+        ;
         Locationbutton = (Button) findViewById(R.id.locationButton);
         textView = (TextView) findViewById(R.id.locationText);
 
@@ -105,8 +105,6 @@ public class LoginActivity extends AppCompatActivity {
                         }
                     }
                 }
-                Intent intent = new Intent(LoginActivity.this,MainActivity.class);
-                startActivity(intent);
             }
         });
 //
