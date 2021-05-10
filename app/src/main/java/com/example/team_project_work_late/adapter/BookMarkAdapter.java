@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -27,7 +28,7 @@ public class BookMarkAdapter extends RecyclerView.Adapter<BookMarkAdapter.ViewHo
     public BookMarkAdapter(ArrayList<BookMarkItem> mBMList, Context mContext) {
         this.mBMList = mBMList;
         this.mContext = mContext;
-        mDBHelper = new DBHelper(mContext);
+        this.mDBHelper = new DBHelper(mContext);
     }
 
     @NonNull
@@ -58,7 +59,7 @@ public class BookMarkAdapter extends RecyclerView.Adapter<BookMarkAdapter.ViewHo
         private TextView tv_bcyclLendSe;
         private TextView tv_operHm;
         private TextView tv_rstde;
-        private Button btn_select;
+        private ImageButton btn_select;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);

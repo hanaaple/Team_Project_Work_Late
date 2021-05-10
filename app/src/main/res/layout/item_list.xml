@@ -4,16 +4,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="150dp"
-    android:background="@color/white">
+    android:layout_height="wrap_content">
 
-    <Button
+    <ImageButton
         android:id="@+id/btn_select"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginBottom="24dp"
-        android:background="@drawable/cir"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:src="@drawable/ic_baseline_stars_24"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -22,12 +19,10 @@
         android:id="@+id/tv_bcyclLendNm"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="16dp"
-        android:singleLine="true"
+        android:layout_marginStart="16dp"
         android:text="대여소명"
-        android:textColor="@color/black"
         android:textSize="30sp"
+        android:textColor="@color/black"
         app:layout_constraintStart_toEndOf="@+id/btn_select"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -35,12 +30,10 @@
         android:id="@+id/tv_rdnmadr"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="16dp"
-        android:singleLine="true"
+        android:layout_marginStart="16dp"
         android:text="도로명주소"
-        android:textColor="@color/black"
         android:textSize="15sp"
+        android:textColor="@color/black"
         app:layout_constraintStart_toEndOf="@+id/btn_select"
         app:layout_constraintTop_toBottomOf="@+id/tv_bcyclLendNm" />
 
@@ -48,11 +41,10 @@
         android:id="@+id/tv_bcyclLendSe"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
+        android:layout_marginStart="16dp"
         android:text="유형"
-        android:textColor="@color/black"
         android:textSize="15sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:textColor="@color/black"
         app:layout_constraintStart_toEndOf="@+id/btn_select"
         app:layout_constraintTop_toBottomOf="@+id/tv_rdnmadr" />
 
@@ -62,9 +54,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:text="운영시간"
-        android:textColor="@color/black"
         android:textSize="15sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:textColor="@color/black"
         app:layout_constraintStart_toEndOf="@+id/tv_bcyclLendSe"
         app:layout_constraintTop_toBottomOf="@+id/tv_rdnmadr" />
 
@@ -74,9 +65,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:text="휴무일"
-        android:textColor="@color/black"
         android:textSize="15sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:textColor="@color/black"
         app:layout_constraintStart_toEndOf="@+id/tv_operHm"
         app:layout_constraintTop_toBottomOf="@+id/tv_rdnmadr" />
 
