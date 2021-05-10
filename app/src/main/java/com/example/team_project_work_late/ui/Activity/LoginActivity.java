@@ -13,10 +13,12 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -51,21 +53,18 @@ public class LoginActivity extends AppCompatActivity {
 
     private BcyclLendData bcyclLendData;      // 대여소 파싱용 데아터
     private BcyclDpstryData bcyclDpstryData;  // 보관소 파싱용 데이터
-    //gps
-    private Button Locationbutton;
-    private TextView textView;
+
+    private ImageButton startButton;
 
     void CheckLocation(Location location) {
         double longitude = location.getLongitude();     //위도
         double latitude = location.getLatitude();       //경도
         double altitude = location.getAltitude();       //고도
-        textView.setText("위도 : " + longitude + "\n" +
+        System.out.println("위도 : " + longitude + "\n" +
                 "경도 : " + latitude + "\n" +
                 "고도 : " + altitude);
     }
 //
-
-    private SignInButton btn_google_login;
     private Button btn_google_logout;
     private GoogleSignInClient googleSignInClient;
     private FirebaseAuth mAuth;
@@ -78,13 +77,10 @@ public class LoginActivity extends AppCompatActivity {
 
         // 파싱을 위한 설정
         parsingStart();
-
+        startButton = (ImageButton)findViewById(R.id.startButton);
+        btn_google_logout = (Button)findViewById(R.id.google_Logout);
         //gps
         final LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-
-        Locationbutton = (Button) findViewById(R.id.locationButton);
-        textView = (TextView) findViewById(R.id.locationText);
-
         //위도가 바뀔때마다 사용되는 Listioner
         LocationListener locationListener = new LocationListener() {
             @Override
@@ -93,9 +89,19 @@ public class LoginActivity extends AppCompatActivity {
             }
         };
 
-        Locationbutton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+        googleSignInClient = GoogleSignIn.getClient(this, gso);
+        mAuth = FirebaseAuth.getInstance();
+
+
+        startButton.setOnClickListener(v -> {
+            Intent signInIntent = googleSignInClient.getSignInIntent();
+            startActivityForResult(signInIntent, REQ_SIGN_GOOGLE);
+
                 if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                     ActivityCompat.requestPermissions(LoginActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 0);
                 } else {
@@ -108,37 +114,19 @@ public class LoginActivity extends AppCompatActivity {
                         }
                     }
                 }
-                Intent intent = new Intent(LoginActivity.this,MainActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("bcyclLendData",bcyclLendData);
-                bundle.putSerializable("bcyclDpstryData",bcyclDpstryData);
-                intent.putExtras(bundle);
-                startActivity(intent);
-            }
+//                Intent intent = new Intent(LoginActivity.this,MainActivity.class);
+//                Bundle bundle = new Bundle();
+//                bundle.putSerializable("bcyclLendData",bcyclLendData);
+//                bundle.putSerializable("bcyclDpstryData",bcyclDpstryData);
+//                intent.putExtras(bundle);
+//                startActivity(intent);
         });
-//
 
-
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
-                .requestEmail()
-                .build();
-        googleSignInClient = GoogleSignIn.getClient(this, gso);
-        btn_google_login = (SignInButton) findViewById(R.id.google_login);
-        btn_google_logout = (Button) findViewById(R.id.google_Logout);
-        mAuth = FirebaseAuth.getInstance();
-
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        btn_google_login.setOnClickListener(v -> {
-            Intent signInIntent = googleSignInClient.getSignInIntent();
-            startActivityForResult(signInIntent, REQ_SIGN_GOOGLE);
-        });
         btn_google_logout.setOnClickListener(v -> {
+            Toast.makeText(LoginActivity.this, "구글 및 파이어베이스 연결 끊음", Toast.LENGTH_SHORT).show();
+            System.out.println("구글 및 파이어베이스 연결 끊음");
             googleSignInClient.signOut();
+            mAuth.signOut();
         });
     }
 
@@ -147,19 +135,22 @@ public class LoginActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        //여기서 resultCode가 0 or -1로 나오며 오류가 뜨는데 없어도 파이어베이스에 성공적으로 연동된다. 내 3시간 ㅇㄷ?
+        //여기서 resultCode가 0 or -1로 나오며 오류가 뜨는데 task 자체는 성공
         //if(resultCode == REQ_SIGN_GOOGLE){
-        System.out.println("구글 성공");
         Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-        try {
-            GoogleSignInAccount account = task.getResult(ApiException.class);
-            firebaseAuthWithGoogle(account.getIdToken());
-        } catch (ApiException e) {
-        }
+        if(task.isSuccessful()) {
+            System.out.println("구글 로그인 task 성공");
+            try {
+                GoogleSignInAccount account = task.getResult(ApiException.class);
+                firebaseAuthWithGoogle(account.getIdToken());
+            } catch (ApiException e) {
+            }
 //        }else{
 //            System.out.println(resultCode);
 //            System.out.println(data);
 //        }
+
+        }
     }
 
     private void firebaseAuthWithGoogle(String idToken) {
@@ -169,10 +160,11 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            Toast.makeText(LoginActivity.this, "성공", Toast.LENGTH_SHORT).show();
-                            System.out.println("성공");
+                            Toast.makeText(LoginActivity.this, "파이어베이스 연동 성공", Toast.LENGTH_SHORT).show();
+                            System.out.println("파이어베이스 연동 성공");
                         } else {
-                            System.out.println("실패");
+                            Toast.makeText(LoginActivity.this, "파이어베이스 연동 실패", Toast.LENGTH_SHORT).show();
+                            System.out.println("파이어베이스 연동 실패");
                         }
                     }
                 });

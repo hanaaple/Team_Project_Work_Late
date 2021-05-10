@@ -1,41 +1,41 @@
 {
   "project_info": {
-    "project_number": "983126838785",
-    "project_id": "worklate-69638",
-    "storage_bucket": "worklate-69638.appspot.com"
+    "project_number": "460375508944",
+    "project_id": "worklate-1",
+    "storage_bucket": "worklate-1.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:983126838785:android:048c964dea0b047aa27a00",
+        "mobilesdk_app_id": "1:460375508944:android:5836576e806f9e643d1bd5",
         "android_client_info": {
           "package_name": "com.example.team_project_work_late"
         }
       },
       "oauth_client": [
         {
-          "client_id": "983126838785-p1lko4l1a605gnnike4v6pj4v1k1ggd4.apps.googleusercontent.com",
+          "client_id": "460375508944-5eegja3pktiq5mio330t14mfo5030us9.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.team_project_work_late",
-            "certificate_hash": "db45723405ae15d353f3a5a9360651a0efcc5519"
+            "certificate_hash": "4ab5a8f1db19029e7e82dbb66b2cb304655c0dae"
           }
         },
         {
-          "client_id": "983126838785-cbfo020p152mkdv55m6g0l0rgn6bncq5.apps.googleusercontent.com",
+          "client_id": "460375508944-6iqqtdjactfo332soc6sadr201ql02uh.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyB_MQdFk5IgFwWxe_EBxnSBO6RiaH-DH50"
+          "current_key": "AIzaSyChKo_hk_Igo3to7m49hcRJDuivYjsfpT8"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "983126838785-cbfo020p152mkdv55m6g0l0rgn6bncq5.apps.googleusercontent.com",
+              "client_id": "460375508944-6iqqtdjactfo332soc6sadr201ql02uh.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
