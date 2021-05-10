@@ -5,8 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 import com.example.team_project_work_late.R;
-import com.example.team_project_work_late.ui.Fragment.Fragment_Kakao;
-import com.example.team_project_work_late.ui.Fragment.Fragment_bookMark;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 
@@ -22,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
       mBottomNavigationView=findViewById(R.id.bottom_navigation);
 
         //첫 화면 띄우기
-        getSupportFragmentManager().beginTransaction().add(R.id.frame_container,new Fragment_Kakao()).commit();
+        getSupportFragmentManager().beginTransaction().add(R.id.frame_container,new Frag1()).commit();
 
         //case 함수를 통해 클릭 받을 때마다 화면 변경하기
         mBottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -30,10 +28,10 @@ public class MainActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()){
                     case R.id.action_1 :
-                        getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,new Fragment_Kakao()).commit();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,new Frag1()).commit();
                         break;
                     case R.id.action_2:
-                        getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,new Fragment_bookMark()).commit();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,new Frag2()).commit();
                         break;
                     case R.id.action_3:
                         getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,new Frag3()).commit();
