@@ -2,21 +2,17 @@ package com.example.team_project_work_late.model;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.io.Serializable;
-
 /*
- * @FileName  BcyclLendData_responseBody_items
- * @madeDate  21.04.10
- * @update    21.05.06
- * @made      전희훈
- * @role      대여소 json 파일의 Body 속 items : ArrayList
- * @implement Serializable
- * @method    bcyclLendNm, bcyclLendSe, rdnmadr, lnmadr, latitude, longitude, operOpenHm, operCloseHm, rstde, chrgeSe, bcyclUseCharge,
- *            bcyclHoldCharge, holderCo, airInjectorYn, airInjectorType, repairStandY, phoneNumber, institutionNm, referenceDate, insttCode 의 getter
- * @etc       setter 의 경우 내용 수정이 불가능하게 private 설정
+ * @FileName Items
+ * @date 21.04.10
+ * @made 전희훈
+ * @role 대여소 json 파일의 Body 속 items : ArrayList
+ * @method bcyclLendNm, bcyclLendSe, rdnmadr, lnmadr, latitude, longitude, operOpenHm, operCloseHm, rstde, chrgeSe, bcyclUseCharge,
+ *         bcyclHoldCharge, holderCo, airInjectorYn, airInjectorType, repairStandY, phoneNumber, institutionNm, referenceDate, insttCode 의 getter
+ * * @etc setter 의 경우 내용 수정이 불가능하게 private 설정
  * */
 
-public class BcyclLendData_responseBody_items implements Serializable {
+public class Items {
 
     // 자전거 대여소 명 (e.g. 다문화 지원센터)
     // SQLite db 포함

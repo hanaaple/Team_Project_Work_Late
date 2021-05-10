@@ -13,8 +13,6 @@ import android.view.ViewGroup;
 import com.example.team_project_work_late.R;
 import com.example.team_project_work_late.adapter.BookMarkAdapter;
 import com.example.team_project_work_late.application.DBHelper;
-import com.example.team_project_work_late.model.BcyclDpstryData;
-import com.example.team_project_work_late.model.BcyclLendData;
 import com.example.team_project_work_late.model.BookMarkItem;
 import com.example.team_project_work_late.ui.Activity.LoginActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -23,8 +21,6 @@ import java.util.ArrayList;
 
 public class Fragment_bookMark extends Fragment {
 
-    private BcyclLendData bcyclLendData;        // 대여소 파싱용 데아터
-    private BcyclDpstryData bcyclDpstryData;    // 보관소 파싱용 데이터
     private RecyclerView mRv_bookMark;
     private FloatingActionButton mBtn_write;
     private ArrayList<BookMarkItem> mBMList;
@@ -47,26 +43,22 @@ public class Fragment_bookMark extends Fragment {
         mBtn_write = view.findViewById(R.id.btn_write);
         loadRecentDB(container);
 
-        Bundle bundle = getArguments();
-        bcyclLendData = (BcyclLendData) bundle.getSerializable("bcyclLendData");
-        bcyclDpstryData = (BcyclDpstryData) bundle.getSerializable("bcyclDpstryData");
-
         mBtn_write.setOnClickListener(v->{
             BookMarkItem bookMarkItem = new BookMarkItem();
-            bookMarkItem.setBcyclLendNm(bcyclLendData.getBcyclLendDataresponse().getBcyclLendDataresponseBody().getItems().get(index).getBcyclLendNm());
-            bookMarkItem.setBcyclLendSe(bcyclLendData.getBcyclLendDataresponse().getBcyclLendDataresponseBody().getItems().get(index).getBcyclLendSe());
-            bookMarkItem.setRdnmadr(bcyclLendData.getBcyclLendDataresponse().getBcyclLendDataresponseBody().getItems().get(index).getRdnmadr());
-            bookMarkItem.setLnmadr(bcyclLendData.getBcyclLendDataresponse().getBcyclLendDataresponseBody().getItems().get(index).getLnmadr());
-            bookMarkItem.setLatitude(bcyclLendData.getBcyclLendDataresponse().getBcyclLendDataresponseBody().getItems().get(index).getLatitude());
-            bookMarkItem.setLongitude(bcyclLendData.getBcyclLendDataresponse().getBcyclLendDataresponseBody().getItems().get(index).getLongitude());
-            bookMarkItem.setOperOpenHm(bcyclLendData.getBcyclLendDataresponse().getBcyclLendDataresponseBody().getItems().get(index).getOperOpenHm());
-            bookMarkItem.setOperCloseHm(bcyclLendData.getBcyclLendDataresponse().getBcyclLendDataresponseBody().getItems().get(index).getOperCloseHm());
-            bookMarkItem.setRstde(bcyclLendData.getBcyclLendDataresponse().getBcyclLendDataresponseBody().getItems().get(index).getRstde());
-            bookMarkItem.setChrgeSe(bcyclLendData.getBcyclLendDataresponse().getBcyclLendDataresponseBody().getItems().get(index).getChrgeSe());
-            bookMarkItem.setBcyclUseCharge(bcyclLendData.getBcyclLendDataresponse().getBcyclLendDataresponseBody().getItems().get(index).getBcyclUseCharge());
-            bookMarkItem.setAirInjectorYn(bcyclLendData.getBcyclLendDataresponse().getBcyclLendDataresponseBody().getItems().get(index).getAirInjectorYn());
-            bookMarkItem.setRepairStandY(bcyclLendData.getBcyclLendDataresponse().getBcyclLendDataresponseBody().getItems().get(index).getRepairStandY());
-            bookMarkItem.setPhoneNumber(bcyclLendData.getBcyclLendDataresponse().getBcyclLendDataresponseBody().getItems().get(index).getPhoneNumber());
+            bookMarkItem.setBcyclLendNm(LoginActivity.data.getResponse().getBody().getItems().get(index).getBcyclLendNm());
+            bookMarkItem.setBcyclLendSe(LoginActivity.data.getResponse().getBody().getItems().get(index).getBcyclLendSe());
+            bookMarkItem.setRdnmadr(LoginActivity.data.getResponse().getBody().getItems().get(index).getRdnmadr());
+            bookMarkItem.setLnmadr(LoginActivity.data.getResponse().getBody().getItems().get(index).getLnmadr());
+            bookMarkItem.setLatitude(LoginActivity.data.getResponse().getBody().getItems().get(index).getLatitude());
+            bookMarkItem.setLongitude(LoginActivity.data.getResponse().getBody().getItems().get(index).getLongitude());
+            bookMarkItem.setOperOpenHm(LoginActivity.data.getResponse().getBody().getItems().get(index).getOperOpenHm());
+            bookMarkItem.setOperCloseHm(LoginActivity.data.getResponse().getBody().getItems().get(index).getOperCloseHm());
+            bookMarkItem.setRstde(LoginActivity.data.getResponse().getBody().getItems().get(index).getRstde());
+            bookMarkItem.setChrgeSe(LoginActivity.data.getResponse().getBody().getItems().get(index).getChrgeSe());
+            bookMarkItem.setBcyclUseCharge(LoginActivity.data.getResponse().getBody().getItems().get(index).getBcyclUseCharge());
+            bookMarkItem.setAirInjectorYn(LoginActivity.data.getResponse().getBody().getItems().get(index).getAirInjectorYn());
+            bookMarkItem.setRepairStandY(LoginActivity.data.getResponse().getBody().getItems().get(index).getRepairStandY());
+            bookMarkItem.setPhoneNumber(LoginActivity.data.getResponse().getBody().getItems().get(index).getPhoneNumber());
 
             mAdapter.addItem(bookMarkItem);
             mDBHelper.insertBookMark(bookMarkItem.getBcyclLendNm(),bookMarkItem.getBcyclLendSe(),bookMarkItem.getLnmadr(),bookMarkItem.getLnmadr(),

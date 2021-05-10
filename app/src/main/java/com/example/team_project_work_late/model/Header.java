@@ -2,20 +2,16 @@ package com.example.team_project_work_late.model;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.io.Serializable;
-
 /*
- * @FileName      BcyclLendData_responseHeader
- * @madeDate      21.04.10
- * @update        21.05.06
- * @made          전희훈
- * @role          대여소 json 파일 Header
- * @implement     Serializable
- * @method        resultCode, resultMsg, type 의 getter
- * * @etc         setter 의 경우 내용 수정이 불가능하게 private 설정
+ * @FileName Header
+ * @date 21.04.10
+ * @made 전희훈
+ * @role 대여소 json 파일 Header
+ * @method resultCode, resultMsg, type 의 getter
+ * * @etc setter 의 경우 내용 수정이 불가능하게 private 설정
  * */
 
-public class BcyclLendData_responseHeader implements Serializable {
+public class Header {
 
     // 결과 코드 ( 00 이 아닐 경우 오류 )
     @SerializedName("resultCode")
