@@ -15,9 +15,8 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.example.team_project_work_late.R;
@@ -25,7 +24,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -33,6 +31,19 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 
 public class LoginActivity extends AppCompatActivity {
@@ -57,7 +68,13 @@ public class LoginActivity extends AppCompatActivity {
                 "경도 : " + latitude + "\n" +
                 "고도 : " + altitude);
     }
-
+//
+    private Button tempButton;
+    private Button btn_google_logout;
+    private GoogleSignInClient googleSignInClient;
+    private FirebaseAuth mAuth;
+    private static final int REQ_SIGN_GOOGLE = 100;
+    private DatabaseReference myRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,11 +82,53 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
-        //1-1. 위치 버튼, 텍스트뷰 할당
-        Locationbutton = (Button) findViewById(R.id.locationButton);
-        textView = (TextView) findViewById(R.id.locationText);
+        tempButton = (Button)findViewById(R.id.tempButton);
+        tempButton.setOnClickListener(v ->{
+            FirebaseDatabase database = FirebaseDatabase.getInstance();
+            //데이터베이스 루트 얻기
+            myRef = database.getReference();
 
-        //1-2. LocationManager 설정
+            //쓰는 방법
+            if(myRef != null){
+                myRef.child(mAuth.getUid()).child("new").setValue("1번째");
+                myRef.child(mAuth.getUid()).child("new").setValue("2번째");
+                myRef.child(mAuth.getUid()).child("two").setValue("1번째");
+                myRef.child(mAuth.getUid()).child("two").setValue("2번째");
+//                Toast.makeText(LoginActivity.this, "myRef는 살아있다", Toast.LENGTH_SHORT).show();
+            }
+
+            //읽는 방법
+            myRef.child(mAuth.getUid()).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DataSnapshot> task) {
+                    if(task.isSuccessful()){
+                        Toast.makeText(LoginActivity.this, String.valueOf(task.getResult().getValue()), Toast.LENGTH_SHORT).show();
+                        System.out.println(task.getResult().getValue().toString());
+                        //key-value형태로 저장, 기본 자체는 json파일 형태의 string  {new=2번째, two=2번째}
+                    }
+                }
+            });
+
+            //외부에서 데이터베이스가 바뀔 경우 발생하는 listner
+//            myRef.addValueEventListener(new ValueEventListener() {
+//                @Override
+//                public void onDataChange(DataSnapshot dataSnapshot) {
+//                    String value = dataSnapshot.getValue(String.class);
+//                    Toast.makeText(LoginActivity.this, value, Toast.LENGTH_SHORT).show();
+//                }
+//
+//                @Override
+//                public void onCancelled(DatabaseError error) {
+//                }
+//            });
+        });
+        
+        // 파싱을 위한 설정
+        parsingStart();
+        startButton = (ImageButton)findViewById(R.id.startButton);
+        btn_google_logout = (Button)findViewById(R.id.google_Logout);
+        //gps
+
         final LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
 
