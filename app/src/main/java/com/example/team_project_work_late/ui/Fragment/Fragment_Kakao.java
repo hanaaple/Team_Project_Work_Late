@@ -44,14 +44,18 @@ public class Fragment_Kakao extends Fragment {
         // 마커용 맵포인트 설정
         MapPoint MARKER_POINT = MapPoint.mapPointWithGeoCoord(37.54892296550104, 126.99089033876304);
 
-        // 마커 설정 -> 기본적인 세팅값
-        MapPOIItem marker = new MapPOIItem();
-        marker.setItemName("Default Marker");
-        marker.setTag(0);
-        marker.setMapPoint(MARKER_POINT);
-        marker.setMarkerType(MapPOIItem.MarkerType.BluePin);
-        marker.setSelectedMarkerType(MapPOIItem.MarkerType.RedPin);
-        mapView.addPOIItem(marker);
+        // 마커 설정 -> 커스텀 마커
+        MapPOIItem customMarker = new MapPOIItem();
+        customMarker.setItemName("custom Marker");
+        customMarker.setTag(1);
+        customMarker.setMapPoint(MARKER_POINT);
+        customMarker.setMarkerType(MapPOIItem.MarkerType.CustomImage);
+        customMarker.setCustomImageResourceId(R.drawable.ic_baseline_location_on_24);
+        customMarker.setCustomImageAutoscale(false);
+        customMarker.setCustomImageAnchor(0.5f, 1.0f);
+        customMarker.setSelectedMarkerType(MapPOIItem.MarkerType.RedPin);
+
+        mapView.addPOIItem(customMarker);
 
         return v;
     }
