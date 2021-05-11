@@ -39,6 +39,9 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -55,6 +58,8 @@ public class LoginActivity extends AppCompatActivity {
     private BcyclDpstryData bcyclDpstryData;  // 보관소 파싱용 데이터
 
     private ImageButton startButton;
+    private DatabaseReference myRef;
+    private Button tempButton;
 
     void CheckLocation(Location location) {
         double longitude = location.getLongitude();     //위도
@@ -74,6 +79,47 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        tempButton = (Button)findViewById(R.id.tempButton);
+        tempButton.setOnClickListener(v ->{
+            FirebaseDatabase database = FirebaseDatabase.getInstance();
+            //데이터베이스 루트 얻기
+            myRef = database.getReference();
+
+            //쓰는 방법
+            if(myRef != null){
+                myRef.child(mAuth.getUid()).child("new").setValue("1번째");
+                myRef.child(mAuth.getUid()).child("new").setValue("2번째");
+                myRef.child(mAuth.getUid()).child("two").setValue("1번째");
+                myRef.child(mAuth.getUid()).child("two").setValue("2번째");
+//                Toast.makeText(LoginActivity.this, "myRef는 살아있다", Toast.LENGTH_SHORT).show();
+            }
+
+            //읽는 방법
+            myRef.child(mAuth.getUid()).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DataSnapshot> task) {
+                    if(task.isSuccessful()){
+                        Toast.makeText(LoginActivity.this, String.valueOf(task.getResult().getValue()), Toast.LENGTH_SHORT).show();
+                        System.out.println(task.getResult().getValue().toString());
+                        //key-value형태로 저장, 기본 자체는 json파일 형태의 string  {new=2번째, two=2번째}
+                    }
+                }
+            });
+
+            //외부에서 데이터베이스가 바뀔 경우 발생하는 listner
+//            myRef.addValueEventListener(new ValueEventListener() {
+//                @Override
+//                public void onDataChange(DataSnapshot dataSnapshot) {
+//                    String value = dataSnapshot.getValue(String.class);
+//                    Toast.makeText(LoginActivity.this, value, Toast.LENGTH_SHORT).show();
+//                }
+//
+//                @Override
+//                public void onCancelled(DatabaseError error) {
+//                }
+//            });
+        });
 
         // 파싱을 위한 설정
         parsingStart();
