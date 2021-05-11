@@ -38,14 +38,19 @@ public class MainActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()){
                     case R.id.action_1 :
-                        getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,new Fragment_Kakao()).commit();
+                        Fragment_Kakao fragment_kakao = new Fragment_Kakao();
+                        Bundle bundle_kakao = new Bundle();
+                        fragment_kakao.setArguments(bundle_kakao);
+                        bundle_kakao.putSerializable("bcyclLendData",bcyclLendData);
+                        bundle_kakao.putSerializable("bcyclDpstryData",bcyclDpstryData);
+                        getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,fragment_kakao).commit();
                         break;
                     case R.id.action_2:
                         Fragment_bookMark fragment_bookMark = new Fragment_bookMark();
-                        Bundle bundle = new Bundle();
-                        fragment_bookMark.setArguments(bundle);
-                        bundle.putSerializable("bcyclLendData",bcyclLendData);
-                        bundle.putSerializable("bcyclDpstryData",bcyclDpstryData);
+                        Bundle bundle_bookmark = new Bundle();
+                        fragment_bookMark.setArguments(bundle_bookmark);
+                        bundle_bookmark.putSerializable("bcyclLendData",bcyclLendData);
+                        bundle_bookmark.putSerializable("bcyclDpstryData",bcyclDpstryData);
                         getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,fragment_bookMark).commit();
                         break;
                     case R.id.action_3:

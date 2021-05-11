@@ -9,10 +9,14 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.team_project_work_late.R;
+import com.example.team_project_work_late.model.BcyclDpstryData;
+import com.example.team_project_work_late.model.BcyclLendData;
 
 import net.daum.mf.map.api.MapPOIItem;
 import net.daum.mf.map.api.MapPoint;
 import net.daum.mf.map.api.MapView;
+
+import java.util.List;
 
 /*
  * @FileName Fragment_Kakao
@@ -24,9 +28,20 @@ import net.daum.mf.map.api.MapView;
 
 public class Fragment_Kakao extends Fragment {
 
+    // 보관소 데이터 접근법 예시
+    // List<BcyclLendData_responseBody_items> list = bcyclLendData.getBcyclLendDataresponse().getBcyclLendDataresponseBody().getItems()
+    // list.get(0).getLatitude()
+    private BcyclLendData bcyclLendData;        // 대여소 파싱용 데아터
+    private BcyclDpstryData bcyclDpstryData;    // 보관소 파싱용 데이터
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        Bundle bundle = getArguments();
+        bcyclLendData = (BcyclLendData) bundle.getSerializable("bcyclLendData");
+        bcyclDpstryData = (BcyclDpstryData) bundle.getSerializable("bcyclDpstryData");
+
         // findViewById를 위한 View 재 할당
         View v = inflater.inflate(R.layout.fragment__kakao, container, false);
 
