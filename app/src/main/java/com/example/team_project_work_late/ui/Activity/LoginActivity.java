@@ -54,6 +54,10 @@ public class LoginActivity extends AppCompatActivity {
     private BcyclLendData bcyclLendData;      // 대여소 파싱용 데아터
     private BcyclDpstryData bcyclDpstryData;  // 보관소 파싱용 데이터
 
+    private boolean parse_one = false;
+    private boolean pares_two = false;
+    private Button btn_location;
+
     private ImageButton startButton;
 
     void CheckLocation(Location location) {
@@ -128,6 +132,17 @@ public class LoginActivity extends AppCompatActivity {
             googleSignInClient.signOut();
             mAuth.signOut();
         });
+
+        // 테스트용
+        btn_location = findViewById(R.id.locationButton);
+        btn_location.setOnClickListener(v->{
+            Intent intent = new Intent(LoginActivity.this,MainActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("bcyclLendData",bcyclLendData);
+                bundle.putSerializable("bcyclDpstryData",bcyclDpstryData);
+                intent.putExtras(bundle);
+                startActivity(intent);
+        });
     }
 
 
@@ -175,6 +190,9 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<BcyclLendData> call, Response<BcyclLendData> response) {
                 bcyclLendData = response.body();
+                pares_two = true;
+                parsingEnd();
+                call.cancel();
                 Log.e("TEST","성공성공");
             }
 
@@ -188,6 +206,9 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<BcyclDpstryData> call, Response<BcyclDpstryData> response) {
                 bcyclDpstryData = response.body();
+                parse_one = true;
+                parsingEnd();
+                call.cancel();
                 Log.e("TEST2","성공성공");
             }
 
@@ -197,5 +218,10 @@ public class LoginActivity extends AppCompatActivity {
                 t.printStackTrace();
             }
         });
+    }
+
+    private void parsingEnd(){
+        if (parse_one && pares_two)
+            btn_location.setVisibility(View.VISIBLE);
     }
 }
