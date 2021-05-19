@@ -60,16 +60,6 @@ public class LoginActivity extends AppCompatActivity {
     private ImageButton startButton;
     private DatabaseReference myRef;
     private Button tempButton;
-
-    void CheckLocation(Location location) {
-        double longitude = location.getLongitude();     //위도
-        double latitude = location.getLatitude();       //경도
-        double altitude = location.getAltitude();       //고도
-        System.out.println("위도 : " + longitude + "\n" +
-                "경도 : " + latitude + "\n" +
-                "고도 : " + altitude);
-    }
-//
     private Button btn_google_logout;
     private GoogleSignInClient googleSignInClient;
     private FirebaseAuth mAuth;
@@ -185,15 +175,6 @@ public class LoginActivity extends AppCompatActivity {
         parsingStart();
         startButton = (ImageButton)findViewById(R.id.startButton);
         btn_google_logout = (Button)findViewById(R.id.google_Logout);
-        //gps
-        final LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        //위도가 바뀔때마다 사용되는 Listioner
-        LocationListener locationListener = new LocationListener() {
-            @Override
-            public void onLocationChanged(@NonNull Location location) {
-                CheckLocation(location);
-            }
-        };
 
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -207,25 +188,6 @@ public class LoginActivity extends AppCompatActivity {
         startButton.setOnClickListener(v -> {
             Intent signInIntent = googleSignInClient.getSignInIntent();
             startActivityForResult(signInIntent, REQ_SIGN_GOOGLE);
-
-                if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(LoginActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 0);
-                } else {
-                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1, locationListener);
-                    if (locationManager != null) {
-                        Log.d("GPSTracker", "LocationManger is Enable");
-                        Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                        if (location != null) {
-                            CheckLocation(location);
-                        }
-                    }
-                }
-//                Intent intent = new Intent(LoginActivity.this,MainActivity.class);
-//                Bundle bundle = new Bundle();
-//                bundle.putSerializable("bcyclLendData",bcyclLendData);
-//                bundle.putSerializable("bcyclDpstryData",bcyclDpstryData);
-//                intent.putExtras(bundle);
-//                startActivity(intent);
         });
 
         btn_google_logout.setOnClickListener(v -> {
