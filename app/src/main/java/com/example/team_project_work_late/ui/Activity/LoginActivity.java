@@ -39,6 +39,9 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -59,39 +62,123 @@ public class LoginActivity extends AppCompatActivity {
     private Button btn_location;
 
     private ImageButton startButton;
-
-    void CheckLocation(Location location) {
-        double longitude = location.getLongitude();     //위도
-        double latitude = location.getLatitude();       //경도
-        double altitude = location.getAltitude();       //고도
-        System.out.println("위도 : " + longitude + "\n" +
-                "경도 : " + latitude + "\n" +
-                "고도 : " + altitude);
-    }
-//
+    private DatabaseReference myRef;
+    private Button tempButton;
     private Button btn_google_logout;
     private GoogleSignInClient googleSignInClient;
     private FirebaseAuth mAuth;
     private static final int REQ_SIGN_GOOGLE = 100;
 
+
+//필요한 Arguments - 대여소인지 보관소인지(필요 없을 수도 있음) - 고유번호 - 평가목록(리뷰만) - 내용
+    void prar() {
+
+
+        //즐겨찾기 - Lend or Archive - user id - 해당 보관소 or 대여소의 고유번호 혹은 이름
+        myRef.child("즐겨찾기").child(mAuth.getUid()).child("Lend").child("번호1").setValue(true);
+        myRef.child("즐겨찾기").child(mAuth.getUid()).child("Lend").child("번호2").setValue(true);
+        myRef.child("즐겨찾기").child(mAuth.getUid()).child("Archive").child("번호3").setValue(true);
+
+        //불러올 때 이대로 사용하면 됨
+        myRef.child("즐겨찾기").child(mAuth.getUid()).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if (task.isSuccessful()) {
+
+                    // Lend 번호1 ~ 번호3의 내용
+                    for (DataSnapshot data : task.getResult().child("Lend").getChildren()) {
+                        System.out.println(data.getKey());
+                    }
+                    // Archive 번호1 ~ 번호3의 내용
+                    for (DataSnapshot data : task.getResult().child("Archive").getChildren()) {
+                        System.out.println(data.getValue().toString());
+                    }
+                }
+            }
+        });
+
+
+        //리뷰 - Lend or Archive - user id - 해당 보관소 or 대여소의 고유번호 혹은 이름 - 내용
+        myRef.child("Review").child(mAuth.getUid()).child("Lend").child("번호1").setValue("Lend 내용1");
+        myRef.child("Review").child(mAuth.getUid()).child("Lend").child("번호2").setValue("Lend 내용2");
+
+        myRef.child("Review").child(mAuth.getUid()).child("Archive").child("번호1").child("평가 목록 : 비싼가요").setValue(1);
+        myRef.child("Review").child(mAuth.getUid()).child("Archive").child("번호1").child("평가 목록 : 형편없나요").setValue(1);
+        myRef.child("Review").child(mAuth.getUid()).child("Archive").child("번호1").child("평가 목록 : 제대로 관리 되고 있나요").setValue(1);
+        myRef.child("Review").child(mAuth.getUid()).child("Archive").child("번호1").child("평가 목록 : 좋은 자전거가 많나요").setValue(1);
+        myRef.child("Review").child(mAuth.getUid()).child("Archive").child("번호1").child("평가 목록 : 더럽나요").setValue(1);
+        myRef.child("Review").child(mAuth.getUid()).child("Archive").child("번호1").child("평가 작성").setValue("1번 불편");
+
+        myRef.child("Review").child(mAuth.getUid()).child("Archive").child("번호2").child("평가 목록 : 비싼가요").setValue(2);
+        myRef.child("Review").child(mAuth.getUid()).child("Archive").child("번호2").child("평가 목록 : 형편없나요").setValue(2);
+        myRef.child("Review").child(mAuth.getUid()).child("Archive").child("번호2").child("평가 목록 : 제대로 관리 되고 있나요").setValue(2);
+        myRef.child("Review").child(mAuth.getUid()).child("Archive").child("번호2").child("평가 목록 : 좋은 자전거가 많나요").setValue(2);
+        myRef.child("Review").child(mAuth.getUid()).child("Archive").child("번호2").child("평가 목록 : 더럽나요").setValue(2);
+        myRef.child("Review").child(mAuth.getUid()).child("Archive").child("번호2").child("평가 작성").setValue("2번 불편");
+
+
+        myRef.child("Review").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if (task.isSuccessful()) {
+                    // Lend 번호1 ~ 번호3의 내용
+                    for (DataSnapshot data : task.getResult().child(mAuth.getUid()).child("Lend").getChildren()) {
+                        System.out.println(data.getValue().toString());
+                    }
+                    // Archive 번호1 ~ 번호3의 내용
+                    for (DataSnapshot data : task.getResult().child(mAuth.getUid()).child("Archive").getChildren()) {
+                        System.out.println(data.getKey());
+                        System.out.println(Integer.parseInt(data.child("평가 목록 : 비싼가요").getValue().toString()));
+                        System.out.println(Integer.parseInt(data.child("평가 목록 : 형편없나요").getValue().toString()));
+                        System.out.println(Integer.parseInt(data.child("평가 목록 : 제대로 관리 되고 있나요").getValue().toString()));
+                        System.out.println(Integer.parseInt(data.child("평가 목록 : 좋은 자전거가 많나요").getValue().toString()));
+                        System.out.println(Integer.parseInt(data.child("평가 목록 : 더럽나요").getValue().toString()));
+                        System.out.println(data.child("평가 작성").getValue().toString());
+                    }
+
+                    //모든 리뷰에 접근
+                   for(DataSnapshot data : task.getResult().getChildren()){
+                       for(DataSnapshot temp : data.child("Archive").getChildren()){
+
+                       }
+                       for(DataSnapshot temp : data.child("Lend").getChildren()){
+                           
+                       }
+                   }
+                }
+            }
+        });
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        tempButton = (Button)findViewById(R.id.tempButton);
+        tempButton.setOnClickListener(v ->{
+            //데이터베이스 루트 얻기
+            myRef = FirebaseDatabase.getInstance().getReference();
+            prar();
+
+
+            //외부에서 데이터베이스가 바뀔 경우 발생하는 listner - 다른 디바이스에서 Review 업데이트될 때 쓰면 좋을듯
+//            myRef.addValueEventListener(new ValueEventListener() {
+//                @Override
+//                public void onDataChange(DataSnapshot dataSnapshot) {
+//                    String value = dataSnapshot.getValue(String.class);
+//                    Toast.makeText(LoginActivity.this, value, Toast.LENGTH_SHORT).show();
+//                }
+//
+//                @Override
+//                public void onCancelled(DatabaseError error) {
+//                }
+//            });
+        });
+
         // 파싱을 위한 설정
         parsingStart();
         startButton = (ImageButton)findViewById(R.id.startButton);
         btn_google_logout = (Button)findViewById(R.id.google_Logout);
-        //gps
-        final LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        //위도가 바뀔때마다 사용되는 Listioner
-        LocationListener locationListener = new LocationListener() {
-            @Override
-            public void onLocationChanged(@NonNull Location location) {
-                CheckLocation(location);
-            }
-        };
 
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -105,25 +192,6 @@ public class LoginActivity extends AppCompatActivity {
         startButton.setOnClickListener(v -> {
             Intent signInIntent = googleSignInClient.getSignInIntent();
             startActivityForResult(signInIntent, REQ_SIGN_GOOGLE);
-
-                if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(LoginActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 0);
-                } else {
-                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1, locationListener);
-                    if (locationManager != null) {
-                        Log.d("GPSTracker", "LocationManger is Enable");
-                        Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                        if (location != null) {
-                            CheckLocation(location);
-                        }
-                    }
-                }
-//                Intent intent = new Intent(LoginActivity.this,MainActivity.class);
-//                Bundle bundle = new Bundle();
-//                bundle.putSerializable("bcyclLendData",bcyclLendData);
-//                bundle.putSerializable("bcyclDpstryData",bcyclDpstryData);
-//                intent.putExtras(bundle);
-//                startActivity(intent);
         });
 
         btn_google_logout.setOnClickListener(v -> {
@@ -160,11 +228,10 @@ public class LoginActivity extends AppCompatActivity {
                 firebaseAuthWithGoogle(account.getIdToken());
             } catch (ApiException e) {
             }
-//        }else{
-//            System.out.println(resultCode);
+        } else {
+            Toast.makeText(LoginActivity.this, "구글 로그인 실패", Toast.LENGTH_SHORT).show();
+            System.out.println("구글 로그인 실패");
 //            System.out.println(data);
-//        }
-
         }
     }
 
