@@ -38,6 +38,13 @@ public class MainActivity extends AppCompatActivity {
 
         init();
         InitializeGPS();
+
+        Fragment_Kakao fragment_kakao = new Fragment_Kakao();
+        Bundle bundle_kakao = new Bundle();
+        fragment_kakao.setArguments(bundle_kakao);
+        bundle_kakao.putSerializable("bcyclLendData",bcyclLendData);
+        bundle_kakao.putSerializable("bcyclDpstryData",bcyclDpstryData);
+
         //첫 화면 띄우기
         getSupportFragmentManager().beginTransaction().add(R.id.frame_container,fragment_kakao).commit();
 
