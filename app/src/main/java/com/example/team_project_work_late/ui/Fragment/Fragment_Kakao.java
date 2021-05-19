@@ -79,8 +79,23 @@ public class Fragment_Kakao extends Fragment {
                 customMarker.setTag(1);
                 MapPoint point = MapPoint.mapPointWithGeoCoord(Double.valueOf(item.getLatitude()),Double.valueOf(item.getLongitude()));
                 customMarker.setMapPoint(point);
-                customMarker.setMarkerType(MapPOIItem.MarkerType.BluePin);
-//            customMarker.setCustomImageResourceId(R.drawable.ic_baseline_location_on_24);
+//                customMarker.setMarkerType(MapPOIItem.MarkerType.BluePin);
+                customMarker.setCustomImageResourceId(R.drawable.ic_baseline_location_on_24_lend);
+                customMarker.setCustomImageAutoscale(false); //기기 해상도에 상관없이 동일한 크키로 표시한다. true는 이미지 크기를 해상도에 맞게 조절함.
+                customMarker.setCustomImageAnchor(0.5f, 1.0f); //마커 이미지 기준점
+                customMarker.setSelectedMarkerType(MapPOIItem.MarkerType.RedPin);
+                mapView.addPOIItem(customMarker);
+            }
+        }
+        for (BcyclDpstryData_responseBody_items item : bcyclDpstryData.getBcyclDpstryData_response().getBcyclDpstryData_responseBody().getItems()){
+            if (!item.getLatitude().isEmpty()&& !item.getLongitude().isEmpty()){
+                MapPOIItem customMarker = new MapPOIItem();
+                customMarker.setItemName(item.getDpstryNm());
+                customMarker.setTag(1);
+                MapPoint point = MapPoint.mapPointWithGeoCoord(Double.valueOf(item.getLatitude()),Double.valueOf(item.getLongitude()));
+                customMarker.setMapPoint(point);
+//                customMarker.setMarkerType(MapPOIItem.MarkerType.BluePin);
+                customMarker.setCustomImageResourceId(R.drawable.ic_baseline_location_on_24_dpstry);
                 customMarker.setCustomImageAutoscale(false); //기기 해상도에 상관없이 동일한 크키로 표시한다. true는 이미지 크기를 해상도에 맞게 조절함.
                 customMarker.setCustomImageAnchor(0.5f, 1.0f); //마커 이미지 기준점
                 customMarker.setSelectedMarkerType(MapPOIItem.MarkerType.RedPin);
