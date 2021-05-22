@@ -105,22 +105,15 @@ public class LoginActivity extends AppCompatActivity {
 
 
         //리뷰 - Lend or Archive - user id - 해당 보관소 or 대여소의 고유번호 혹은 이름 - 내용
-        myRef.child("Review").child(mAuth.getUid()).child("Lend").child("번호1").setValue("Lend 내용1");
-        myRef.child("Review").child(mAuth.getUid()).child("Lend").child("번호2").setValue("Lend 내용2");
+        //myRef.child("Review").child(mAuth.getUid()).child("Lend").child("번호1").setValue("Lend 내용1");
+        //myRef.child("Review").child(mAuth.getUid()).child("Lend").child("번호2").setValue("Lend 내용2");
 
-        myRef.child("Review").child(mAuth.getUid()).child("Archive").child("번호1").child("평가 목록 : 비싼가요").setValue(1);
-        myRef.child("Review").child(mAuth.getUid()).child("Archive").child("번호1").child("평가 목록 : 형편없나요").setValue(1);
-        myRef.child("Review").child(mAuth.getUid()).child("Archive").child("번호1").child("평가 목록 : 제대로 관리 되고 있나요").setValue(1);
-        myRef.child("Review").child(mAuth.getUid()).child("Archive").child("번호1").child("평가 목록 : 좋은 자전거가 많나요").setValue(1);
-        myRef.child("Review").child(mAuth.getUid()).child("Archive").child("번호1").child("평가 목록 : 더럽나요").setValue(1);
-        myRef.child("Review").child(mAuth.getUid()).child("Archive").child("번호1").child("평가 작성").setValue("1번 불편");
 
-        myRef.child("Review").child(mAuth.getUid()).child("Archive").child("번호2").child("평가 목록 : 비싼가요").setValue(2);
-        myRef.child("Review").child(mAuth.getUid()).child("Archive").child("번호2").child("평가 목록 : 형편없나요").setValue(2);
-        myRef.child("Review").child(mAuth.getUid()).child("Archive").child("번호2").child("평가 목록 : 제대로 관리 되고 있나요").setValue(2);
-        myRef.child("Review").child(mAuth.getUid()).child("Archive").child("번호2").child("평가 목록 : 좋은 자전거가 많나요").setValue(2);
-        myRef.child("Review").child(mAuth.getUid()).child("Archive").child("번호2").child("평가 목록 : 더럽나요").setValue(2);
-        myRef.child("Review").child(mAuth.getUid()).child("Archive").child("번호2").child("평가 작성").setValue("2번 불편");
+        myRef.child("Review").child(mAuth.getUid()).child("Archive").child("번호1").child("내용").setValue("1번 불편");
+        myRef.child("Review").child(mAuth.getUid()).child("Archive").child("번호1").child("점수").setValue(1);
+
+        myRef.child("Review").child(mAuth.getUid()).child("Archive").child("번호2").child("내용").setValue("2번 불편");
+        myRef.child("Review").child(mAuth.getUid()).child("Archive").child("번호2").child("점수").setValue(2);
 
 
         myRef.child("Review").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {

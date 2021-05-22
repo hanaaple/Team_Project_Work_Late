@@ -21,8 +21,10 @@ import com.example.team_project_work_late.model.BcyclDpstryData_responseBody_ite
 import com.example.team_project_work_late.model.BcyclLendData_responseBody_items;
 import com.example.team_project_work_late.model.BookMarkItem;
 import com.example.team_project_work_late.ui.Fragment.Fragment_Kakao;
+import com.example.team_project_work_late.ui.Fragment.Fragment_Review;
 import com.example.team_project_work_late.ui.Fragment.Fragment_bookMark;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -83,7 +85,8 @@ public class MainActivity extends AppCompatActivity implements AddItemListener {
                         getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,fragment_bookMark).commit();
                         break;
                     case R.id.action_3:
-                        getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,new Frag3()).commit();
+                        Fragment_Review fragment_review = new Fragment_Review();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,fragment_review).commit();
                         break;
 
                 }
