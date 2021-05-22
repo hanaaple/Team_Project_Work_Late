@@ -26,7 +26,9 @@ import com.example.team_project_work_late.R;
 import com.example.team_project_work_late.application.NetRetrofit;
 import com.example.team_project_work_late.application.RetrofitAPI;
 import com.example.team_project_work_late.model.BcyclDpstryData;
+import com.example.team_project_work_late.model.BcyclDpstryData_responseBody_items;
 import com.example.team_project_work_late.model.BcyclLendData;
+import com.example.team_project_work_late.model.BcyclLendData_responseBody_items;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -45,6 +47,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -54,11 +60,11 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private BcyclLendData bcyclLendData;      // 대여소 파싱용 데아터
-    private BcyclDpstryData bcyclDpstryData;  // 보관소 파싱용 데이터
+    private List<BcyclLendData_responseBody_items> bcyclLendData;     // 대여소 파싱용 데아터
+    private List<BcyclDpstryData_responseBody_items> bcyclDpstryData; // 보관소 파싱용 데이터
 
-    private boolean parse_one = false;
-    private boolean pares_two = false;
+    private boolean parse_Lend = false;
+    private boolean parse_Dpstry = false;
     private Button btn_location;
 
     private ImageButton startButton;
@@ -176,6 +182,8 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         // 파싱을 위한 설정
+        bcyclLendData = new ArrayList<>();
+        bcyclDpstryData = new ArrayList<>();
         parsingStart();
         startButton = (ImageButton)findViewById(R.id.startButton);
         btn_google_logout = (Button)findViewById(R.id.google_Logout);
@@ -206,8 +214,8 @@ public class LoginActivity extends AppCompatActivity {
         btn_location.setOnClickListener(v->{
             Intent intent = new Intent(LoginActivity.this,MainActivity.class);
                 Bundle bundle = new Bundle();
-                bundle.putSerializable("bcyclLendData",bcyclLendData);
-                bundle.putSerializable("bcyclDpstryData",bcyclDpstryData);
+                bundle.putSerializable("bcyclLendData", (Serializable) bcyclLendData);
+                bundle.putSerializable("bcyclDpstryData", (Serializable) bcyclDpstryData);
                 intent.putExtras(bundle);
                 startActivity(intent);
         });
@@ -256,10 +264,9 @@ public class LoginActivity extends AppCompatActivity {
         NetRetrofit.getInstance().getAPI().getLendData().enqueue(new Callback<BcyclLendData>() {
             @Override
             public void onResponse(Call<BcyclLendData> call, Response<BcyclLendData> response) {
-                bcyclLendData = response.body();
-                pares_two = true;
+                bcyclLendData.addAll(response.body().getBcyclLendDataresponse().getBcyclLendDataresponseBody().getItems());
+                parse_Lend = true;
                 parsingEnd();
-                call.cancel();
                 Log.e("TEST","성공성공");
             }
 
@@ -272,10 +279,9 @@ public class LoginActivity extends AppCompatActivity {
         NetRetrofit.getInstance().getAPI().getDpstryData().enqueue(new Callback<BcyclDpstryData>() {
             @Override
             public void onResponse(Call<BcyclDpstryData> call, Response<BcyclDpstryData> response) {
-                bcyclDpstryData = response.body();
-                parse_one = true;
+                bcyclDpstryData.addAll(response.body().getBcyclDpstryData_response().getBcyclDpstryData_responseBody().getItems());
+                parse_Dpstry = true;
                 parsingEnd();
-                call.cancel();
                 Log.e("TEST2","성공성공");
             }
 
@@ -288,7 +294,8 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void parsingEnd(){
-        if (parse_one && pares_two)
+        if (parse_Lend && parse_Dpstry){
             btn_location.setVisibility(View.VISIBLE);
+        }
     }
 }

@@ -16,9 +16,14 @@ import retrofit2.http.GET;
  */
 
 public interface RetrofitAPI {
-    @GET("openapi/tn_pubr_public_bcycl_lend_api?serviceKey=GyqT8YmA2REYKelkbYuNW0Ke%2BoU7ArbS5pBRj4Dj2wj5mm1%2Fmz8VwfSVYh59ymnCYpvCd01Dqem1zImM4QfGyQ%3D%3D&pageNo=0&numOfRows=700&type=json")
+
+
+    @GET("openapi/tn_pubr_public_bcycl_lend_api?serviceKey=GyqT8YmA2REYKelkbYuNW0Ke%2BoU7ArbS5pBRj4Dj2wj5mm1%2Fmz8VwfSVYh59ymnCYpvCd01Dqem1zImM4QfGyQ%3D%3D&pageNo=+0&numOfRows=100&type=json")
     Call<BcyclLendData> getLendData();
 
-    @GET("openapi/tn_pubr_public_bcycl_dpstry_api?serviceKey=GyqT8YmA2REYKelkbYuNW0Ke%2BoU7ArbS5pBRj4Dj2wj5mm1%2Fmz8VwfSVYh59ymnCYpvCd01Dqem1zImM4QfGyQ%3D%3D&pageNo=0&numOfRows=100&type=json")
+    int parseDpstry_pageNo = 0;
+    int parseDpstry_numOfRows = 100;
+
+    @GET("openapi/tn_pubr_public_bcycl_dpstry_api?serviceKey=GyqT8YmA2REYKelkbYuNW0Ke%2BoU7ArbS5pBRj4Dj2wj5mm1%2Fmz8VwfSVYh59ymnCYpvCd01Dqem1zImM4QfGyQ%3D%3D&pageNo="+parseDpstry_pageNo+"&numOfRows="+parseDpstry_numOfRows+"&type=json")
     Call<BcyclDpstryData> getDpstryData();
 }
