@@ -26,7 +26,9 @@ import com.example.team_project_work_late.R;
 import com.example.team_project_work_late.application.NetRetrofit;
 import com.example.team_project_work_late.application.RetrofitAPI;
 import com.example.team_project_work_late.model.BcyclDpstryData;
+import com.example.team_project_work_late.model.BcyclDpstryData_responseBody_items;
 import com.example.team_project_work_late.model.BcyclLendData;
+import com.example.team_project_work_late.model.BcyclLendData_responseBody_items;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -47,6 +49,10 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -56,11 +62,11 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private BcyclLendData bcyclLendData;      // 대여소 파싱용 데아터
-    private BcyclDpstryData bcyclDpstryData;  // 보관소 파싱용 데이터
+    private List<BcyclLendData_responseBody_items> bcyclLendData;     // 대여소 파싱용 데아터
+    private List<BcyclDpstryData_responseBody_items> bcyclDpstryData; // 보관소 파싱용 데이터
 
-    private boolean parse_one = false;
-    private boolean pares_two = false;
+    private boolean parse_Lend = false;
+    private boolean parse_Dpstry = false;
     private Button btn_location;
 
     private ImageButton startButton;
@@ -101,22 +107,15 @@ public class LoginActivity extends AppCompatActivity {
 
 
         //리뷰 - Lend or Archive - user id - 해당 보관소 or 대여소의 고유번호 혹은 이름 - 내용
-        myRef.child("Review").child(mAuth.getUid()).child("Lend").child("번호1").setValue("Lend 내용1");
-        myRef.child("Review").child(mAuth.getUid()).child("Lend").child("번호2").setValue("Lend 내용2");
+        //myRef.child("Review").child(mAuth.getUid()).child("Lend").child("번호1").setValue("Lend 내용1");
+        //myRef.child("Review").child(mAuth.getUid()).child("Lend").child("번호2").setValue("Lend 내용2");
 
-        myRef.child("Review").child(mAuth.getUid()).child("Archive").child("번호1").child("평가 목록 : 비싼가요").setValue(1);
-        myRef.child("Review").child(mAuth.getUid()).child("Archive").child("번호1").child("평가 목록 : 형편없나요").setValue(1);
-        myRef.child("Review").child(mAuth.getUid()).child("Archive").child("번호1").child("평가 목록 : 제대로 관리 되고 있나요").setValue(1);
-        myRef.child("Review").child(mAuth.getUid()).child("Archive").child("번호1").child("평가 목록 : 좋은 자전거가 많나요").setValue(1);
-        myRef.child("Review").child(mAuth.getUid()).child("Archive").child("번호1").child("평가 목록 : 더럽나요").setValue(1);
-        myRef.child("Review").child(mAuth.getUid()).child("Archive").child("번호1").child("평가 작성").setValue("1번 불편");
 
-        myRef.child("Review").child(mAuth.getUid()).child("Archive").child("번호2").child("평가 목록 : 비싼가요").setValue(2);
-        myRef.child("Review").child(mAuth.getUid()).child("Archive").child("번호2").child("평가 목록 : 형편없나요").setValue(2);
-        myRef.child("Review").child(mAuth.getUid()).child("Archive").child("번호2").child("평가 목록 : 제대로 관리 되고 있나요").setValue(2);
-        myRef.child("Review").child(mAuth.getUid()).child("Archive").child("번호2").child("평가 목록 : 좋은 자전거가 많나요").setValue(2);
-        myRef.child("Review").child(mAuth.getUid()).child("Archive").child("번호2").child("평가 목록 : 더럽나요").setValue(2);
-        myRef.child("Review").child(mAuth.getUid()).child("Archive").child("번호2").child("평가 작성").setValue("2번 불편");
+        myRef.child("Review").child(mAuth.getUid()).child("Archive").child("번호1").child("내용").setValue("1번 불편");
+        myRef.child("Review").child(mAuth.getUid()).child("Archive").child("번호1").child("점수").setValue(1);
+
+        myRef.child("Review").child(mAuth.getUid()).child("Archive").child("번호2").child("내용").setValue("2번 불편");
+        myRef.child("Review").child(mAuth.getUid()).child("Archive").child("번호2").child("점수").setValue(2);
 
 
         myRef.child("Review").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
@@ -178,6 +177,8 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         // 파싱을 위한 설정
+        bcyclLendData = new ArrayList<>();
+        bcyclDpstryData = new ArrayList<>();
         parsingStart();
         startButton = (ImageButton)findViewById(R.id.startButton);
         btn_google_logout = (Button)findViewById(R.id.google_Logout);
@@ -208,8 +209,8 @@ public class LoginActivity extends AppCompatActivity {
         btn_location.setOnClickListener(v->{
             Intent intent = new Intent(LoginActivity.this,MainActivity.class);
                 Bundle bundle = new Bundle();
-                bundle.putSerializable("bcyclLendData",bcyclLendData);
-                bundle.putSerializable("bcyclDpstryData",bcyclDpstryData);
+                bundle.putSerializable("bcyclLendData", (Serializable) bcyclLendData);
+                bundle.putSerializable("bcyclDpstryData", (Serializable) bcyclDpstryData);
                 intent.putExtras(bundle);
                 startActivity(intent);
         });
@@ -258,10 +259,9 @@ public class LoginActivity extends AppCompatActivity {
         NetRetrofit.getInstance().getAPI().getLendData().enqueue(new Callback<BcyclLendData>() {
             @Override
             public void onResponse(Call<BcyclLendData> call, Response<BcyclLendData> response) {
-                bcyclLendData = response.body();
-                pares_two = true;
+                bcyclLendData.addAll(response.body().getBcyclLendDataresponse().getBcyclLendDataresponseBody().getItems());
+                parse_Lend = true;
                 parsingEnd();
-                call.cancel();
                 Log.e("TEST","성공성공");
             }
 
@@ -274,10 +274,9 @@ public class LoginActivity extends AppCompatActivity {
         NetRetrofit.getInstance().getAPI().getDpstryData().enqueue(new Callback<BcyclDpstryData>() {
             @Override
             public void onResponse(Call<BcyclDpstryData> call, Response<BcyclDpstryData> response) {
-                bcyclDpstryData = response.body();
-                parse_one = true;
+                bcyclDpstryData.addAll(response.body().getBcyclDpstryData_response().getBcyclDpstryData_responseBody().getItems());
+                parse_Dpstry = true;
                 parsingEnd();
-                call.cancel();
                 Log.e("TEST2","성공성공");
             }
 
@@ -290,7 +289,8 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void parsingEnd(){
-        if (parse_one && pares_two)
+        if (parse_Lend && parse_Dpstry){
             btn_location.setVisibility(View.VISIBLE);
+        }
     }
 }

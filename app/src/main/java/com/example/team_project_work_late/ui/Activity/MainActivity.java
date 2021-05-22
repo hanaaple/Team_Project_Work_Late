@@ -16,34 +16,45 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import com.example.team_project_work_late.R;
-import com.example.team_project_work_late.model.BcyclDpstryData;
-import com.example.team_project_work_late.model.BcyclLendData;
+import com.example.team_project_work_late.listener.AddItemListener;
+import com.example.team_project_work_late.model.BcyclDpstryData_responseBody_items;
+import com.example.team_project_work_late.model.BcyclLendData_responseBody_items;
+import com.example.team_project_work_late.model.BookMarkItem;
 import com.example.team_project_work_late.ui.Fragment.Fragment_Kakao;
+import com.example.team_project_work_late.ui.Fragment.Fragment_Review;
 import com.example.team_project_work_late.ui.Fragment.Fragment_bookMark;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements AddItemListener {
 
     private static final String TAG = "Main_Activity";
 
-    private BcyclLendData bcyclLendData;     // 대여소 파싱용 데아터
-    private BcyclDpstryData bcyclDpstryData; // 보관소 파싱용 데이터
+    private List<BcyclLendData_responseBody_items> bcyclLendData;     // 대여소 파싱용 데아터
+    private List<BcyclDpstryData_responseBody_items> bcyclDpstryData; // 보관소 파싱용 데이터
     private BottomNavigationView mBottomNavigationView;
+    private List<BookMarkItem> addItem;
     private Location mlocation;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         init();
+        addItem = new ArrayList<>();
         InitializeGPS();
 
         Fragment_Kakao fragment_kakao = new Fragment_Kakao();
         Bundle bundle_kakao = new Bundle();
         fragment_kakao.setArguments(bundle_kakao);
-        bundle_kakao.putSerializable("bcyclLendData",bcyclLendData);
-        bundle_kakao.putSerializable("bcyclDpstryData",bcyclDpstryData);
+        bundle_kakao.putSerializable("bcyclLendData", (Serializable) bcyclLendData);
+        bundle_kakao.putSerializable("bcyclDpstryData", (Serializable) bcyclDpstryData);
 
         //첫 화면 띄우기
         getSupportFragmentManager().beginTransaction().add(R.id.frame_container,fragment_kakao).commit();
@@ -57,20 +68,25 @@ public class MainActivity extends AppCompatActivity {
                         Fragment_Kakao fragment_kakao = new Fragment_Kakao();
                         Bundle bundle_kakao = new Bundle();
                         fragment_kakao.setArguments(bundle_kakao);
-                        bundle_kakao.putSerializable("bcyclLendData",bcyclLendData);
-                        bundle_kakao.putSerializable("bcyclDpstryData",bcyclDpstryData);
+                        bundle_kakao.putSerializable("bcyclLendData", (Serializable) bcyclLendData);
+                        bundle_kakao.putSerializable("bcyclDpstryData", (Serializable) bcyclDpstryData);
+//                        bundle_kakao.putDouble("latitude",mlocation.getLatitude());
+//                        bundle_kakao.putDouble("longitude",mlocation.getLongitude());
+                        addItem.clear();
                         getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,fragment_kakao).commit();
                         break;
                     case R.id.action_2:
                         Fragment_bookMark fragment_bookMark = new Fragment_bookMark();
                         Bundle bundle_bookmark = new Bundle();
                         fragment_bookMark.setArguments(bundle_bookmark);
-                        bundle_bookmark.putSerializable("bcyclLendData",bcyclLendData);
-                        bundle_bookmark.putSerializable("bcyclDpstryData",bcyclDpstryData);
+                        bundle_bookmark.putSerializable("bcyclLendData", (Serializable) bcyclLendData);
+                        bundle_bookmark.putSerializable("bcyclDpstryData", (Serializable) bcyclDpstryData);
+                        bundle_bookmark.putSerializable("addItem", (Serializable) addItem);
                         getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,fragment_bookMark).commit();
                         break;
                     case R.id.action_3:
-                        getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,new Frag3()).commit();
+                        Fragment_Review fragment_review = new Fragment_Review();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,fragment_review).commit();
                         break;
 
                 }
@@ -84,8 +100,8 @@ public class MainActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
-        bcyclLendData = (BcyclLendData) bundle.getSerializable("bcyclLendData");
-        bcyclDpstryData = (BcyclDpstryData) bundle.getSerializable("bcyclDpstryData");
+        bcyclLendData = (List<BcyclLendData_responseBody_items>) bundle.getSerializable("bcyclLendData");
+        bcyclDpstryData = (List<BcyclDpstryData_responseBody_items>) bundle.getSerializable("bcyclDpstryData");
     }
     private void InitializeGPS(){
         final LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
@@ -108,6 +124,11 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }
+    }
+
+    @Override
+    public void addItemSet(BookMarkItem item) {
+        addItem.add(item);
     }
 
     // 해시키 받아오는 메소드

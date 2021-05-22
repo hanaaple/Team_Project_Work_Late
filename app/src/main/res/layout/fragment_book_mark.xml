@@ -21,7 +21,7 @@
         <Button
             android:id="@+id/button2"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="35dp"
             android:layout_marginStart="32dp"
             android:layout_marginTop="32dp"
             android:background="@drawable/group_1"
@@ -32,8 +32,12 @@
             android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="24dp"
-            android:background="@drawable/text_bookmark"
+            android:fontFamily="@font/kopubworld_dotum_bold"
+            android:text="즐겨찾기"
+            android:textColor="@color/black"
+            android:textSize="30sp"
             app:layout_constraintStart_toStartOf="@+id/button2"
             app:layout_constraintTop_toBottomOf="@+id/button2" />
 
@@ -47,13 +51,16 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView" />
 
-        <Spinner
-            android:id="@+id/spinner"
+        <TextView
+            android:id="@+id/tv_bookmark_size"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
             android:layout_marginTop="8dp"
-            android:background="@drawable/sec_all"
+            android:text="전체"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            android:fontFamily="@font/kopubworld_dotum_bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/view" />
 
@@ -63,7 +70,7 @@
             android:layout_marginStart="60dp"
             android:layout_marginTop="8dp"
             android:background="@drawable/sec"
-            app:layout_constraintStart_toStartOf="@id/spinner"
+            app:layout_constraintStart_toStartOf="@id/tv_bookmark_size"
             app:layout_constraintTop_toBottomOf="@+id/view" />
 
         <View
@@ -88,16 +95,5 @@
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
         tools:listitem="@layout/item_list" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/btn_write"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:clickable="true"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.459"
-        app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/ic_baseline_add_circle_24" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

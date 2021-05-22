@@ -1,6 +1,8 @@
 package com.example.team_project_work_late.model;
 
-public class BookMarkItem {
+import java.io.Serializable;
+
+public class BookMarkItem implements Serializable {
 
     private int id;
     private String bcyclLendNm;     // 자전거 대여소 명 (e.g. 다문화 지원센터)

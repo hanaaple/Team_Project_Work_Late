@@ -3,31 +3,29 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:background="@android:color/transparent"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout2"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginLeft="32dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginRight="32dp"
-        android:layout_marginBottom="32dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/detailbox"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintStart_toStartOf="parent">
 
         <TextView
             android:id="@+id/tv_dialog_bcyclLendNm"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginStart="60dp"
+            android:layout_marginTop="32dp"
+            android:fontFamily="@font/kopubworld_dotum_bold"
             android:text="대여소 이름"
+            android:textColor="@color/black"
+            android:textSize="25sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -36,7 +34,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
+            android:fontFamily="@font/kopubworld_dotum_bold"
             android:text="주소"
+            android:textColor="@color/black"
+            android:textSize="15sp"
             app:layout_constraintStart_toStartOf="@id/tv_dialog_bcyclLendNm"
             app:layout_constraintTop_toBottomOf="@id/tv_dialog_bcyclLendNm" />
 
@@ -45,28 +46,50 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="시간"
+            android:fontFamily="@font/kopubworld_dotum_bold"
+            android:text="운영시간:"
+            android:textColor="@color/black"
+            android:textSize="15sp"
             app:layout_constraintStart_toStartOf="@id/tv_dialog_lnmadr"
+            app:layout_constraintTop_toBottomOf="@id/tv_dialog_lnmadr" />
+
+        <TextView
+            android:id="@+id/tv_dialog_operHm_input"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/kopubworld_dotum_medium"
+            android:text="운영시간"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            app:layout_constraintStart_toEndOf="@+id/tv_dialog_operHm"
             app:layout_constraintTop_toBottomOf="@id/tv_dialog_lnmadr" />
 
         <TextView
             android:id="@+id/tv_dialog_rstde"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="16dp"
+            android:fontFamily="@font/kopubworld_dotum_bold"
             android:text="휴무일"
-            app:layout_constraintStart_toEndOf="@+id/tv_dialog_operHm"
-            app:layout_constraintTop_toBottomOf="@id/tv_dialog_lnmadr" />
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            app:layout_constraintStart_toStartOf="@+id/tv_dialog_operHm_input"
+            app:layout_constraintTop_toBottomOf="@+id/tv_dialog_operHm_input" />
 
         <TextView
             android:id="@+id/tv_dialog_chrgeSe"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="무료/유료"
+            android:fontFamily="@font/kopubworld_dotum_bold"
+            android:text="이용 요금 정보:"
+            android:textColor="@color/black"
+            android:textSize="15sp"
             app:layout_constraintStart_toStartOf="@id/tv_dialog_operHm"
-            app:layout_constraintTop_toBottomOf="@id/tv_dialog_operHm" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_dialog_rstde" />
 
         <TextView
             android:id="@+id/tv_dialog_bcyclUseCharge"
@@ -74,57 +97,76 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
+            android:fontFamily="@font/kopubworld_dotum_medium"
             android:text="이용요금정보"
+            android:textColor="@color/black"
+            android:textSize="15sp"
             app:layout_constraintStart_toEndOf="@+id/tv_dialog_chrgeSe"
-            app:layout_constraintTop_toBottomOf="@id/tv_dialog_operHm" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_dialog_rstde" />
 
-        <TextView
-            android:id="@+id/tv_dialog_airInjector"
+        <CheckBox
+            android:id="@+id/cb_dialog_airInjector"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
+            android:fontFamily="@font/kopubworld_dotum_medium"
             android:text="공기 주입기 비치"
+            android:textColor="@color/black"
+            android:enabled="false"
+            android:textSize="15sp"
             app:layout_constraintStart_toStartOf="@id/tv_dialog_chrgeSe"
             app:layout_constraintTop_toBottomOf="@id/tv_dialog_chrgeSe" />
 
-        <TextView
-            android:id="@+id/tv_dialog_airInjectorYN"
+        <CheckBox
+            android:id="@+id/cb_dialog_repairStand"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:text="Y/N"
-            app:layout_constraintStart_toEndOf="@+id/tv_dialog_airInjector"
-            app:layout_constraintTop_toBottomOf="@id/tv_dialog_chrgeSe" />
-
-        <TextView
-            android:id="@+id/tv_dialog_repairStand"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:enabled="false"
+            android:fontFamily="@font/kopubworld_dotum_medium"
             android:text="수리대 설치 여부"
-            app:layout_constraintStart_toStartOf="@id/tv_dialog_airInjector"
-            app:layout_constraintTop_toBottomOf="@id/tv_dialog_airInjector" />
-
-        <TextView
-            android:id="@+id/tv_dialog_repairStandYN"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:text="Y/N"
-            app:layout_constraintStart_toEndOf="@+id/tv_dialog_repairStand"
-            app:layout_constraintTop_toBottomOf="@id/tv_dialog_airInjector" />
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            app:layout_constraintStart_toStartOf="@id/cb_dialog_airInjector"
+            app:layout_constraintTop_toBottomOf="@id/cb_dialog_airInjector" />
 
         <TextView
             android:id="@+id/tv_dialog_phoneNumber"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="전화번호"
-            app:layout_constraintStart_toStartOf="@id/tv_dialog_repairStand"
-            app:layout_constraintTop_toBottomOf="@id/tv_dialog_repairStand" />
+            android:fontFamily="@font/kopubworld_dotum_bold"
+            android:text="전화번호:"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            app:layout_constraintStart_toStartOf="@id/cb_dialog_repairStand"
+            app:layout_constraintTop_toBottomOf="@id/cb_dialog_repairStand" />
 
+        <TextView
+            android:id="@+id/tv_dialog_phoneNumber_input"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/kopubworld_dotum_medium"
+            android:text="010-0000-0000"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            app:layout_constraintStart_toEndOf="@+id/tv_dialog_phoneNumber"
+            app:layout_constraintTop_toBottomOf="@id/cb_dialog_repairStand" />
 
+        <RelativeLayout
+            android:id="@+id/dialog_map_view"
+            android:layout_width="match_parent"
+            android:layout_height="175dp"
+            android:layout_marginStart="60dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="60dp"
+            android:layout_marginBottom="16dp"
+            app:layout_constraintBottom_toBottomOf="@+id/constraintLayout2"
+            app:layout_constraintEnd_toEndOf="@+id/constraintLayout2"
+            app:layout_constraintStart_toStartOf="@+id/constraintLayout2"
+            app:layout_constraintTop_toBottomOf="@+id/tv_dialog_phoneNumber"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
