@@ -1,20 +1,15 @@
 package com.example.team_project_work_late.adapter;
 
-import android.app.Dialog;
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.team_project_work_late.R;
@@ -50,7 +45,7 @@ public class BookMarkAdapter extends RecyclerView.Adapter<BookMarkAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull BookMarkAdapter.ViewHolder holder, int position) {
         holder.tv_bcyclLendNm.setText(mBMList.get(position).getBcyclLendNm());
-        holder.tv_rdnmadr.setText(mBMList.get(position).getRdnmadr());
+        holder.tv_lnmadr.setText(mBMList.get(position).getLnmadr());
         holder.tv_bcyclLendSe.setText(mBMList.get(position).getBcyclLendSe());
         holder.tv_operHm.setText(mBMList.get(position).getOperOpenHm()+"~"+mBMList.get(position).getOperCloseHm());
         holder.tv_rstde.setText(mBMList.get(position).getRstde());
@@ -64,7 +59,7 @@ public class BookMarkAdapter extends RecyclerView.Adapter<BookMarkAdapter.ViewHo
     class ViewHolder extends RecyclerView.ViewHolder{
 
         private TextView tv_bcyclLendNm;
-        private TextView tv_rdnmadr;
+        private TextView tv_lnmadr;
         private TextView tv_bcyclLendSe;
         private TextView tv_operHm;
         private TextView tv_rstde;
@@ -74,7 +69,7 @@ public class BookMarkAdapter extends RecyclerView.Adapter<BookMarkAdapter.ViewHo
             super(itemView);
 
             tv_bcyclLendNm = itemView.findViewById(R.id.tv_bcyclLendNm);
-            tv_rdnmadr = itemView.findViewById(R.id.tv_rdnmadr);
+            tv_lnmadr = itemView.findViewById(R.id.tv_lnmadr);
             tv_bcyclLendSe = itemView.findViewById(R.id.tv_bcyclLendSe);
             tv_operHm = itemView.findViewById(R.id.tv_operHm);
             tv_rstde = itemView.findViewById(R.id.tv_rstde);
@@ -97,13 +92,16 @@ public class BookMarkAdapter extends RecyclerView.Adapter<BookMarkAdapter.ViewHo
                 TextView tv_dialog_bcyclUseCharge = dialog.findViewById(R.id.tv_dialog_bcyclUseCharge);
                 tv_dialog_bcyclUseCharge.setText(bookMarkItem.getBcyclUseCharge());
                 CheckBox cb_dialog_airInjectorYN = dialog.findViewById(R.id.cb_dialog_airInjector);
-                if (bookMarkItem.getAirInjectorYn().toUpperCase().equals("Y")){
-                    cb_dialog_airInjectorYN.setChecked(true);
+                if (bookMarkItem.getAirInjectorYn() != null){
+                    if (bookMarkItem.getAirInjectorYn().toUpperCase().equals("Y")){
+                        cb_dialog_airInjectorYN.setChecked(true);
+                    }
                 }
-
                 CheckBox cb_dialog_repairStandYN = dialog.findViewById(R.id.cb_dialog_repairStand);
-                if (bookMarkItem.getRepairStandY().toUpperCase().equals("Y")){
-                    cb_dialog_repairStandYN.setChecked(true);
+                if (bookMarkItem.getRepairStandY() != null){
+                    if (bookMarkItem.getRepairStandY().toUpperCase().equals("Y")){
+                        cb_dialog_repairStandYN.setChecked(true);
+                    }
                 }
                 TextView tv_dialog_phoneNumber = dialog.findViewById(R.id.tv_dialog_phoneNumber_input);
                 tv_dialog_phoneNumber.setText(bookMarkItem.getPhoneNumber());

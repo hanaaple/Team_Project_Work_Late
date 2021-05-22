@@ -1,21 +1,29 @@
 package com.example.team_project_work_late.ui.Fragment;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.team_project_work_late.R;
+import com.example.team_project_work_late.adapter.CustomBalloonAdapter;
 import com.example.team_project_work_late.listener.AddItemListener;
 import com.example.team_project_work_late.model.BcyclDpstryData;
 import com.example.team_project_work_late.model.BcyclDpstryData_responseBody_items;
 import com.example.team_project_work_late.model.BcyclLendData;
 import com.example.team_project_work_late.model.BcyclLendData_responseBody_items;
+import com.example.team_project_work_late.model.BookMarkItem;
+import com.example.team_project_work_late.model.DpstryMarker;
+import com.example.team_project_work_late.model.LendMarker;
 
 import net.daum.mf.map.api.MapPOIItem;
 import net.daum.mf.map.api.MapPoint;
@@ -31,7 +39,7 @@ import java.util.List;
  * @Method onCreateView
  * */
 
-public class Fragment_Kakao extends Fragment {
+public class Fragment_Kakao extends Fragment implements MapView.POIItemEventListener{
 
     // 보관소 데이터 접근법 예시
     // List<BcyclLendData_responseBody_items> list = bcyclLendData.getBcyclLendDataresponse().getBcyclLendDataresponseBody().getItems()
@@ -66,13 +74,14 @@ public class Fragment_Kakao extends Fragment {
         // 줌 정도 설정
         mapView.setZoomLevel(4,true);
 
-        // 마커용 맵포인트 설정
-        MapPoint MARKER_POINT = MapPoint.mapPointWithGeoCoord(37.54892296550104, 126.99089033876304);
+        // 벌룬 마커 적용
+        mapView.setCalloutBalloonAdapter(new CustomBalloonAdapter(getContext()));
+        mapView.setPOIItemEventListener(this);
 
 
         for (BcyclLendData_responseBody_items item : bcyclLendData){
             if (!item.getLatitude().isEmpty()&& !item.getLongitude().isEmpty()){
-                MapPOIItem customMarker = new MapPOIItem();
+                LendMarker customMarker = new LendMarker();
                 customMarker.setItemName(item.getBcyclLendNm());
                 customMarker.setTag(1);
                 MapPoint point = MapPoint.mapPointWithGeoCoord(Double.valueOf(item.getLatitude()),Double.valueOf(item.getLongitude()));
@@ -83,12 +92,14 @@ public class Fragment_Kakao extends Fragment {
                 customMarker.setCustomImageAnchor(0.5f, 1.0f); //마커 이미지 기준점
                 customMarker.setSelectedMarkerType(MapPOIItem.MarkerType.CustomImage);
                 customMarker.setCustomSelectedImageResourceId(R.drawable.selected_marker_rental_s);
+                BookMarkItem bookMarkItem = new BookMarkItem(item);
+                customMarker.setItem(bookMarkItem);
                 mapView.addPOIItem(customMarker);
             }
         }
         for (BcyclDpstryData_responseBody_items item : bcyclDpstryData){
             if (!item.getLatitude().isEmpty()&& !item.getLongitude().isEmpty()){
-                MapPOIItem customMarker = new MapPOIItem();
+                DpstryMarker customMarker = new DpstryMarker();
                 customMarker.setItemName(item.getDpstryNm());
                 customMarker.setTag(1);
                 MapPoint point = MapPoint.mapPointWithGeoCoord(Double.valueOf(item.getLatitude()),Double.valueOf(item.getLongitude()));
@@ -99,6 +110,7 @@ public class Fragment_Kakao extends Fragment {
                 customMarker.setCustomImageAnchor(0.5f, 1.0f); //마커 이미지 기준점
                 customMarker.setSelectedMarkerType(MapPOIItem.MarkerType.CustomImage);
                 customMarker.setCustomSelectedImageResourceId(R.drawable.selected_marker_dpstry_s);
+                customMarker.setItem(item);
                 mapView.addPOIItem(customMarker);
             }
         }
@@ -124,5 +136,50 @@ public class Fragment_Kakao extends Fragment {
     }
 
 
+    @Override
+    public void onPOIItemSelected(MapView mapView, MapPOIItem mapPOIItem) {
 
+    }
+
+    @Override
+    public void onCalloutBalloonOfPOIItemTouched(MapView mapView, MapPOIItem mapPOIItem) {
+
+    }
+
+    @Override
+    public void onCalloutBalloonOfPOIItemTouched(MapView mapView, MapPOIItem mapPOIItem, MapPOIItem.CalloutBalloonButtonType calloutBalloonButtonType) {
+        if (mapPOIItem instanceof LendMarker){
+            LendMarker lendMarker = (LendMarker) mapPOIItem;
+
+            String[] arr = {"즐겨찾기 등록", "길찾기", "취소"};
+            AlertDialog.Builder dialog = new AlertDialog.Builder(this.getContext());
+            dialog.setTitle("원하는 작업을 선택해주세요");
+            dialog.setItems(arr, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    switch (which){
+                        case 0: {
+                            addItemListener.addItemSet(lendMarker.getItem());
+                            Toast.makeText(mapView.getContext(), "즐겨찾기 등록이 완료되었습니다.", Toast.LENGTH_SHORT).show();
+                            break;
+                        }
+                        case 1:{
+                            Log.e("길찾기","길찾기");
+                            break;
+                        }
+                        case 2: {
+                            dialog.dismiss();
+                            break;
+                        }
+                    }
+                }
+            });
+            dialog.show();
+        }
+    }
+
+    @Override
+    public void onDraggablePOIItemMoved(MapView mapView, MapPOIItem mapPOIItem, MapPoint mapPoint) {
+
+    }
 }
