@@ -194,8 +194,9 @@ public class LoginActivity extends AppCompatActivity {
 
         // 테스트용
         btn_location = findViewById(R.id.locationButton);
-        btn_location.setOnClickListener(v -> {
-            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+        btn_location.setOnClickListener(v->{
+            btn_location.setEnabled(false);
+            Intent intent = new Intent(LoginActivity.this,MainActivity.class);
             Bundle bundle = new Bundle();
             bundle.putSerializable("bcyclLendData", (Serializable) bcyclLendData);
             bundle.putSerializable("bcyclDpstryData", (Serializable) bcyclDpstryData);

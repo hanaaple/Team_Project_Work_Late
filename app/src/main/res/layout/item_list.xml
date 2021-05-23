@@ -34,13 +34,13 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/tv_rdnmadr"
+        android:id="@+id/tv_lnmadr"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
         android:layout_marginTop="16dp"
         android:singleLine="true"
-        android:text="도로명주소"
+        android:text="지번주소"
         android:textColor="@color/black"
         android:textSize="15sp"
         android:fontFamily="@font/kopubworld_dotum_light"
@@ -58,7 +58,7 @@
         android:fontFamily="@font/kopubworld_dotum_light"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/btn_select"
-        app:layout_constraintTop_toBottomOf="@+id/tv_rdnmadr" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_lnmadr" />
 
     <TextView
         android:id="@+id/tv_operHm"
@@ -71,7 +71,7 @@
         android:fontFamily="@font/kopubworld_dotum_light"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/tv_bcyclLendSe"
-        app:layout_constraintTop_toBottomOf="@+id/tv_rdnmadr" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_lnmadr" />
 
     <TextView
         android:id="@+id/tv_rstde"
@@ -84,6 +84,6 @@
         android:fontFamily="@font/kopubworld_dotum_light"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/tv_operHm"
-        app:layout_constraintTop_toBottomOf="@+id/tv_rdnmadr" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_lnmadr" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

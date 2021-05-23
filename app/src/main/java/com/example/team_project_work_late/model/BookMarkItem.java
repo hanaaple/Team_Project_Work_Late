@@ -20,6 +20,25 @@ public class BookMarkItem implements Serializable {
     private String repairStandY;    // 수리대 설치 여부 (e.g. N)
     private String phoneNumber;     // 관리 기관 전화 번호 (e.g. 1544-6339)
 
+    public BookMarkItem(){}
+
+    public BookMarkItem(BcyclLendData_responseBody_items item) {
+        this.bcyclLendNm = item.getBcyclLendNm();
+        this.bcyclLendSe = item.getBcyclLendSe();
+        this.rdnmadr = item.getRdnmadr();
+        this.lnmadr = item.getLnmadr();
+        this.latitude = item.getLatitude();
+        this.longitude = item.getLongitude();
+        this.operOpenHm = item.getOperOpenHm();
+        this.operCloseHm = item.getOperCloseHm();
+        this.rstde = item.getRstde();
+        this.chrgeSe = item.getChrgeSe();
+        this.bcyclUseCharge = item.getBcyclUseCharge();
+        this.airInjectorYn = item.getAirInjectorYn();
+        this.repairStandY = item.getRepairStandY();
+        this.phoneNumber = item.getPhoneNumber();
+    }
+
     public int getId() {
         return id;
     }
