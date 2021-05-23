@@ -9,4 +9,8 @@
         <item name="android:colorBackground">@android:color/transparent</item>
         <item name="android:windowBackground">@android:color/transparent</item>
     </style>
+    <style name="RatingBar" parent="Theme.AppCompat">
+        <item name="colorControlNormal">@color/colorBrown</item>
+        <item name="colorControlActivated">@color/colorPink</item>
+    </style>
 </resources>

@@ -1,14 +1,24 @@
 package com.example.team_project_work_late.ui.Fragment;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.media.Rating;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.RatingBar;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -16,6 +26,7 @@ import com.example.team_project_work_late.R;
 import com.example.team_project_work_late.adapter.ReviewAdapter;
 import com.example.team_project_work_late.model.ReviewItem;
 import com.example.team_project_work_late.ui.Activity.LoginActivity;
+import com.example.team_project_work_late.ui.Activity.MainActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -34,44 +45,93 @@ public class Fragment_Review extends Fragment {
     private ReviewAdapter mRAdapter;
     private ArrayList<ReviewItem> mRList;
     private DatabaseReference mRef;
-    FirebaseAuth mAuth;
-
+    private FirebaseAuth mAuth;
+    ConstraintLayout dialogView;
+    Button logoButton;
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
+        mAuth = FirebaseAuth.getInstance();
+        mRef = FirebaseDatabase.getInstance().getReference();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_review, container, false);
-        mBtn_write = (Button)view.findViewById(R.id.write_review);
+        mBtn_write = (Button) view.findViewById(R.id.write_review);
         mRView = (RecyclerView) view.findViewById(R.id.review_list);
-        if (mAuth == null) {
-            mRef = FirebaseDatabase.getInstance().getReference();
-            mAuth = FirebaseAuth.getInstance();
-        }
-        LoadReview();
+        logoButton = view.findViewById(R.id.logoButton);
+        mRef = FirebaseDatabase.getInstance().getReference();
+        mAuth = FirebaseAuth.getInstance();
+
+//mRef.child("Review").child("Archive").child("번호1").child(mAuth.getUid()).false or 내용
         mBtn_write.setOnClickListener(v -> {
-            ReviewItem reviewItem = new ReviewItem();
-            if(mAuth != null){ reviewItem.setUID(mAuth.getUid()); }
-            reviewItem.setUserName("123");
-            reviewItem.setRating(5);
-            reviewItem.setContents("좋아용");
+            mRef.child("Review").get().addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    Boolean isAlreadyReviewed = false;
+                    Loop1:
+                    for (DataSnapshot data : task.getResult().child("Archive").getChildren()) {
+                        //if()
+                        for (DataSnapshot userData : data.getChildren()) {
+                            if (userData.getKey().equals(mAuth.getUid())) {
+                                Toast.makeText(getContext(), "이미 리뷰 하심", Toast.LENGTH_SHORT).show();
+                                isAlreadyReviewed = true;
+                                break Loop1;
+                            }
+                        }
+                    }
+                    if (!isAlreadyReviewed) {
+                        dialogView = (ConstraintLayout) View.inflate(getContext(), R.layout.dialog_review, null);
+
+                        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getContext());
+                        dialogBuilder.setView(dialogView);
+                        AlertDialog alertDialog = dialogBuilder.show();
+                        alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                        ReviewItem reviewItem = new ReviewItem();
+                        RatingBar ratingBar = dialogView.findViewById(R.id.write_ratingbar);
+                        ratingBar.setOnRatingBarChangeListener((RatingBar ratingBar1, float rating, boolean fromUser) -> {
+                             reviewItem.setRating(rating);
+                        });
+                        Button cancelButton = dialogView.findViewById(R.id.cancelButton);
+                        cancelButton.setOnClickListener(v1 -> {
+                            alertDialog.dismiss();
+                            dialogView.removeView(dialogView);
+                        });
+                        Button saveButton = dialogView.findViewById(R.id.SaveButton);
+                        saveButton.setOnClickListener(v1 -> {
+                            //내용, 평점 찾고 파이어베이스에 입력 및 추가
+                            EditText editText = dialogView.findViewById(R.id.InputText);
+                            Toast.makeText(getContext(), editText.getText().toString(), Toast.LENGTH_SHORT).show();
+                            if (mAuth != null) {
+                                reviewItem.setUID(mAuth.getUid());
+                            }
+                            reviewItem.setUserName(mAuth.getCurrentUser().getDisplayName());
+//                            reviewItem.setRating(5);
+                            reviewItem.setContents(editText.getText().toString());
 
 
-            if (mAuth == null) {
-                Log.e("파이어베이스", "연동 안됨");
-                //Toast.makeText()
-            } else {
-                //데이터베이스 상에서 유저의 이름은 모른다.
-                mRef.child("Review").child(mAuth.getUid()).child("Archive").child("번호1").child("내용").setValue(reviewItem.getContents());
-                mRef.child("Review").child(mAuth.getUid()).child("Archive").child("번호1").child("평점").setValue(reviewItem.getRating());
-            }
+                            if (mAuth == null) {
+                                Log.e("파이어베이스", "연동 안됨");
+                                //Toast.makeText()
+                            } else {
+                                mRef.child("Review").child("Archive").child("번호1").child(mAuth.getUid()).child("닉네임").setValue(reviewItem.getUserName());
+                                mRef.child("Review").child("Archive").child("번호1").child(mAuth.getUid()).child("내용").setValue(reviewItem.getContents());
+                                mRef.child("Review").child("Archive").child("번호1").child(mAuth.getUid()).child("평점").setValue(reviewItem.getRating());
+                            }
 
-            mRAdapter.addItem(reviewItem);
-            mRView.smoothScrollToPosition(0);
+                            mRAdapter.addItem(reviewItem);
+                            mRView.smoothScrollToPosition(0);
+
+
+                            alertDialog.dismiss();
+                            dialogView.removeView(dialogView);
+                        });
+                    }
+                }
             });
+        });
+        LoadReview();
         return view;
     }
 
@@ -86,26 +146,24 @@ public class Fragment_Review extends Fragment {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
                 if (task.isSuccessful()) {
-                    //모든 리뷰에 접근
-                    for(DataSnapshot data : task.getResult().getChildren()){
-                        for(DataSnapshot temp : data.child("Archive").getChildren()) {
-                            if (!temp.getValue().toString().equals("false")) {
+                    for(DataSnapshot data : task.getResult().child("Archive").getChildren()){
+                        for(DataSnapshot userData : data.getChildren()){
+                            if(!userData.getValue().toString().equals("false")){
                                 ReviewItem reviewItem = new ReviewItem();
-                                reviewItem.setUID(data.getKey());
-                                reviewItem.setUserName(reviewItem.getUID());
-                                reviewItem.setContents(temp.child("내용").getValue().toString());
-                                reviewItem.setRating(Integer.parseInt(temp.child("평점").getValue().toString()));
+                                reviewItem.setUID(userData.getKey());
+//                                reviewItem.setUID(mAuth.getUid());
+                                reviewItem.setUserName(userData.child("닉네임").getValue().toString());
+                                reviewItem.setContents(userData.child("내용").getValue().toString());
+                                reviewItem.setRating(Float.parseFloat(userData.child("평점").getValue().toString()));
                                 mRAdapter.addItem(reviewItem);
                                 mRView.smoothScrollToPosition(0);
                             }
-                        }
-                        for(DataSnapshot temp : data.child("Lend").getChildren()){
-
                         }
                     }
                 }
             }
         });
         //mRef.child("Review").child(mAuth.getUid()).child("Archive").child("번호1")
+        //mRef.child("Review").child("Archive").child("번호1").child(mAuth.getUid()).false or 내용
     }
 }

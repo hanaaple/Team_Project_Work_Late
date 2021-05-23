@@ -4,6 +4,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,8 +26,6 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
 
     public ReviewAdapter(ArrayList<ReviewItem> mRlist){
         this.mRlist = mRlist;
-        mAuth = FirebaseAuth.getInstance();
-        mRef = FirebaseDatabase.getInstance().getReference();
     }
 
 
@@ -41,6 +40,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
     public void onBindViewHolder(@NonNull ReviewAdapter.ViewHolder holder, int position) {
         holder.review_uid.setText(mRlist.get(position).getUserName());
         holder.review_contents.setText(mRlist.get(position).getContents());
+        holder.ratingBar.setRating(mRlist.get(position).getRating());
         //holder.review_uid.setText(mRlist.get(position).getRating());
         //평점에 따라 별 개수 다르게
     }
@@ -57,24 +57,24 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
 
         private TextView review_uid;
         private TextView review_contents;
+        private RatingBar ratingBar;
 
-        public ViewHolder(View view){
+        public ViewHolder(View view) {
             super(view);
-            review_uid = (TextView)view.findViewById(R.id.review_uid);
-            review_contents = (TextView)view.findViewById(R.id.review_contents);
+            review_uid = (TextView) view.findViewById(R.id.review_uid);
+            review_contents = (TextView) view.findViewById(R.id.review_contents);
+            ratingBar = view.findViewById(R.id.ratingBar);
             //사진, 아이디, 별점, 내용
-            view.setOnClickListener(v->{
-                if(mAuth == null) {
-                    mAuth = FirebaseAuth.getInstance();
-                    mRef = FirebaseDatabase.getInstance().getReference();
-                }
-                if(mAuth == null) {
+            view.setOnClickListener(v -> {
+                mAuth = FirebaseAuth.getInstance();
+                mRef = FirebaseDatabase.getInstance().getReference();
+                if (mAuth == null) {
                     Log.e("파이어베이스", "연동안됨");
-                }
-                else {
+                } else {
                     //자신의 리뷰만 삭제 가능하도록
                     if (mRlist.get(getAdapterPosition()).getUID().equals(mAuth.getUid())) {
-                        mRef.child("Review").child(mAuth.getUid()).child("Archive").child("번호1").setValue(false);
+                        mRef.child("Review").child("Archive").child("번호1").child(mAuth.getUid()).setValue(null);
+
                         mRlist.remove(getAdapterPosition());
                         notifyItemRemoved(getAdapterPosition());
                     }

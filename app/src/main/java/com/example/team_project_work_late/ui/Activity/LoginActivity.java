@@ -3,28 +3,25 @@ package com.example.team_project_work_late.ui.Activity;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
-import android.Manifest;
-import android.content.Context;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
-import android.media.Image;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.team_project_work_late.R;
 import com.example.team_project_work_late.application.NetRetrofit;
-import com.example.team_project_work_late.application.RetrofitAPI;
 import com.example.team_project_work_late.model.BcyclDpstryData;
 import com.example.team_project_work_late.model.BcyclDpstryData_responseBody_items;
 import com.example.team_project_work_late.model.BcyclLendData;
@@ -33,7 +30,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -42,12 +38,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -56,8 +47,6 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 
 public class LoginActivity extends AppCompatActivity {
@@ -76,7 +65,6 @@ public class LoginActivity extends AppCompatActivity {
     private GoogleSignInClient googleSignInClient;
     private FirebaseAuth mAuth;
     private static final int REQ_SIGN_GOOGLE = 100;
-
 
 //필요한 Arguments - 대여소인지 보관소인지(필요 없을 수도 있음) - 고유번호 - 평가목록(리뷰만) - 내용
     void prar() {
@@ -143,7 +131,7 @@ public class LoginActivity extends AppCompatActivity {
 
                        }
                        for(DataSnapshot temp : data.child("Lend").getChildren()){
-                           
+
                        }
                    }
                 }
@@ -154,34 +142,34 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        tempButton = (Button) findViewById(R.id.tempButton);
 
-        tempButton = (Button)findViewById(R.id.tempButton);
-        tempButton.setOnClickListener(v ->{
-            //데이터베이스 루트 얻기
-            myRef = FirebaseDatabase.getInstance().getReference();
-            prar();
-
-
-            //외부에서 데이터베이스가 바뀔 경우 발생하는 listner - 다른 디바이스에서 Review 업데이트될 때 쓰면 좋을듯
-//            myRef.addValueEventListener(new ValueEventListener() {
-//                @Override
-//                public void onDataChange(DataSnapshot dataSnapshot) {
-//                    String value = dataSnapshot.getValue(String.class);
-//                    Toast.makeText(LoginActivity.this, value, Toast.LENGTH_SHORT).show();
-//                }
+//        tempButton.setOnClickListener(v -> {
+//            dialogView = (ConstraintLayout) View.inflate(LoginActivity.this, R.layout.dialog_review, null);
 //
-//                @Override
-//                public void onCancelled(DatabaseError error) {
-//                }
+//
+//            AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(LoginActivity.this);
+//
+//            dialogBuilder.setView(dialogView);
+//            //dialogBuilder.set
+//
+//            AlertDialog a = dialogBuilder.show();
+//
+//            a.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+//            cancelButton = dialogView.findViewById(R.id.cancelButton);
+//            cancelButton.setOnClickListener(v1 -> {
+//                a.dismiss();
+//                dialogView.removeView(dialogView);
 //            });
-        });
+//
+//        });
 
         // 파싱을 위한 설정
         bcyclLendData = new ArrayList<>();
         bcyclDpstryData = new ArrayList<>();
         parsingStart();
-        startButton = (ImageButton)findViewById(R.id.startButton);
-        btn_google_logout = (Button)findViewById(R.id.google_Logout);
+        startButton = (ImageButton) findViewById(R.id.startButton);
+        btn_google_logout = (Button) findViewById(R.id.google_Logout);
 
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -206,13 +194,13 @@ public class LoginActivity extends AppCompatActivity {
 
         // 테스트용
         btn_location = findViewById(R.id.locationButton);
-        btn_location.setOnClickListener(v->{
-            Intent intent = new Intent(LoginActivity.this,MainActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("bcyclLendData", (Serializable) bcyclLendData);
-                bundle.putSerializable("bcyclDpstryData", (Serializable) bcyclDpstryData);
-                intent.putExtras(bundle);
-                startActivity(intent);
+        btn_location.setOnClickListener(v -> {
+            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("bcyclLendData", (Serializable) bcyclLendData);
+            bundle.putSerializable("bcyclDpstryData", (Serializable) bcyclDpstryData);
+            intent.putExtras(bundle);
+            startActivity(intent);
         });
     }
 

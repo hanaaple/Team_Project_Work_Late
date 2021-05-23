@@ -17,7 +17,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <Button
-            android:id="@+id/button4"
+            android:id="@+id/logoButton"
             android:layout_width="wrap_content"
             android:layout_height="35dp"
             android:layout_marginStart="32dp"
@@ -36,8 +36,8 @@
             android:textColor="#000000"
             android:textSize="30sp"
             android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="@+id/button4"
-            app:layout_constraintTop_toBottomOf="@+id/button4" />
+            app:layout_constraintStart_toStartOf="@+id/logoButton"
+            app:layout_constraintTop_toBottomOf="@+id/logoButton" />
 
         <ImageView
             android:id="@+id/imageView4"
