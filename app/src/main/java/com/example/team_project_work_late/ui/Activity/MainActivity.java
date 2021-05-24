@@ -55,8 +55,8 @@ public class MainActivity extends AppCompatActivity implements AddItemListener {
         fragment_kakao.setArguments(bundle_kakao);
         bundle_kakao.putSerializable("bcyclLendData", (Serializable) bcyclLendData);
         bundle_kakao.putSerializable("bcyclDpstryData", (Serializable) bcyclDpstryData);
-        bundle_kakao.putDouble("latitude",mlocation.getLatitude());
-        bundle_kakao.putDouble("longitude",mlocation.getLongitude());
+//        bundle_kakao.putDouble("latitude",mlocation.getLatitude());
+//        bundle_kakao.putDouble("longitude",mlocation.getLongitude());
         //첫 화면 띄우기
         getSupportFragmentManager().beginTransaction().add(R.id.frame_container,fragment_kakao).commit();
 
@@ -71,8 +71,8 @@ public class MainActivity extends AppCompatActivity implements AddItemListener {
                         fragment_kakao.setArguments(bundle_kakao);
                         bundle_kakao.putSerializable("bcyclLendData", (Serializable) bcyclLendData);
                         bundle_kakao.putSerializable("bcyclDpstryData", (Serializable) bcyclDpstryData);
-                        bundle_kakao.putDouble("latitude",mlocation.getLatitude());
-                        bundle_kakao.putDouble("longitude",mlocation.getLongitude());
+//                        bundle_kakao.putDouble("latitude",mlocation.getLatitude());
+//                        bundle_kakao.putDouble("longitude",mlocation.getLongitude());
                         addItem.clear();
                         getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,fragment_kakao).commit();
                         break;

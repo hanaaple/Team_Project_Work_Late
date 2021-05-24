@@ -56,8 +56,8 @@ public class Fragment_Kakao extends Fragment implements MapView.POIItemEventList
         Bundle bundle = getArguments();
         bcyclLendData = (List<BcyclLendData_responseBody_items>) bundle.getSerializable("bcyclLendData");
         bcyclDpstryData = (List<BcyclDpstryData_responseBody_items>) bundle.getSerializable("bcyclDpstryData");
-        mLatitude = bundle.getDouble("latitude");
-        mLongitude = bundle.getDouble("longitude");
+//        mLatitude = bundle.getDouble("latitude");
+//        mLongitude = bundle.getDouble("longitude");
 
         // findViewById를 위한 View 재 할당
         View v = inflater.inflate(R.layout.fragment__kakao, container, false);

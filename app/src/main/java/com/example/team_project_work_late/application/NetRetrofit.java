@@ -1,5 +1,8 @@
 package com.example.team_project_work_late.application;
 
+import java.util.concurrent.TimeUnit;
+
+import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -26,8 +29,15 @@ public class NetRetrofit {
         return NetRetrofitInner.INSTANCE;
     }
 
+//    private final OkHttpClient okHttpClient = new OkHttpClient.Builder()
+//            .connectTimeout(1, TimeUnit.MINUTES)
+//            .readTimeout(1, TimeUnit.MINUTES)
+//            .writeTimeout(1, TimeUnit.MINUTES)
+//            .build();
+
     private final Retrofit RETROFIT = new Retrofit.Builder()
             .baseUrl("http://api.data.go.kr/")
+//            .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create()) // 파싱등록
             .build();
 

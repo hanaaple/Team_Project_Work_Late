@@ -3,25 +3,18 @@ package com.example.team_project_work_late.ui.Activity;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.example.team_project_work_late.R;
 import com.example.team_project_work_late.application.NetRetrofit;
+import com.example.team_project_work_late.listener.AddItemListener;
 import com.example.team_project_work_late.model.BcyclDpstryData;
 import com.example.team_project_work_late.model.BcyclDpstryData_responseBody_items;
 import com.example.team_project_work_late.model.BcyclLendData;
@@ -52,7 +45,12 @@ import retrofit2.Response;
 public class LoginActivity extends AppCompatActivity {
 
     private List<BcyclLendData_responseBody_items> bcyclLendData;     // 대여소 파싱용 데아터
+    private final String LEND_KEY_ENCODING = "GyqT8YmA2REYKelkbYuNW0Ke%2BoU7ArbS5pBRj4Dj2wj5mm1%2Fmz8VwfSVYh59ymnCYpvCd01Dqem1zImM4QfGyQ%3D%3D";
+    private final String LEND_KEY_DECODING = "GyqT8YmA2REYKelkbYuNW0Ke+oU7ArbS5pBRj4Dj2wj5mm1/mz8VwfSVYh59ymnCYpvCd01Dqem1zImM4QfGyQ==";
     private List<BcyclDpstryData_responseBody_items> bcyclDpstryData; // 보관소 파싱용 데이터
+    private final String DPSTRY_KEY_ENCODING = "GyqT8YmA2REYKelkbYuNW0Ke%2BoU7ArbS5pBRj4Dj2wj5mm1%2Fmz8VwfSVYh59ymnCYpvCd01Dqem1zImM4QfGyQ%3D%3D";
+    private final String DPSTRY_KEY_DECODING = "GyqT8YmA2REYKelkbYuNW0Ke+oU7ArbS5pBRj4Dj2wj5mm1/mz8VwfSVYh59ymnCYpvCd01Dqem1zImM4QfGyQ==";
+
 
     private boolean parse_Lend = false;
     private boolean parse_Dpstry = false;
@@ -245,13 +243,35 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void parsingStart(){
-        NetRetrofit.getInstance().getAPI().getLendData().enqueue(new Callback<BcyclLendData>() {
+        parsingLend(LEND_KEY_DECODING, 0);
+        parsingDpstry(LEND_KEY_DECODING,0);
+    }
+
+    private void parsingLend(String serviceKey, int pageNo){
+        NetRetrofit.getInstance().getAPI().getLendData(serviceKey, String.valueOf(pageNo),"100","json").enqueue(new Callback<BcyclLendData>() {
             @Override
             public void onResponse(Call<BcyclLendData> call, Response<BcyclLendData> response) {
-                bcyclLendData.addAll(response.body().getBcyclLendDataresponse().getBcyclLendDataresponseBody().getItems());
-                parse_Lend = true;
-                parsingEnd();
-                Log.e("TEST","성공성공");
+                if (response.body().getBcyclLendDataresponse().getBcyclLendDataresponseHeader().getResultCode().equals("00")){
+                    bcyclLendData.addAll(response.body().getBcyclLendDataresponse().getBcyclLendDataresponseBody().getItems());
+                    if (pageNo<1){
+                        parsingLend(serviceKey,pageNo+1);
+                    }else{
+                        parse_Lend = true;
+                        parsingEnd();
+                    }
+                }else if (response.body().getBcyclLendDataresponse().getBcyclLendDataresponseHeader().getResultCode().equals("03")){
+                    parse_Lend = true;
+                    parsingEnd();
+                    Log.e("대여소","파싱완료");
+                }else if (response.body().getBcyclLendDataresponse().getBcyclLendDataresponseHeader().getResultCode().equals("30")){
+                    if (serviceKey.equals(LEND_KEY_DECODING)){
+                        parsingLend(LEND_KEY_ENCODING,pageNo);
+                    }else{
+                        parsingLend(LEND_KEY_DECODING,pageNo);
+                    }
+                }else{
+                    Log.e("TAG",response.body().getBcyclLendDataresponse().getBcyclLendDataresponseHeader().getResultCode());
+                }
             }
 
             @Override
@@ -260,13 +280,34 @@ public class LoginActivity extends AppCompatActivity {
                 t.printStackTrace();
             }
         });
-        NetRetrofit.getInstance().getAPI().getDpstryData().enqueue(new Callback<BcyclDpstryData>() {
+    }
+
+    private void parsingDpstry(String serviceKey, int pageNo){
+        NetRetrofit.getInstance().getAPI().getDpstryData(serviceKey, String.valueOf(pageNo),"100","json").enqueue(new Callback<BcyclDpstryData>() {
             @Override
             public void onResponse(Call<BcyclDpstryData> call, Response<BcyclDpstryData> response) {
-                bcyclDpstryData.addAll(response.body().getBcyclDpstryData_response().getBcyclDpstryData_responseBody().getItems());
-                parse_Dpstry = true;
-                parsingEnd();
-                Log.e("TEST2","성공성공");
+                if (response.body().getBcyclDpstryData_response().getBcyclDpstryData_responseHeader().getResultCode().equals("00")){
+                    bcyclDpstryData.addAll(response.body().getBcyclDpstryData_response().getBcyclDpstryData_responseBody().getItems());
+                    if (pageNo < 1){
+                        parsingDpstry(serviceKey,pageNo+1);
+                    }else{
+                        parse_Dpstry = true;
+                        parsingEnd();
+                    }
+                }else if (response.body().getBcyclDpstryData_response().getBcyclDpstryData_responseHeader().getResultCode().equals("03")){
+                    parse_Dpstry = true;
+                    parsingEnd();
+                    Log.e("보관소","파싱완료");
+                }else if (response.body().getBcyclDpstryData_response().getBcyclDpstryData_responseHeader().getResultCode().equals("30")){
+                    if (serviceKey.equals(DPSTRY_KEY_DECODING)){
+                        parsingDpstry(DPSTRY_KEY_ENCODING,pageNo);
+                    }else{
+                        parsingDpstry(DPSTRY_KEY_DECODING,pageNo);
+                    }
+
+                }else{
+                    Log.e("TAG", response.body().getBcyclDpstryData_response().getBcyclDpstryData_responseHeader().getResultCode());
+                }
             }
 
             @Override
