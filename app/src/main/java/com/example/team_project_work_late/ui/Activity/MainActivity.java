@@ -60,25 +60,6 @@ public class MainActivity extends AppCompatActivity implements AddItemListener {
         bundle_kakao.putSerializable("bcyclLendData", (Serializable) bcyclLendData);
         bundle_kakao.putSerializable("bcyclDpstryData", (Serializable) bcyclDpstryData);
 
-        PermissionListener permissionlistener = new PermissionListener() {
-            @Override
-            public void onPermissionGranted() {
-                Toast.makeText(MainActivity.this, "위치정보 권한 허용", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onPermissionDenied(ArrayList<String> deniedPermissions) {
-                Toast.makeText(MainActivity.this, "위치정보 권한 거부\n" + deniedPermissions.toString(), Toast.LENGTH_SHORT).show();
-            }
-
-        };
-
-        TedPermission.with(this)
-                .setPermissionListener(permissionlistener)
-                .setRationaleMessage("구글 로그인을 하기 위해서는 위치 접근 권한이 필요합니다")
-                .setDeniedMessage("[설정] > [권한] 에서 권한을 설정할 수 있습니다.")
-                .setPermissions(Manifest.permission.ACCESS_FINE_LOCATION)
-                .check(); //권한체크
 
 //        bundle_kakao.putDouble("latitude",mlocation.getLatitude());
 //        bundle_kakao.putDouble("longitude",mlocation.getLongitude());
