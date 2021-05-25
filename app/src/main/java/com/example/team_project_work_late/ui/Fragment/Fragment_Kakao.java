@@ -11,7 +11,6 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,13 +19,12 @@ import android.widget.Toast;
 import com.example.team_project_work_late.R;
 import com.example.team_project_work_late.adapter.CustomBalloonAdapter;
 import com.example.team_project_work_late.listener.AddItemListener;
-import com.example.team_project_work_late.model.BcyclDpstryData;
 import com.example.team_project_work_late.model.BcyclDpstryData_responseBody_items;
-import com.example.team_project_work_late.model.BcyclLendData;
 import com.example.team_project_work_late.model.BcyclLendData_responseBody_items;
 import com.example.team_project_work_late.model.BookMarkItem;
 import com.example.team_project_work_late.model.DpstryMarker;
 import com.example.team_project_work_late.model.LendMarker;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import net.daum.mf.map.api.MapPOIItem;
 import net.daum.mf.map.api.MapPoint;
@@ -154,7 +152,7 @@ public class Fragment_Kakao extends Fragment implements MapView.POIItemEventList
         if (mapPOIItem instanceof LendMarker){
             LendMarker lendMarker = (LendMarker) mapPOIItem;
 
-            String[] arr = {"즐겨찾기 등록", "길찾기", "취소"};
+            String[] arr = {"즐겨찾기 등록", "리뷰", "길찾기", "취소"};
             AlertDialog.Builder dialog = new AlertDialog.Builder(this.getContext());
             dialog.setTitle("원하는 작업을 선택해주세요");
             dialog.setItems(arr, new DialogInterface.OnClickListener() {
@@ -167,6 +165,22 @@ public class Fragment_Kakao extends Fragment implements MapView.POIItemEventList
                             break;
                         }
                         case 1:{
+                            Fragment_Review fragment_review = new Fragment_Review();
+                            Bundle bundle_review = new Bundle();
+                            fragment_review.setArguments(bundle_review);
+                            //필요할 경우 이 정보들 전부 넘겨주기
+                            bundle_review.putString("ItemName", lendMarker.getItem().getBcyclLendNm());
+                            bundle_review.putSerializable("Item", lendMarker.getItem());
+
+                            //lendMarker.getItem().getId()
+                            //해당 대여소의 Id
+
+                            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, fragment_review).commit();
+                            BottomNavigationView view = getActivity().findViewById(R.id.bottom_navigation);
+                            view.setSelectedItemId(R.id.action_3);
+                            break;
+                        }
+                        case 2:{
                             try {
                                 Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("kakaomap://route?sp=37.537229,127.005515&ep="+lendMarker.getItem().getLatitude()+","+lendMarker.getItem().getLongitude()+"&by=bike"));
                                 startActivity(intent);
@@ -175,7 +189,7 @@ public class Fragment_Kakao extends Fragment implements MapView.POIItemEventList
                             }
                             break;
                         }
-                        case 2: {
+                        case 3: {
                             dialog.dismiss();
                             break;
                         }

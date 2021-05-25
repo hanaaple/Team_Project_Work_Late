@@ -15,7 +15,6 @@ import android.widget.Toast;
 
 import com.example.team_project_work_late.R;
 import com.example.team_project_work_late.application.NetRetrofit;
-import com.example.team_project_work_late.listener.AddItemListener;
 import com.example.team_project_work_late.model.BcyclDpstryData;
 import com.example.team_project_work_late.model.BcyclDpstryData_responseBody_items;
 import com.example.team_project_work_late.model.BcyclLendData;
@@ -31,8 +30,6 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GoogleAuthProvider;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseReference;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 
@@ -60,90 +57,16 @@ public class LoginActivity extends AppCompatActivity {
     private Button btn_location;
 
     private ImageButton startButton;
-    private DatabaseReference myRef;
-    private Button tempButton;
     private Button btn_google_logout;
     private GoogleSignInClient googleSignInClient;
     private FirebaseAuth mAuth;
     private static final int REQ_SIGN_GOOGLE = 100;
 
-//필요한 Arguments - 대여소인지 보관소인지(필요 없을 수도 있음) - 고유번호 - 평가목록(리뷰만) - 내용
-    void prar() {
 
-
-        //즐겨찾기 - Lend or Archive - user id - 해당 보관소 or 대여소의 고유번호 혹은 이름
-        myRef.child("즐겨찾기").child(mAuth.getUid()).child("Lend").child("번호1").setValue(true);
-        myRef.child("즐겨찾기").child(mAuth.getUid()).child("Lend").child("번호2").setValue(true);
-        myRef.child("즐겨찾기").child(mAuth.getUid()).child("Archive").child("번호3").setValue(true);
-
-        //불러올 때 이대로 사용하면 됨
-        myRef.child("즐겨찾기").child(mAuth.getUid()).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DataSnapshot> task) {
-                if (task.isSuccessful()) {
-
-                    // Lend 번호1 ~ 번호3의 내용
-                    for (DataSnapshot data : task.getResult().child("Lend").getChildren()) {
-                        System.out.println(data.getKey());
-                    }
-                    // Archive 번호1 ~ 번호3의 내용
-                    for (DataSnapshot data : task.getResult().child("Archive").getChildren()) {
-                        System.out.println(data.getValue().toString());
-                    }
-                }
-            }
-        });
-
-
-        //리뷰 - Lend or Archive - user id - 해당 보관소 or 대여소의 고유번호 혹은 이름 - 내용
-        //myRef.child("Review").child(mAuth.getUid()).child("Lend").child("번호1").setValue("Lend 내용1");
-        //myRef.child("Review").child(mAuth.getUid()).child("Lend").child("번호2").setValue("Lend 내용2");
-
-
-        myRef.child("Review").child(mAuth.getUid()).child("Archive").child("번호1").child("내용").setValue("1번 불편");
-        myRef.child("Review").child(mAuth.getUid()).child("Archive").child("번호1").child("점수").setValue(1);
-
-        myRef.child("Review").child(mAuth.getUid()).child("Archive").child("번호2").child("내용").setValue("2번 불편");
-        myRef.child("Review").child(mAuth.getUid()).child("Archive").child("번호2").child("점수").setValue(2);
-
-
-        myRef.child("Review").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DataSnapshot> task) {
-                if (task.isSuccessful()) {
-                    // Lend 번호1 ~ 번호3의 내용
-                    for (DataSnapshot data : task.getResult().child(mAuth.getUid()).child("Lend").getChildren()) {
-                        System.out.println(data.getValue().toString());
-                    }
-                    // Archive 번호1 ~ 번호3의 내용
-                    for (DataSnapshot data : task.getResult().child(mAuth.getUid()).child("Archive").getChildren()) {
-                        System.out.println(data.getKey());
-                        System.out.println(Integer.parseInt(data.child("평가 목록 : 비싼가요").getValue().toString()));
-                        System.out.println(Integer.parseInt(data.child("평가 목록 : 형편없나요").getValue().toString()));
-                        System.out.println(Integer.parseInt(data.child("평가 목록 : 제대로 관리 되고 있나요").getValue().toString()));
-                        System.out.println(Integer.parseInt(data.child("평가 목록 : 좋은 자전거가 많나요").getValue().toString()));
-                        System.out.println(Integer.parseInt(data.child("평가 목록 : 더럽나요").getValue().toString()));
-                        System.out.println(data.child("평가 작성").getValue().toString());
-                    }
-
-                    //모든 리뷰에 접근
-                   for(DataSnapshot data : task.getResult().getChildren()){
-                       for(DataSnapshot temp : data.child("Archive").getChildren()){
-
-                       }
-                       for(DataSnapshot temp : data.child("Lend").getChildren()){
-
-                       }
-                   }
-                }
-            }
-        });
-    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        tempButton = (Button) findViewById(R.id.tempButton);
 
         PermissionListener permissionlistener = new PermissionListener() {
             @Override
@@ -164,26 +87,6 @@ public class LoginActivity extends AppCompatActivity {
                 .setDeniedMessage("[설정] > [권한] 에서 권한을 설정할 수 있습니다.")
                 .setPermissions(Manifest.permission.ACCESS_FINE_LOCATION)
                 .check(); //권한체크
-
-//        tempButton.setOnClickListener(v -> {
-//            dialogView = (ConstraintLayout) View.inflate(LoginActivity.this, R.layout.dialog_review, null);
-//
-//
-//            AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(LoginActivity.this);
-//
-//            dialogBuilder.setView(dialogView);
-//            //dialogBuilder.set
-//
-//            AlertDialog a = dialogBuilder.show();
-//
-//            a.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-//            cancelButton = dialogView.findViewById(R.id.cancelButton);
-//            cancelButton.setOnClickListener(v1 -> {
-//                a.dismiss();
-//                dialogView.removeView(dialogView);
-//            });
-//
-//        });
 
         // 파싱을 위한 설정
         bcyclLendData = new ArrayList<>();
@@ -215,9 +118,9 @@ public class LoginActivity extends AppCompatActivity {
 
         // 테스트용
         btn_location = findViewById(R.id.locationButton);
-        btn_location.setOnClickListener(v->{
+        btn_location.setOnClickListener(v -> {
             btn_location.setEnabled(false);
-            Intent intent = new Intent(LoginActivity.this,MainActivity.class);
+            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
             intent.putExtra("bcyclLendData", (Serializable) bcyclLendData);
             intent.putExtra("bcyclDpstryData", (Serializable) bcyclDpstryData);
             startActivity(intent);
@@ -229,20 +132,16 @@ public class LoginActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        //여기서 resultCode가 0 or -1로 나오며 오류가 뜨는데 task 자체는 성공
-        //if(resultCode == REQ_SIGN_GOOGLE){
         Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-        if(task.isSuccessful()) {
-            System.out.println("구글 로그인 task 성공");
+        if (task.isSuccessful()) {
+            Log.d("구글", "로그인 성공");
             try {
                 GoogleSignInAccount account = task.getResult(ApiException.class);
                 firebaseAuthWithGoogle(account.getIdToken());
             } catch (ApiException e) {
             }
         } else {
-            Toast.makeText(LoginActivity.this, "구글 로그인 실패", Toast.LENGTH_SHORT).show();
-            System.out.println("구글 로그인 실패");
-//            System.out.println(data);
+            Log.e("구글", "로그인 실패");
         }
     }
 
@@ -253,95 +152,93 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            Toast.makeText(LoginActivity.this, "파이어베이스 연동 성공", Toast.LENGTH_SHORT).show();
-                            System.out.println("파이어베이스 연동 성공");
+                            Log.d("파이어베이스", "연동 성공");
                         } else {
-                            Toast.makeText(LoginActivity.this, "파이어베이스 연동 실패", Toast.LENGTH_SHORT).show();
-                            System.out.println("파이어베이스 연동 실패");
+                            Log.e("파이어베이스", "연동 실패");
                         }
                     }
                 });
     }
 
-    private void parsingStart(){
+    private void parsingStart() {
         // FAILED BINDER TRANSACTION 오류로 인한 대여소 200개, 보관소 200개 고정
         parsingLend(LEND_KEY_DECODING, 0);
-        parsingDpstry(LEND_KEY_DECODING,0);
+        parsingDpstry(LEND_KEY_DECODING, 0);
     }
 
-    private void parsingLend(String serviceKey, int pageNo){
-        NetRetrofit.getInstance().getAPI().getLendData(serviceKey, String.valueOf(pageNo),"100","json").enqueue(new Callback<BcyclLendData>() {
+    private void parsingLend(String serviceKey, int pageNo) {
+        NetRetrofit.getInstance().getAPI().getLendData(serviceKey, String.valueOf(pageNo), "100", "json").enqueue(new Callback<BcyclLendData>() {
             @Override
             public void onResponse(Call<BcyclLendData> call, Response<BcyclLendData> response) {
-                if (response.body().getBcyclLendDataresponse().getBcyclLendDataresponseHeader().getResultCode().equals("00")){
+                if (response.body().getBcyclLendDataresponse().getBcyclLendDataresponseHeader().getResultCode().equals("00")) {
                     bcyclLendData.addAll(response.body().getBcyclLendDataresponse().getBcyclLendDataresponseBody().getItems());
-                    if (pageNo<1){
-                        parsingLend(serviceKey,pageNo+1);
-                    }else{
+                    if (pageNo < 1) {
+                        parsingLend(serviceKey, pageNo + 1);
+                    } else {
                         parse_Lend = true;
                         parsingEnd();
                     }
-                }else if (response.body().getBcyclLendDataresponse().getBcyclLendDataresponseHeader().getResultCode().equals("03")){
+                } else if (response.body().getBcyclLendDataresponse().getBcyclLendDataresponseHeader().getResultCode().equals("03")) {
                     parse_Lend = true;
                     parsingEnd();
-                    Log.e("대여소","파싱완료");
-                }else if (response.body().getBcyclLendDataresponse().getBcyclLendDataresponseHeader().getResultCode().equals("30")){
-                    if (serviceKey.equals(LEND_KEY_DECODING)){
-                        parsingLend(LEND_KEY_ENCODING,pageNo);
-                    }else{
-                        parsingLend(LEND_KEY_DECODING,pageNo);
+                    Log.e("대여소", "파싱완료");
+                } else if (response.body().getBcyclLendDataresponse().getBcyclLendDataresponseHeader().getResultCode().equals("30")) {
+                    if (serviceKey.equals(LEND_KEY_DECODING)) {
+                        parsingLend(LEND_KEY_ENCODING, pageNo);
+                    } else {
+                        parsingLend(LEND_KEY_DECODING, pageNo);
                     }
-                }else{
-                    Log.e("TAG",response.body().getBcyclLendDataresponse().getBcyclLendDataresponseHeader().getResultCode());
+                } else {
+                    Log.e("TAG", response.body().getBcyclLendDataresponse().getBcyclLendDataresponseHeader().getResultCode());
                 }
             }
 
             @Override
             public void onFailure(Call<BcyclLendData> call, Throwable t) {
-                Log.e("Test","실패실패");
+                Log.e("Test", "실패실패");
                 t.printStackTrace();
             }
         });
     }
 
-    private void parsingDpstry(String serviceKey, int pageNo){
-        NetRetrofit.getInstance().getAPI().getDpstryData(serviceKey, String.valueOf(pageNo),"100","json").enqueue(new Callback<BcyclDpstryData>() {
+    private void parsingDpstry(String serviceKey, int pageNo) {
+        NetRetrofit.getInstance().getAPI().getDpstryData(serviceKey, String.valueOf(pageNo), "100", "json").enqueue(new Callback<BcyclDpstryData>() {
             @Override
             public void onResponse(Call<BcyclDpstryData> call, Response<BcyclDpstryData> response) {
-                if (response.body().getBcyclDpstryData_response().getBcyclDpstryData_responseHeader().getResultCode().equals("00")){
+                if (response.body().getBcyclDpstryData_response().getBcyclDpstryData_responseHeader().getResultCode().equals("00")) {
                     bcyclDpstryData.addAll(response.body().getBcyclDpstryData_response().getBcyclDpstryData_responseBody().getItems());
-                    if (pageNo < 1){
-                        parsingDpstry(serviceKey,pageNo+1);
-                    }else{
+                    if (pageNo < 1) {
+                        parsingDpstry(serviceKey, pageNo + 1);
+                    } else {
                         parse_Dpstry = true;
                         parsingEnd();
                     }
-                }else if (response.body().getBcyclDpstryData_response().getBcyclDpstryData_responseHeader().getResultCode().equals("03")){
+                } else if (response.body().getBcyclDpstryData_response().getBcyclDpstryData_responseHeader().getResultCode().equals("03")) {
                     parse_Dpstry = true;
                     parsingEnd();
-                    Log.e("보관소","파싱완료");
-                }else if (response.body().getBcyclDpstryData_response().getBcyclDpstryData_responseHeader().getResultCode().equals("30")){
-                    if (serviceKey.equals(DPSTRY_KEY_DECODING)){
-                        parsingDpstry(DPSTRY_KEY_ENCODING,pageNo);
-                    }else{
-                        parsingDpstry(DPSTRY_KEY_DECODING,pageNo);
+                    Log.e("보관소", "파싱완료");
+                } else if (response.body().getBcyclDpstryData_response().getBcyclDpstryData_responseHeader().getResultCode().equals("30")) {
+                    if (serviceKey.equals(DPSTRY_KEY_DECODING)) {
+                        parsingDpstry(DPSTRY_KEY_ENCODING, pageNo);
+                    } else {
+                        parsingDpstry(DPSTRY_KEY_DECODING, pageNo);
                     }
 
-                }else{
+                } else {
                     Log.e("TAG", response.body().getBcyclDpstryData_response().getBcyclDpstryData_responseHeader().getResultCode());
                 }
             }
 
             @Override
             public void onFailure(Call<BcyclDpstryData> call, Throwable t) {
-                Log.e("Test2","실패실패");
+                Log.e("Test2", "실패실패");
                 t.printStackTrace();
             }
         });
     }
 
-    private void parsingEnd(){
-        if (parse_Lend && parse_Dpstry){
+    private void parsingEnd() {
+        if (parse_Lend && parse_Dpstry) {
             btn_location.setVisibility(View.VISIBLE);
         }
     }

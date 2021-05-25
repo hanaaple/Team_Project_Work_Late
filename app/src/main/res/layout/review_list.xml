@@ -7,30 +7,27 @@
     android:background="#FFFFFF">
 
     <RatingBar
-        android:theme="@style/RatingBar"
         android:id="@+id/ratingBar"
         style="?android:attr/ratingBarStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
-        android:indeterminate="false"
-        android:isIndicator="false"
         android:numStars="5"
         android:progressTint="#FFC107"
-        android:stepSize="0.5"
+        android:stepSize="1"
+        android:theme="@style/RatingBar"
         app:layout_constraintStart_toStartOf="@+id/review_uid"
         app:layout_constraintTop_toBottomOf="@+id/review_uid" />
 
-    <ImageView
-        android:id="@+id/imageView"
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/userImage"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_marginStart="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.28"
-        app:srcCompat="@drawable/userimg" />
+        app:layout_constraintVertical_bias="0.28" />
 
     <TextView
         android:id="@+id/review_uid"
@@ -39,11 +36,11 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="2dp"
         android:singleLine="true"
-        android:text="사용자 아이디"
+        android:text="사용자 닉네임"
         android:textColor="@color/black"
         android:textSize="15sp"
-        app:layout_constraintStart_toEndOf="@+id/imageView"
-        app:layout_constraintTop_toTopOf="@+id/imageView" />
+        app:layout_constraintStart_toEndOf="@+id/userImage"
+        app:layout_constraintTop_toTopOf="@+id/userImage" />
 
     <TextView
         android:id="@+id/review_contents"
@@ -56,6 +53,6 @@
         android:textColor="@color/black"
         android:textSize="15sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/imageView" />
+        app:layout_constraintStart_toStartOf="@+id/userImage" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

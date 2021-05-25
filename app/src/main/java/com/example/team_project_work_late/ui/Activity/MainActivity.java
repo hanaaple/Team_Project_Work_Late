@@ -92,8 +92,8 @@ public class MainActivity extends AppCompatActivity implements AddItemListener {
                         getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,fragment_bookMark).commit();
                         break;
                     case R.id.action_3:
-                        Fragment_Review fragment_review = new Fragment_Review();
-                        getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,fragment_review).commit();
+                        //Fragment_Review fragment_review = new Fragment_Review();
+                        //getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,fragment_review).commit();
                         break;
 
                 }
@@ -123,7 +123,7 @@ public class MainActivity extends AppCompatActivity implements AddItemListener {
         } else {
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1, locationListener);
             if (locationManager != null) {
-                Log.d("GPSTracker", "LocationManger is Enable");
+                Log.d("GPS", "Tracking 가능");
                 Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
                 if (location != null) {
                     mlocation = location;
