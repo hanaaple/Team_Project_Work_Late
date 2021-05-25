@@ -1,8 +1,11 @@
 package com.example.team_project_work_late.ui.Fragment;
 
 import android.app.AlertDialog;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -164,7 +167,12 @@ public class Fragment_Kakao extends Fragment implements MapView.POIItemEventList
                             break;
                         }
                         case 1:{
-                            Log.e("길찾기","길찾기");
+                            try {
+                                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("kakaomap://route?sp=37.537229,127.005515&ep="+lendMarker.getItem().getLatitude()+","+lendMarker.getItem().getLongitude()+"&by=bike"));
+                                startActivity(intent);
+                            }catch (ActivityNotFoundException e){
+                                Toast.makeText(getContext(), "카카오맵이 존재하지 않습니다.", Toast.LENGTH_SHORT).show();
+                            }
                             break;
                         }
                         case 2: {

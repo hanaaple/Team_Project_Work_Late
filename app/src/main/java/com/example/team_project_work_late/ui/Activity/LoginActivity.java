@@ -218,10 +218,8 @@ public class LoginActivity extends AppCompatActivity {
         btn_location.setOnClickListener(v->{
             btn_location.setEnabled(false);
             Intent intent = new Intent(LoginActivity.this,MainActivity.class);
-            Bundle bundle = new Bundle();
-            bundle.putSerializable("bcyclLendData", (Serializable) bcyclLendData);
-            bundle.putSerializable("bcyclDpstryData", (Serializable) bcyclDpstryData);
-            intent.putExtras(bundle);
+            intent.putExtra("bcyclLendData", (Serializable) bcyclLendData);
+            intent.putExtra("bcyclDpstryData", (Serializable) bcyclDpstryData);
             startActivity(intent);
         });
     }
@@ -266,6 +264,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void parsingStart(){
+        // FAILED BINDER TRANSACTION 오류로 인한 대여소 200개, 보관소 200개 고정
         parsingLend(LEND_KEY_DECODING, 0);
         parsingDpstry(LEND_KEY_DECODING,0);
     }

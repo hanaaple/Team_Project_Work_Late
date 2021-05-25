@@ -106,9 +106,8 @@ public class MainActivity extends AppCompatActivity implements AddItemListener {
         mBottomNavigationView=findViewById(R.id.bottom_navigation);
 
         Intent intent = getIntent();
-        Bundle bundle = intent.getExtras();
-        bcyclLendData = (List<BcyclLendData_responseBody_items>) bundle.getSerializable("bcyclLendData");
-        bcyclDpstryData = (List<BcyclDpstryData_responseBody_items>) bundle.getSerializable("bcyclDpstryData");
+        bcyclLendData = (List<BcyclLendData_responseBody_items>) intent.getSerializableExtra("bcyclLendData");
+        bcyclDpstryData = (List<BcyclDpstryData_responseBody_items>) intent.getSerializableExtra("bcyclDpstryData");
     }
     private void InitializeGPS(){
         final LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
