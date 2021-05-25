@@ -15,6 +15,8 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.Toast;
+
 import com.example.team_project_work_late.R;
 import com.example.team_project_work_late.listener.AddItemListener;
 import com.example.team_project_work_late.model.BcyclDpstryData_responseBody_items;
@@ -25,6 +27,8 @@ import com.example.team_project_work_late.ui.Fragment.Fragment_Review;
 import com.example.team_project_work_late.ui.Fragment.Fragment_bookMark;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.gun0912.tedpermission.PermissionListener;
+import com.gun0912.tedpermission.TedPermission;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -55,6 +59,27 @@ public class MainActivity extends AppCompatActivity implements AddItemListener {
         fragment_kakao.setArguments(bundle_kakao);
         bundle_kakao.putSerializable("bcyclLendData", (Serializable) bcyclLendData);
         bundle_kakao.putSerializable("bcyclDpstryData", (Serializable) bcyclDpstryData);
+
+        PermissionListener permissionlistener = new PermissionListener() {
+            @Override
+            public void onPermissionGranted() {
+                Toast.makeText(MainActivity.this, "위치정보 권한 허용", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onPermissionDenied(ArrayList<String> deniedPermissions) {
+                Toast.makeText(MainActivity.this, "위치정보 권한 거부\n" + deniedPermissions.toString(), Toast.LENGTH_SHORT).show();
+            }
+
+        };
+
+        TedPermission.with(this)
+                .setPermissionListener(permissionlistener)
+                .setRationaleMessage("구글 로그인을 하기 위해서는 위치 접근 권한이 필요합니다")
+                .setDeniedMessage("[설정] > [권한] 에서 권한을 설정할 수 있습니다.")
+                .setPermissions(Manifest.permission.ACCESS_FINE_LOCATION)
+                .check(); //권한체크
+
 //        bundle_kakao.putDouble("latitude",mlocation.getLatitude());
 //        bundle_kakao.putDouble("longitude",mlocation.getLongitude());
         //첫 화면 띄우기
