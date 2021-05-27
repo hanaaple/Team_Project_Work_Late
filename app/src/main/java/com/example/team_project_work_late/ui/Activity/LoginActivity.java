@@ -6,19 +6,24 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.Manifest;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.team_project_work_late.R;
+import com.example.team_project_work_late.application.DpstryDBHelper;
+import com.example.team_project_work_late.application.LendDBHelper;
 import com.example.team_project_work_late.application.NetRetrofit;
 import com.example.team_project_work_late.model.BcyclDpstryData;
 import com.example.team_project_work_late.model.BcyclDpstryData_responseBody_items;
 import com.example.team_project_work_late.model.BcyclLendData;
 import com.example.team_project_work_late.model.BcyclLendData_responseBody_items;
+import com.example.team_project_work_late.ui.dialog.ProgressDialog;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -44,10 +49,10 @@ import retrofit2.Response;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private List<BcyclLendData_responseBody_items> bcyclLendData;     // 대여소 파싱용 데아터
+    private LendDBHelper lendDBHelper;
     private final String LEND_KEY_ENCODING = "GyqT8YmA2REYKelkbYuNW0Ke%2BoU7ArbS5pBRj4Dj2wj5mm1%2Fmz8VwfSVYh59ymnCYpvCd01Dqem1zImM4QfGyQ%3D%3D";
     private final String LEND_KEY_DECODING = "GyqT8YmA2REYKelkbYuNW0Ke+oU7ArbS5pBRj4Dj2wj5mm1/mz8VwfSVYh59ymnCYpvCd01Dqem1zImM4QfGyQ==";
-    private List<BcyclDpstryData_responseBody_items> bcyclDpstryData; // 보관소 파싱용 데이터
+    private DpstryDBHelper dpstryDBHelper;
     private final String DPSTRY_KEY_ENCODING = "GyqT8YmA2REYKelkbYuNW0Ke%2BoU7ArbS5pBRj4Dj2wj5mm1%2Fmz8VwfSVYh59ymnCYpvCd01Dqem1zImM4QfGyQ%3D%3D";
     private final String DPSTRY_KEY_DECODING = "GyqT8YmA2REYKelkbYuNW0Ke+oU7ArbS5pBRj4Dj2wj5mm1/mz8VwfSVYh59ymnCYpvCd01Dqem1zImM4QfGyQ==";
 
@@ -55,6 +60,7 @@ public class LoginActivity extends AppCompatActivity {
     private boolean parse_Lend = false;
     private boolean parse_Dpstry = false;
     private Button btn_location;
+    private ProgressDialog customProgressDialog;
 
     private ImageButton startButton;
     private Button btn_google_logout;
@@ -89,9 +95,19 @@ public class LoginActivity extends AppCompatActivity {
                 .check(); //권한체크
 
         // 파싱을 위한 설정
-        bcyclLendData = new ArrayList<>();
-        bcyclDpstryData = new ArrayList<>();
-        parsingStart();
+        lendDBHelper = new LendDBHelper(getApplicationContext());
+        dpstryDBHelper = new DpstryDBHelper(getApplicationContext());
+        btn_location = findViewById(R.id.locationButton);
+
+        if (lendDBHelper.getLendDataList().size() == 0 && dpstryDBHelper.getDpstryDataList().size() == 0){
+            // 파싱하는 동안 다른거 못하게 막음
+            customProgressDialog = new ProgressDialog(this);
+            customProgressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+            customProgressDialog.show();
+            parsingStart();
+        }else{
+            btn_location.setVisibility(View.VISIBLE);
+        }
         startButton = (ImageButton) findViewById(R.id.startButton);
         btn_google_logout = (Button) findViewById(R.id.google_Logout);
 
@@ -117,12 +133,9 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         // 테스트용
-        btn_location = findViewById(R.id.locationButton);
         btn_location.setOnClickListener(v -> {
             btn_location.setEnabled(false);
             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-            intent.putExtra("bcyclLendData", (Serializable) bcyclLendData);
-            intent.putExtra("bcyclDpstryData", (Serializable) bcyclDpstryData);
             startActivity(intent);
         });
     }
@@ -171,13 +184,10 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<BcyclLendData> call, Response<BcyclLendData> response) {
                 if (response.body().getBcyclLendDataresponse().getBcyclLendDataresponseHeader().getResultCode().equals("00")) {
-                    bcyclLendData.addAll(response.body().getBcyclLendDataresponse().getBcyclLendDataresponseBody().getItems());
-                    if (pageNo < 1) {
-                        parsingLend(serviceKey, pageNo + 1);
-                    } else {
-                        parse_Lend = true;
-                        parsingEnd();
+                    for (BcyclLendData_responseBody_items item: response.body().getBcyclLendDataresponse().getBcyclLendDataresponseBody().getItems()){
+                        lendDBHelper.insertLendItem(item);
                     }
+                    parsingLend(serviceKey, pageNo + 1);
                 } else if (response.body().getBcyclLendDataresponse().getBcyclLendDataresponseHeader().getResultCode().equals("03")) {
                     parse_Lend = true;
                     parsingEnd();
@@ -206,13 +216,10 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<BcyclDpstryData> call, Response<BcyclDpstryData> response) {
                 if (response.body().getBcyclDpstryData_response().getBcyclDpstryData_responseHeader().getResultCode().equals("00")) {
-                    bcyclDpstryData.addAll(response.body().getBcyclDpstryData_response().getBcyclDpstryData_responseBody().getItems());
-                    if (pageNo < 1) {
-                        parsingDpstry(serviceKey, pageNo + 1);
-                    } else {
-                        parse_Dpstry = true;
-                        parsingEnd();
+                    for (BcyclDpstryData_responseBody_items item: response.body().getBcyclDpstryData_response().getBcyclDpstryData_responseBody().getItems()){
+                        dpstryDBHelper.insertDpstryItem(item);
                     }
+                    parsingDpstry(serviceKey, pageNo + 1);
                 } else if (response.body().getBcyclDpstryData_response().getBcyclDpstryData_responseHeader().getResultCode().equals("03")) {
                     parse_Dpstry = true;
                     parsingEnd();
@@ -240,6 +247,7 @@ public class LoginActivity extends AppCompatActivity {
     private void parsingEnd() {
         if (parse_Lend && parse_Dpstry) {
             btn_location.setVisibility(View.VISIBLE);
+            customProgressDialog.dismiss();
         }
     }
 }

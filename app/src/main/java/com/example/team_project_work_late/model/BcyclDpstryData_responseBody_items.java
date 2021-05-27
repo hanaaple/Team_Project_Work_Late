@@ -86,7 +86,7 @@ public class BcyclDpstryData_responseBody_items implements Serializable {
         return dpstryNm;
     }
 
-    private void setDpstryNm(String dpstryNm) {
+    public void setDpstryNm(String dpstryNm) {
         this.dpstryNm = dpstryNm;
     }
 
@@ -94,7 +94,7 @@ public class BcyclDpstryData_responseBody_items implements Serializable {
         return rdnmadr;
     }
 
-    private void setRdnmadr(String rdnmadr) {
+    public void setRdnmadr(String rdnmadr) {
         this.rdnmadr = rdnmadr;
     }
 
@@ -102,7 +102,7 @@ public class BcyclDpstryData_responseBody_items implements Serializable {
         return lnmadr;
     }
 
-    private void setLnmadr(String lnmadr) {
+    public void setLnmadr(String lnmadr) {
         this.lnmadr = lnmadr;
     }
 
@@ -110,7 +110,7 @@ public class BcyclDpstryData_responseBody_items implements Serializable {
         return latitude;
     }
 
-    private void setLatitude(String latitude) {
+    public void setLatitude(String latitude) {
         this.latitude = latitude;
     }
 
@@ -118,7 +118,7 @@ public class BcyclDpstryData_responseBody_items implements Serializable {
         return longitude;
     }
 
-    private void setLongitude(String longitude) {
+    public void setLongitude(String longitude) {
         this.longitude = longitude;
     }
 
@@ -126,7 +126,7 @@ public class BcyclDpstryData_responseBody_items implements Serializable {
         return cstdyCo;
     }
 
-    private void setCstdyCo(String cstdyCo) {
+    public void setCstdyCo(String cstdyCo) {
         this.cstdyCo = cstdyCo;
     }
 
@@ -134,7 +134,7 @@ public class BcyclDpstryData_responseBody_items implements Serializable {
         return installationYear;
     }
 
-    private void setInstallationYear(String installationYear) {
+    public void setInstallationYear(String installationYear) {
         this.installationYear = installationYear;
     }
 
@@ -142,7 +142,7 @@ public class BcyclDpstryData_responseBody_items implements Serializable {
         return installationStle;
     }
 
-    private void setInstallationStle(String installationStle) {
+    public void setInstallationStle(String installationStle) {
         this.installationStle = installationStle;
     }
 
@@ -150,7 +150,7 @@ public class BcyclDpstryData_responseBody_items implements Serializable {
         return awningsYn;
     }
 
-    private void setAwningsYn(String awningsYn) {
+    public void setAwningsYn(String awningsYn) {
         this.awningsYn = awningsYn;
     }
 
@@ -158,7 +158,7 @@ public class BcyclDpstryData_responseBody_items implements Serializable {
         return airInjectorYn;
     }
 
-    private void setAirInjectorYn(String airInjectorYn) {
+    public void setAirInjectorYn(String airInjectorYn) {
         this.airInjectorYn = airInjectorYn;
     }
 
@@ -166,7 +166,7 @@ public class BcyclDpstryData_responseBody_items implements Serializable {
         return airInjectorType;
     }
 
-    private void setAirInjectorType(String airInjectorType) {
+    public void setAirInjectorType(String airInjectorType) {
         this.airInjectorType = airInjectorType;
     }
 
@@ -174,7 +174,7 @@ public class BcyclDpstryData_responseBody_items implements Serializable {
         return repairStandYn;
     }
 
-    private void setRepairStandYn(String repairStandYn) {
+    public void setRepairStandYn(String repairStandYn) {
         this.repairStandYn = repairStandYn;
     }
 
@@ -182,7 +182,7 @@ public class BcyclDpstryData_responseBody_items implements Serializable {
         return phoneNumber;
     }
 
-    private void setPhoneNumber(String phoneNumber) {
+    public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 
@@ -190,7 +190,7 @@ public class BcyclDpstryData_responseBody_items implements Serializable {
         return institutionNm;
     }
 
-    private void setInstitutionNm(String institutionNm) {
+    public void setInstitutionNm(String institutionNm) {
         this.institutionNm = institutionNm;
     }
 
@@ -198,7 +198,7 @@ public class BcyclDpstryData_responseBody_items implements Serializable {
         return referenceDate;
     }
 
-    private void setReferenceDate(String referenceDate) {
+    public void setReferenceDate(String referenceDate) {
         this.referenceDate = referenceDate;
     }
 
@@ -206,7 +206,7 @@ public class BcyclDpstryData_responseBody_items implements Serializable {
         return instt_code;
     }
 
-    private void setInstt_code(String instt_code) {
+    public void setInstt_code(String instt_code) {
         this.instt_code = instt_code;
     }
 

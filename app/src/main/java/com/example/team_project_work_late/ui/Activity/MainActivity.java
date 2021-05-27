@@ -39,8 +39,6 @@ public class MainActivity extends AppCompatActivity implements AddItemListener {
 
     private static final String TAG = "Main_Activity";
 
-    private List<BcyclLendData_responseBody_items> bcyclLendData;     // 대여소 파싱용 데아터
-    private List<BcyclDpstryData_responseBody_items> bcyclDpstryData; // 보관소 파싱용 데이터
     private BottomNavigationView mBottomNavigationView;
     private List<BookMarkItem> addItem;
     private Location mlocation;
@@ -55,10 +53,6 @@ public class MainActivity extends AppCompatActivity implements AddItemListener {
         InitializeGPS();
 
         Fragment_Kakao fragment_kakao = new Fragment_Kakao();
-        Bundle bundle_kakao = new Bundle();
-        fragment_kakao.setArguments(bundle_kakao);
-        bundle_kakao.putSerializable("bcyclLendData", (Serializable) bcyclLendData);
-        bundle_kakao.putSerializable("bcyclDpstryData", (Serializable) bcyclDpstryData);
 
 
 //        bundle_kakao.putDouble("latitude",mlocation.getLatitude());
@@ -73,10 +67,6 @@ public class MainActivity extends AppCompatActivity implements AddItemListener {
                 switch (item.getItemId()){
                     case R.id.action_1 :
                         Fragment_Kakao fragment_kakao = new Fragment_Kakao();
-                        Bundle bundle_kakao = new Bundle();
-                        fragment_kakao.setArguments(bundle_kakao);
-                        bundle_kakao.putSerializable("bcyclLendData", (Serializable) bcyclLendData);
-                        bundle_kakao.putSerializable("bcyclDpstryData", (Serializable) bcyclDpstryData);
 //                        bundle_kakao.putDouble("latitude",mlocation.getLatitude());
 //                        bundle_kakao.putDouble("longitude",mlocation.getLongitude());
                         addItem.clear();
@@ -86,8 +76,6 @@ public class MainActivity extends AppCompatActivity implements AddItemListener {
                         Fragment_bookMark fragment_bookMark = new Fragment_bookMark();
                         Bundle bundle_bookmark = new Bundle();
                         fragment_bookMark.setArguments(bundle_bookmark);
-                        bundle_bookmark.putSerializable("bcyclLendData", (Serializable) bcyclLendData);
-                        bundle_bookmark.putSerializable("bcyclDpstryData", (Serializable) bcyclDpstryData);
                         bundle_bookmark.putSerializable("addItem", (Serializable) addItem);
                         getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,fragment_bookMark).commit();
                         break;
@@ -104,10 +92,6 @@ public class MainActivity extends AppCompatActivity implements AddItemListener {
 
     private void init(){
         mBottomNavigationView=findViewById(R.id.bottom_navigation);
-
-        Intent intent = getIntent();
-        bcyclLendData = (List<BcyclLendData_responseBody_items>) intent.getSerializableExtra("bcyclLendData");
-        bcyclDpstryData = (List<BcyclDpstryData_responseBody_items>) intent.getSerializableExtra("bcyclDpstryData");
     }
     private void InitializeGPS(){
         final LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);

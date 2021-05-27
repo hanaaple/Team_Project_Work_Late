@@ -23,12 +23,12 @@ import java.util.ArrayList;
  * @overrideMethod onCreate(SQLiteDatabase db), onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)
  */
 
-public class DBHelper extends SQLiteOpenHelper {
+public class BMDBHelper extends SQLiteOpenHelper {
 
     private static final int DB_VERSION = 1;
     private static final String DB_NAME = "BookMarkList.db";
 
-    public DBHelper(@Nullable Context context){
+    public BMDBHelper(@Nullable Context context){
         super(context,DB_NAME,null,DB_VERSION);
     }
 

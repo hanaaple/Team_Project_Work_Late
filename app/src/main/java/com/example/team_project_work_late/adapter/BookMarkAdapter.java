@@ -13,7 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.team_project_work_late.R;
-import com.example.team_project_work_late.application.DBHelper;
+import com.example.team_project_work_late.application.BMDBHelper;
 import com.example.team_project_work_late.model.BookMarkItem;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
@@ -27,12 +27,12 @@ public class BookMarkAdapter extends RecyclerView.Adapter<BookMarkAdapter.ViewHo
 
     private ArrayList<BookMarkItem> mBMList;
     private Context mContext;
-    private DBHelper mDBHelper;
+    private BMDBHelper mBMDBHelper;
 
     public BookMarkAdapter(ArrayList<BookMarkItem> mBMList, Context mContext) {
         this.mBMList = mBMList;
         this.mContext = mContext;
-        mDBHelper = new DBHelper(mContext);
+        mBMDBHelper = new BMDBHelper(mContext);
     }
 
     @NonNull
@@ -133,7 +133,7 @@ public class BookMarkAdapter extends RecyclerView.Adapter<BookMarkAdapter.ViewHo
 
             btn_select.setOnClickListener(v->{
                 String bcyclLendNm = tv_bcyclLendNm.getText().toString();
-                mDBHelper.deleteRental(bcyclLendNm);
+                mBMDBHelper.deleteRental(bcyclLendNm);
                 mBMList.remove(getAdapterPosition());
                 notifyItemRemoved(getAdapterPosition());
             });
