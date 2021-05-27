@@ -71,7 +71,7 @@ public class Fragment_bookMark extends Fragment {
         if (!addItem.isEmpty()) {
             for (BookMarkItem bookMarkItem : addItem){
                 mAdapter.addItem(bookMarkItem);
-                mBMDBHelper.insertBookMark(bookMarkItem.getBcyclLendNm(),bookMarkItem.getBcyclLendSe(),bookMarkItem.getLnmadr(),bookMarkItem.getLnmadr(),
+                mBMDBHelper.insertBookMark(bookMarkItem.getBcyclLendNm(),bookMarkItem.getBcyclLendSe(),bookMarkItem.getRdnmadr(),bookMarkItem.getLnmadr(),
                         bookMarkItem.getLatitude(),bookMarkItem.getLongitude(),bookMarkItem.getOperOpenHm(),bookMarkItem.getOperCloseHm(),bookMarkItem.getRstde(),
                         bookMarkItem.getChrgeSe(),bookMarkItem.getBcyclUseCharge(),bookMarkItem.getAirInjectorYn(),bookMarkItem.getRepairStandY(),bookMarkItem.getPhoneNumber());
                 mRv_bookMark.smoothScrollToPosition(0);

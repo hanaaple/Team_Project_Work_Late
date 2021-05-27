@@ -279,12 +279,12 @@ public class Fragment_Kakao extends Fragment implements MapView.POIItemEventList
 
     @Override
     public void onMapViewDragEnded(MapView mapView, MapPoint mapPoint) {
-
+        drawMarker(mapView);
     }
 
     @Override
     public void onMapViewMoveFinished(MapView mapView, MapPoint mapPoint) {
-        drawMarker(mapView);
+
     }
 
     private void drawMarker(MapView mapView) {
