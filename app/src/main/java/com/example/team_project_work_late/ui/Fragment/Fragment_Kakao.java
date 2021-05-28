@@ -258,11 +258,11 @@ public class Fragment_Kakao extends Fragment implements MapView.POIItemEventList
                     MapPoint point = MapPoint.mapPointWithGeoCoord(Double.valueOf(item.getLatitude()), Double.valueOf(item.getLongitude()));
                     customMarker.setMapPoint(point);
                     customMarker.setMarkerType(MapPOIItem.MarkerType.CustomImage);
-                    customMarker.setCustomImageResourceId(R.drawable.marker_rental_s);
+                    customMarker.setCustomImageResourceId(R.drawable.marker_retal_red_s);
                     customMarker.setCustomImageAutoscale(true); //기기 해상도에 상관없이 동일한 크키로 표시한다. true는 이미지 크기를 해상도에 맞게 조절함.
                     customMarker.setCustomImageAnchor(0.5f, 1.0f); //마커 이미지 기준점
                     customMarker.setSelectedMarkerType(MapPOIItem.MarkerType.CustomImage);
-                    customMarker.setCustomSelectedImageResourceId(R.drawable.selected_marker_rental_s);
+                    customMarker.setCustomSelectedImageResourceId(R.drawable.selected_rental_red_s);
                     BookMarkItem bookMarkItem = new BookMarkItem(item);
                     customMarker.setItem(bookMarkItem);
                     mapView.addPOIItem(customMarker);
