@@ -44,7 +44,7 @@
         android:textSize="15sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/btn_select"
-        app:layout_constraintTop_toBottomOf="@+id/tv_rdnmadr"
+        app:layout_constraintTop_toBottomOf="@+id/tv_lnmadr"
         app:layout_constraintVertical_bias="0.485" />
 
     <TextView
@@ -58,7 +58,7 @@
         android:textSize="15sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/tv_bcyclLendSe"
-        app:layout_constraintTop_toBottomOf="@+id/tv_rdnmadr"
+        app:layout_constraintTop_toBottomOf="@+id/tv_lnmadr"
         app:layout_constraintVertical_bias="0.485" />
 
     <TextView
@@ -72,11 +72,11 @@
         android:textSize="15sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/tv_operHm"
-        app:layout_constraintTop_toBottomOf="@+id/tv_rdnmadr"
+        app:layout_constraintTop_toBottomOf="@+id/tv_lnmadr"
         app:layout_constraintVertical_bias="0.485" />
 
     <TextView
-        android:id="@+id/tv_rdnmadr"
+        android:id="@+id/tv_lnmadr"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"

@@ -45,9 +45,15 @@ public class BookMarkAdapter extends RecyclerView.Adapter<BookMarkAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull BookMarkAdapter.ViewHolder holder, int position) {
         holder.tv_bcyclLendNm.setText(mBMList.get(position).getBcyclLendNm());
-        if (!mBMList.get(position).getLnmadr().isEmpty()){
+        if (!mBMList.get(position).getLnmadr().isEmpty() && !mBMList.get(position).getRdnmadr().isEmpty()){
+            if (mBMList.get(position).getLnmadr().length() > mBMList.get(position).getRdnmadr().length()){
+                holder.tv_lnmadr.setText(mBMList.get(position).getLnmadr());
+            }else{
+                holder.tv_lnmadr.setText(mBMList.get(position).getRdnmadr());
+            }
+        }else if (!mBMList.get(position).getLnmadr().isEmpty()){
             holder.tv_lnmadr.setText(mBMList.get(position).getLnmadr());
-        }else{
+        }else if(!mBMList.get(position).getRdnmadr().isEmpty()){
             holder.tv_lnmadr.setText(mBMList.get(position).getRdnmadr());
         }
         holder.tv_bcyclLendSe.setText(mBMList.get(position).getBcyclLendSe());
@@ -88,9 +94,15 @@ public class BookMarkAdapter extends RecyclerView.Adapter<BookMarkAdapter.ViewHo
                 TextView tv_dialog_bcyclLendNm = dialog.findViewById(R.id.tv_dialog_bcyclLendNm);
                 tv_dialog_bcyclLendNm.setText(bookMarkItem.getBcyclLendNm());
                 TextView tv_dialog_lnmadr = dialog.findViewById(R.id.tv_dialog_lnmadr);
-                if (!bookMarkItem.getLnmadr().isEmpty()){
+                if (!bookMarkItem.getLnmadr().isEmpty() && !bookMarkItem.getRdnmadr().isEmpty()){
+                    if (bookMarkItem.getRdnmadr().length() > bookMarkItem.getLnmadr().length()){
+                        tv_dialog_lnmadr.setText(bookMarkItem.getRdnmadr());
+                    }else{
+                        tv_dialog_lnmadr.setText(bookMarkItem.getLnmadr());
+                    }
+                } else if (!bookMarkItem.getLnmadr().isEmpty()){
                     tv_dialog_lnmadr.setText(bookMarkItem.getLnmadr());
-                }else{
+                } else if (!bookMarkItem.getRdnmadr().isEmpty()){
                     tv_dialog_lnmadr.setText(bookMarkItem.getRdnmadr());
                 }
                 TextView tv_dialog_operHm = dialog.findViewById(R.id.tv_dialog_operHm_input);

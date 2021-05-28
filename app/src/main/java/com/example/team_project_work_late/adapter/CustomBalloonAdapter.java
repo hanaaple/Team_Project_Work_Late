@@ -34,13 +34,34 @@ public class CustomBalloonAdapter implements CalloutBalloonAdapter {
     @Override
     public View getCalloutBalloon(MapPOIItem mapPOIItem) {
         if (mapPOIItem instanceof LendMarker){
+
             tv_ball.setText(((LendMarker) mapPOIItem).getItem().getBcyclLendNm());
             tv_set.setText("대여소");
-            tv_add.setText(((LendMarker) mapPOIItem).getItem().getLnmadr());
+            if (!((LendMarker) mapPOIItem).getItem().getLnmadr().isEmpty() && !((LendMarker) mapPOIItem).getItem().getRdnmadr().isEmpty()){
+                if (((LendMarker) mapPOIItem).getItem().getLnmadr().length() > ((LendMarker) mapPOIItem).getItem().getRdnmadr().length()){
+                    tv_add.setText(((LendMarker) mapPOIItem).getItem().getLnmadr());
+                }else{
+                    tv_add.setText(((LendMarker) mapPOIItem).getItem().getRdnmadr());
+                }
+            } else if (((LendMarker) mapPOIItem).getItem().getLnmadr().isEmpty()){
+                tv_add.setText(((LendMarker) mapPOIItem).getItem().getRdnmadr());
+            } else if (((LendMarker) mapPOIItem).getItem().getRdnmadr().isEmpty()){
+                tv_add.setText(((LendMarker) mapPOIItem).getItem().getLnmadr());
+            }
         }else if (mapPOIItem instanceof DpstryMarker){
             tv_ball.setText(((DpstryMarker) mapPOIItem).getItem().getDpstryNm());
             tv_set.setText("보관소");
-            tv_add.setText(((DpstryMarker) mapPOIItem).getItem().getLnmadr());
+            if (!((DpstryMarker) mapPOIItem).getItem().getLnmadr().isEmpty() && !((DpstryMarker) mapPOIItem).getItem().getRdnmadr().isEmpty()){
+                if (((DpstryMarker) mapPOIItem).getItem().getLnmadr().length() > ((DpstryMarker) mapPOIItem).getItem().getRdnmadr().length()){
+                    tv_add.setText(((DpstryMarker) mapPOIItem).getItem().getLnmadr());
+                }else{
+                    tv_add.setText(((DpstryMarker) mapPOIItem).getItem().getRdnmadr());
+                }
+            }else if (((DpstryMarker) mapPOIItem).getItem().getLnmadr().isEmpty()){
+                tv_add.setText(((DpstryMarker) mapPOIItem).getItem().getRdnmadr());
+            }else if(((DpstryMarker) mapPOIItem).getItem().getRdnmadr().isEmpty()){
+                tv_add.setText(((DpstryMarker) mapPOIItem).getItem().getLnmadr());
+            }
         }
         return mBalloon;
     }
