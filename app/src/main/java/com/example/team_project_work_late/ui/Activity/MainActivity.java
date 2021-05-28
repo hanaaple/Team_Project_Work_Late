@@ -72,9 +72,10 @@ public class MainActivity extends AppCompatActivity implements AddItemListener {
 
         Fragment_Kakao fragment_kakao = new Fragment_Kakao();
 
-
+//        Bundle bundle_kakao = new Bundle();
 //        bundle_kakao.putDouble("latitude",mlocation.getLatitude());
 //        bundle_kakao.putDouble("longitude",mlocation.getLongitude());
+//        fragment_kakao.setArguments(bundle_kakao);
         //첫 화면 띄우기
         getSupportFragmentManager().beginTransaction().add(R.id.frame_container,fragment_kakao).commit();
 
@@ -85,8 +86,10 @@ public class MainActivity extends AppCompatActivity implements AddItemListener {
                 switch (item.getItemId()){
                     case R.id.action_1 :
                         Fragment_Kakao fragment_kakao = new Fragment_Kakao();
+//                        Bundle bundle_kakao = new Bundle();
 //                        bundle_kakao.putDouble("latitude",mlocation.getLatitude());
 //                        bundle_kakao.putDouble("longitude",mlocation.getLongitude());
+//                        fragment_kakao.setArguments(bundle_kakao);
                         addItem.clear();
                         getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,fragment_kakao).commit();
                         break;
@@ -97,11 +100,6 @@ public class MainActivity extends AppCompatActivity implements AddItemListener {
                         bundle_bookmark.putSerializable("addItem", (Serializable) addItem);
                         getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,fragment_bookMark).commit();
                         break;
-                    case R.id.action_3:
-                        //Fragment_Review fragment_review = new Fragment_Review();
-                        //getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,fragment_review).commit();
-                        break;
-
                 }
                 return true;
             }

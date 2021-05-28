@@ -61,6 +61,7 @@ public class Fragment_Kakao extends Fragment implements MapView.POIItemEventList
                              Bundle savedInstanceState) {
         mLendDBHelper = new LendDBHelper(getContext());
         mDpstryDBHelper = new DpstryDBHelper(getContext());
+//        Bundle bundle = getArguments();
 //        mLatitude = bundle.getDouble("latitude");
 //        mLongitude = bundle.getDouble("longitude");
 
@@ -74,7 +75,7 @@ public class Fragment_Kakao extends Fragment implements MapView.POIItemEventList
 
         // 센터포인트 설정
         //MapPoint.mapPointWithGeoCoord(Double.valueOf(bcyclDpstryData.get(0).getLatitude()), Double.valueOf(bcyclDpstryData.get(0).getLongitude())),true
-        mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(37.499435, 126.751687),true);
+        mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(37.4821, 126.7651),true);
 
         // 줌 정도 설정
         mapView.setZoomLevel(2,true);
@@ -174,8 +175,6 @@ public class Fragment_Kakao extends Fragment implements MapView.POIItemEventList
                             fragment_review.setArguments(bundle_review);
                             bundle_review.putString("ItemName", lendMarker.getItem().getBcyclLendNm());
                             getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, fragment_review).commit();
-                            BottomNavigationView view = getActivity().findViewById(R.id.bottom_navigation);
-                            view.setSelectedItemId(R.id.action_3);
                             break;
                         }
                         case 2:{
