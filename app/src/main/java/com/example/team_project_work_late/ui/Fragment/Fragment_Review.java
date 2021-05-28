@@ -49,29 +49,20 @@ public class Fragment_Review extends Fragment {
         mRView = (RecyclerView) view.findViewById(R.id.review_list);
         mRef = FirebaseDatabase.getInstance().getReference();
         mAuth = FirebaseAuth.getInstance();
-
-
         String itemName = getArguments().getString("ItemName");
-//        BookMarkItem item = (BookMarkItem)getArguments().getSerializable("Item");
-//        String itemName = item.getBcyclLendNm();
-
         LoadReview(itemName, view);
 
-//mRef.child("Review").child("이름").child(mAuth.getUid()).false or 내용
+
         mBtn_write.setOnClickListener(v -> {
             mRef.child("Review").get().addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
                     Boolean isAlreadyReviewed = false;
-                    Loop1:
                     for (DataSnapshot data : task.getResult().child(itemName).getChildren()) {
-                        //if()
-                        //for (DataSnapshot userData : data.getChildren()) {
                         if (data.getKey().equals(mAuth.getUid())) {
                             Toast.makeText(getContext(), "이미 리뷰를 하였습니다.", Toast.LENGTH_SHORT).show();
                             isAlreadyReviewed = true;
-                            break Loop1;
+                            break;
                         }
-                        //}
                     }
                     if (!isAlreadyReviewed) {
                         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext(), R.style.TransparentBottomSheetDialogTheme);
@@ -88,18 +79,13 @@ public class Fragment_Review extends Fragment {
                         });
                         Button saveButton = bottomSheetDialog.findViewById(R.id.SaveButton);
                         saveButton.setOnClickListener(v1 -> {
-                            //내용, 평점 찾고 파이어베이스에 입력 및 추가
                             EditText editText = bottomSheetDialog.findViewById(R.id.InputText);
-                            if (mAuth != null) {
-                                reviewItem.setUID(mAuth.getUid());
-                            }
+                            if (mAuth != null) reviewItem.setUID(mAuth.getUid());
                             reviewItem.setUserName(mAuth.getCurrentUser().getDisplayName());
                             reviewItem.setContents(editText.getText().toString());
                             reviewItem.setPhotoURL(mAuth.getCurrentUser().getPhotoUrl().toString());
-
                             if (mAuth == null) {
-                                Log.e("파이어베이스", "연동 안됨");
-                                //Toast.makeText()
+                                Log.e("파이어베이스", "연동 오류");
                             } else {
                                 mRef.child("Review").child(itemName).child(mAuth.getUid()).child("닉네임").setValue(reviewItem.getUserName());
                                 mRef.child("Review").child(itemName).child(mAuth.getUid()).child("내용").setValue(reviewItem.getContents());
@@ -129,16 +115,14 @@ public class Fragment_Review extends Fragment {
                     if (task.isSuccessful()) {
                         mRAdapter.InitialCount();
                         for (DataSnapshot data : task.getResult().child(itemName).getChildren()) {
-                            if (!data.getValue().toString().equals("false")) {
-                                ReviewItem reviewItem = new ReviewItem();
-                                reviewItem.setUID(data.getKey());
-                                reviewItem.setUserName(data.child("닉네임").getValue().toString());
-                                reviewItem.setContents(data.child("내용").getValue().toString());
-                                reviewItem.setRating(Integer.parseInt(data.child("평점").getValue().toString()));
-                                reviewItem.setPhotoURL(data.child("사진 URL").getValue().toString());
-                                mRAdapter.addItem(reviewItem);
-                                mRView.smoothScrollToPosition(0);
-                            }
+                            ReviewItem reviewItem = new ReviewItem();
+                            reviewItem.setUID(data.getKey());
+                            reviewItem.setUserName(data.child("닉네임").getValue().toString());
+                            reviewItem.setContents(data.child("내용").getValue().toString());
+                            reviewItem.setRating(Integer.parseInt(data.child("평점").getValue().toString()));
+                            reviewItem.setPhotoURL(data.child("사진 URL").getValue().toString());
+                            mRAdapter.addItem(reviewItem);
+                            mRView.smoothScrollToPosition(0);
                         }
                     }
                 });

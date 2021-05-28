@@ -172,13 +172,7 @@ public class Fragment_Kakao extends Fragment implements MapView.POIItemEventList
                             Fragment_Review fragment_review = new Fragment_Review();
                             Bundle bundle_review = new Bundle();
                             fragment_review.setArguments(bundle_review);
-                            //필요할 경우 이 정보들 전부 넘겨주기
                             bundle_review.putString("ItemName", lendMarker.getItem().getBcyclLendNm());
-                            bundle_review.putSerializable("Item", lendMarker.getItem());
-
-                            //lendMarker.getItem().getId()
-                            //해당 대여소의 Id
-
                             getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, fragment_review).commit();
                             BottomNavigationView view = getActivity().findViewById(R.id.bottom_navigation);
                             view.setSelectedItemId(R.id.action_3);

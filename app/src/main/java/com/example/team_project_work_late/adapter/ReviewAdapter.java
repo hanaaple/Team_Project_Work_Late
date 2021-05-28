@@ -19,8 +19,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import org.w3c.dom.Text;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -67,7 +65,6 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
             @Override
             public void run() {
                 try {
-                    //현재로그인한 사용자 정보를 통해 PhotoUrl 가져오기
                     URL url = new URL(mRlist.get(position).getPhotoURL());
                     HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                     conn.setDoInput(true);
@@ -114,14 +111,12 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
             review_contents = (TextView) view.findViewById(R.id.review_contents);
             ratingBar = view.findViewById(R.id.ratingBar);
             userImage = view.findViewById(R.id.userImage);
-            //사진, 아이디, 별점, 내용
             view.setOnClickListener(v -> {
                 FirebaseAuth mAuth = FirebaseAuth.getInstance();
                 DatabaseReference mRef = FirebaseDatabase.getInstance().getReference();
                 if (mAuth == null) {
-                    Log.e("파이어베이스", "연동안됨");
+                    Log.e("파이어베이스", "연동 오류");
                 } else {
-                    //자신의 리뷰만 삭제 가능하도록
                     if (mRlist.get(getAdapterPosition()).getUID().equals(mAuth.getUid())) {
                         RemoveCount(mRlist.get(getAdapterPosition()).getRating());
                         UpdateRate(review_view);
@@ -155,21 +150,19 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
         float average = 0;
         if (count != 0)
             average = (fiveCount * 5 + fourCount * 4 + threeCount * 3 + twoCount * 2 + oneCount) / (float) count;
-        textView_average.setText(Float.toString(average));
+        textView_average.setText(String.format("%.1f", average));
         ratingbar_average.setRating(average);
         five.setMax(count);
         four.setMax(count);
         three.setMax(count);
         two.setMax(count);
         one.setMax(count);
-        Thread thread = new Thread(new Runnable() {
-            public void run() {
-                five.setProgress(fiveCount);
-                four.setProgress(fourCount);
-                three.setProgress(threeCount);
-                two.setProgress(twoCount);
-                one.setProgress(oneCount);
-            }
+        Thread thread = new Thread(() -> {
+            five.setProgress(fiveCount);
+            four.setProgress(fourCount);
+            three.setProgress(threeCount);
+            two.setProgress(twoCount);
+            one.setProgress(oneCount);
         });
         thread.start();
     }
