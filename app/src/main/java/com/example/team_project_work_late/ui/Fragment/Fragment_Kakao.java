@@ -181,7 +181,7 @@ public class Fragment_Kakao extends Fragment implements MapView.POIItemEventList
                         case 2:{
 
                             try {
-                                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("kakaomap://route?sp=37.537229,127.005515&ep="+lendMarker.getItem().getLatitude()+","+lendMarker.getItem().getLongitude()+"&by=bike"));
+                                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("kakaomap://route?sp="+mLatitude+","+mLongitude+"&ep="+lendMarker.getItem().getLatitude()+","+lendMarker.getItem().getLongitude()+"&by=bike"));
                                 startActivity(intent);
                             }catch (ActivityNotFoundException e){
                                 Intent intent = new Intent(Intent.ACTION_VIEW,Uri.parse("https://play.google.com/store/apps/details?id=net.daum.android.map"));
@@ -210,7 +210,7 @@ public class Fragment_Kakao extends Fragment implements MapView.POIItemEventList
                     switch (which){
                         case 0:{
                             try {
-                                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("kakaomap://route?sp=37.537229,127.005515&ep="+dpstryMarker.getItem().getLatitude()+","+dpstryMarker.getItem().getLongitude()+"&by=bike"));
+                                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("kakaomap://route?sp="+mLatitude+","+mLongitude+"&ep="+dpstryMarker.getItem().getLatitude()+","+dpstryMarker.getItem().getLongitude()+"&by=bike"));
                                 startActivity(intent);
                             }catch (ActivityNotFoundException e){
                                 Intent intent = new Intent(Intent.ACTION_VIEW,Uri.parse("https://play.google.com/store/apps/details?id=net.daum.android.map"));
