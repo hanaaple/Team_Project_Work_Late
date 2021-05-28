@@ -1,7 +1,14 @@
 package com.example.team_project_work_late.adapter;
 
+import android.app.AlertDialog;
+import android.content.ActivityNotFoundException;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,12 +16,14 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.team_project_work_late.R;
 import com.example.team_project_work_late.model.ReviewItem;
+import com.example.team_project_work_late.ui.Fragment.Fragment_Review;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -40,6 +49,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
     private int count;
     private View review_view;
     Bitmap bitmap;
+    private Context context;
 
     public ReviewAdapter(ArrayList<ReviewItem> mRlist, View review_view, String bcyclLendNm) {
         this.mRlist = mRlist;
@@ -52,6 +62,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View holder = LayoutInflater.from(parent.getContext()).inflate(R.layout.review_list, parent, false);
+        context = parent.getContext();
         return new ReviewAdapter.ViewHolder(holder);
     }
 
@@ -111,20 +122,35 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
             review_contents = (TextView) view.findViewById(R.id.review_contents);
             ratingBar = view.findViewById(R.id.ratingBar);
             userImage = view.findViewById(R.id.userImage);
-            view.setOnClickListener(v -> {
-                FirebaseAuth mAuth = FirebaseAuth.getInstance();
-                DatabaseReference mRef = FirebaseDatabase.getInstance().getReference();
-                if (mAuth == null) {
-                    Log.e("파이어베이스", "연동 오류");
-                } else {
-                    if (mRlist.get(getAdapterPosition()).getUID().equals(mAuth.getUid())) {
-                        RemoveCount(mRlist.get(getAdapterPosition()).getRating());
-                        UpdateRate(review_view);
-                        mRef.child("Review").child(bcyclLendNm).child(mAuth.getUid()).setValue(null);
-                        mRlist.remove(getAdapterPosition());
-                        notifyItemRemoved(getAdapterPosition());
+            view.setOnLongClickListener(v -> {
+                String[] arr = {"리뷰 삭제"};
+                AlertDialog.Builder dialog = new AlertDialog.Builder(context);
+                dialog.setItems(arr, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (which){
+                            case 0: {
+                                FirebaseAuth mAuth = FirebaseAuth.getInstance();
+                                DatabaseReference mRef = FirebaseDatabase.getInstance().getReference();
+                                if (mAuth == null) {
+                                    Log.e("파이어베이스", "연동 오류");
+                                } else {
+                                    if (mRlist.get(getAdapterPosition()).getUID().equals(mAuth.getUid())) {
+                                        RemoveCount(mRlist.get(getAdapterPosition()).getRating());
+                                        UpdateRate(review_view);
+                                        mRef.child("Review").child(bcyclLendNm).child(mAuth.getUid()).setValue(null);
+                                        mRlist.remove(getAdapterPosition());
+                                        notifyItemRemoved(getAdapterPosition());
+                                    }
+                                }
+                                Toast.makeText(context, "리뷰 삭제가 완료되었습니다.", Toast.LENGTH_SHORT).show();
+                                break;
+                            }
+                        }
                     }
-                }
+                });
+                dialog.show();
+                return true;
             });
         }
     }
