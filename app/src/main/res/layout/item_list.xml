@@ -37,56 +37,56 @@
         android:id="@+id/tv_bcyclLendSe"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="28dp"
+        android:layout_marginStart="24dp"
         android:fontFamily="@font/kopubworld_dotum_light"
         android:text="유형"
-        android:textColor="#818181"
+        android:textColor="@color/black"
         android:textSize="15sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/btn_select"
-        app:layout_constraintTop_toBottomOf="@+id/tv_lnmadr"
-        app:layout_constraintVertical_bias="0.255" />
-
-    <TextView
-        android:id="@+id/tv_lnmadr"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="28dp"
-        android:layout_marginTop="8dp"
-        android:fontFamily="@font/kopubworld_dotum_light"
-        android:singleLine="true"
-        android:text="지번주소"
-        android:textColor="@color/black"
-        android:textSize="15sp"
-        app:layout_constraintStart_toEndOf="@+id/btn_select"
-        app:layout_constraintTop_toBottomOf="@+id/tv_bcyclLendNm" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_rdnmadr"
+        app:layout_constraintVertical_bias="0.485" />
 
     <TextView
         android:id="@+id/tv_operHm"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
+        android:layout_marginStart="8dp"
         android:fontFamily="@font/kopubworld_dotum_light"
         android:text="운영시간"
-        android:textColor="#818181"
+        android:textColor="@color/black"
         android:textSize="15sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/tv_bcyclLendSe"
-        app:layout_constraintTop_toBottomOf="@+id/tv_lnmadr"
-        app:layout_constraintVertical_bias="0.255" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_rdnmadr"
+        app:layout_constraintVertical_bias="0.485" />
 
     <TextView
         android:id="@+id/tv_rstde"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="24dp"
         android:fontFamily="@font/kopubworld_dotum_light"
         android:text="휴무일"
-        android:textColor="#818181"
+        android:textColor="@color/black"
         android:textSize="15sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/tv_operHm"
-        app:layout_constraintTop_toBottomOf="@+id/tv_lnmadr"
-        app:layout_constraintVertical_bias="0.255" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_rdnmadr"
+        app:layout_constraintVertical_bias="0.485" />
+
+    <TextView
+        android:id="@+id/tv_rdnmadr"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/kopubworld_dotum_light"
+        android:singleLine="true"
+        android:text="도로명주소"
+        android:textColor="@color/black"
+        android:textSize="15sp"
+        app:layout_constraintStart_toEndOf="@+id/btn_select"
+        app:layout_constraintTop_toBottomOf="@+id/tv_bcyclLendNm" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

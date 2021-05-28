@@ -10,7 +10,7 @@
         <item name="android:windowBackground">@android:color/transparent</item>
     </style>
     <style name="RatingBar" parent="Theme.AppCompat">
-        <item name="colorControlNormal">@color/colorBrown</item>
-        <item name="colorControlActivated">@color/colorBrown</item>
+        <item name="colorControlNormal">#A5A5A5</item>
+        <item name="colorControlActivated">#A5A5A5</item>
     </style>
 </resources>
