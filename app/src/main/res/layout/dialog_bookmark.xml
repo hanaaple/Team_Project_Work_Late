@@ -11,9 +11,11 @@
         android:id="@+id/constraintLayout2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
         android:background="@drawable/detailbox"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent">
 
         <TextView
@@ -21,7 +23,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="60dp"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="48dp"
             android:fontFamily="@font/kopubworld_dotum_bold"
             android:text="대여소 이름"
             android:textColor="@color/black"
@@ -109,10 +111,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
+            android:enabled="false"
             android:fontFamily="@font/kopubworld_dotum_medium"
             android:text="공기 주입기 비치"
             android:textColor="@color/black"
-            android:enabled="false"
             android:textSize="15sp"
             app:layout_constraintStart_toStartOf="@id/tv_dialog_chrgeSe"
             app:layout_constraintTop_toBottomOf="@id/tv_dialog_chrgeSe" />
@@ -165,7 +167,7 @@
             app:layout_constraintBottom_toBottomOf="@+id/constraintLayout2"
             app:layout_constraintEnd_toEndOf="@+id/constraintLayout2"
             app:layout_constraintStart_toStartOf="@+id/constraintLayout2"
-            app:layout_constraintTop_toBottomOf="@+id/tv_dialog_phoneNumber"/>
+            app:layout_constraintTop_toBottomOf="@+id/tv_dialog_phoneNumber" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
