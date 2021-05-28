@@ -85,43 +85,6 @@ public class Fragment_Kakao extends Fragment implements MapView.POIItemEventList
         mapView.setMapViewEventListener(this);
         mapView.setPOIItemEventListener(this);
 
-//      마커는 이거 바탕으로 맨 아래 MapViewEventListener 내부 Marker 컨트롤로 들어감
-//        for (BcyclLendData_responseBody_items item : bcyclLendData){
-//            if (!item.getLatitude().isEmpty()&& !item.getLongitude().isEmpty()){
-//                LendMarker customMarker = new LendMarker();
-//                customMarker.setItemName(item.getBcyclLendNm());
-//                customMarker.setTag(1);
-//                MapPoint point = MapPoint.mapPointWithGeoCoord(Double.valueOf(item.getLatitude()),Double.valueOf(item.getLongitude()));
-//                customMarker.setMapPoint(point);
-//                customMarker.setMarkerType(MapPOIItem.MarkerType.CustomImage);
-//                customMarker.setCustomImageResourceId(R.drawable.marker_rental_s);
-//                customMarker.setCustomImageAutoscale(true); //기기 해상도에 상관없이 동일한 크키로 표시한다. true는 이미지 크기를 해상도에 맞게 조절함.
-//                customMarker.setCustomImageAnchor(0.5f, 1.0f); //마커 이미지 기준점
-//                customMarker.setSelectedMarkerType(MapPOIItem.MarkerType.CustomImage);
-//                customMarker.setCustomSelectedImageResourceId(R.drawable.selected_marker_rental_s);
-//                BookMarkItem bookMarkItem = new BookMarkItem(item);
-//                customMarker.setItem(bookMarkItem);
-//                mapView.addPOIItem(customMarker);
-//            }
-//        }
-//        for (BcyclDpstryData_responseBody_items item : bcyclDpstryData){
-//            if (!item.getLatitude().isEmpty()&& !item.getLongitude().isEmpty()){
-//                DpstryMarker customMarker = new DpstryMarker();
-//                customMarker.setItemName(item.getDpstryNm());
-//                customMarker.setTag(1);
-//                MapPoint point = MapPoint.mapPointWithGeoCoord(Double.valueOf(item.getLatitude()),Double.valueOf(item.getLongitude()));
-//                customMarker.setMapPoint(point);
-//                customMarker.setMarkerType(MapPOIItem.MarkerType.CustomImage);
-//                customMarker.setCustomImageResourceId(R.drawable.marker_dpstry_s);
-//                customMarker.setCustomImageAutoscale(true); //기기 해상도에 상관없이 동일한 크키로 표시한다. true는 이미지 크기를 해상도에 맞게 조절함.
-//                customMarker.setCustomImageAnchor(0.5f, 1.0f); //마커 이미지 기준점
-//                customMarker.setSelectedMarkerType(MapPOIItem.MarkerType.CustomImage);
-//                customMarker.setCustomSelectedImageResourceId(R.drawable.selected_marker_dpstry_s);
-//                customMarker.setItem(item);
-//                mapView.addPOIItem(customMarker);
-//            }
-//        }
-
         return v;
     }
 
