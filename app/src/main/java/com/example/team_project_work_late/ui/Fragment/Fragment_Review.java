@@ -103,7 +103,7 @@ public class Fragment_Review extends Fragment {
         return view;
     }
 
-    public void LoadReview(String itemName, View view) {
+    private void LoadReview(String itemName, View view) {
         if (mRAdapter == null) {
             mRList = new ArrayList<ReviewItem>();
             mRAdapter = new ReviewAdapter(mRList, view, itemName);

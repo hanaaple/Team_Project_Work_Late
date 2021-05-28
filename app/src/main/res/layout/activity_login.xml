@@ -6,47 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.google.android.gms.common.SignInButton
-        android:id="@+id/google_login"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/common_signin_button_text"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.51"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.545">
-
-    </com.google.android.gms.common.SignInButton>
-
-    <TextView
-        android:id="@+id/locationText"
-        android:layout_width="134dp"
-        android:layout_height="100dp"
-        android:layout_marginTop="124dp"
-        android:text="위치 정보"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.181" />
-
-    <Button
-        android:id="@+id/locationButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="위치 확인"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.175" />
-
     <ImageView
         android:id="@+id/background"
         android:layout_width="match_parent"
@@ -58,18 +17,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@drawable/login_background" />
-
-    <Button
-        android:id="@+id/google_Logout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="logout"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.501"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/google_login"
-        app:layout_constraintVertical_bias="0.254" />
 
     <ImageButton
         android:id="@+id/startButton"
@@ -83,15 +30,4 @@
         app:layout_constraintVertical_bias="0.871"
         app:srcCompat="@drawable/start_button" />
 
-    <Button
-        android:id="@+id/tempButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Temp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.501"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.587" />
 </androidx.constraintlayout.widget.ConstraintLayout>

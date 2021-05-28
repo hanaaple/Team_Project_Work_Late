@@ -11,9 +11,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.team_project_work_late.R;
@@ -39,9 +37,7 @@ import com.google.firebase.auth.GoogleAuthProvider;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 
-import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -60,11 +56,9 @@ public class LoginActivity extends AppCompatActivity {
 
     private boolean parse_Lend = false;
     private boolean parse_Dpstry = false;
-    private Button btn_location;
     private ProgressDialog customProgressDialog;
 
     private ImageButton startButton;
-    private Button btn_google_logout;
     private GoogleSignInClient googleSignInClient;
     private FirebaseAuth mAuth;
     private static final int REQ_SIGN_GOOGLE = 100;
@@ -114,7 +108,6 @@ public class LoginActivity extends AppCompatActivity {
         // 파싱을 위한 설정
         lendDBHelper = new LendDBHelper(getApplicationContext());
         dpstryDBHelper = new DpstryDBHelper(getApplicationContext());
-        btn_location = findViewById(R.id.locationButton);
 
         if (lendDBHelper.getLendDataList().size() == 0 && dpstryDBHelper.getDpstryDataList().size() == 0){
             // 파싱하는 동안 다른거 못하게 막음
@@ -122,12 +115,7 @@ public class LoginActivity extends AppCompatActivity {
             customProgressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
             customProgressDialog.show();
             parsingStart();
-        }else{
-            btn_location.setVisibility(View.VISIBLE);
         }
-        startButton = (ImageButton) findViewById(R.id.startButton);
-        btn_google_logout = (Button) findViewById(R.id.google_Logout);
-
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
@@ -136,24 +124,10 @@ public class LoginActivity extends AppCompatActivity {
         googleSignInClient = GoogleSignIn.getClient(this, gso);
         mAuth = FirebaseAuth.getInstance();
 
-
+        startButton = (ImageButton) findViewById(R.id.startButton);
         startButton.setOnClickListener(v -> {
             Intent signInIntent = googleSignInClient.getSignInIntent();
             startActivityForResult(signInIntent, REQ_SIGN_GOOGLE);
-        });
-
-        btn_google_logout.setOnClickListener(v -> {
-            Toast.makeText(LoginActivity.this, "구글 및 파이어베이스 연결 끊음", Toast.LENGTH_SHORT).show();
-            System.out.println("구글 및 파이어베이스 연결 끊음");
-            googleSignInClient.signOut();
-            mAuth.signOut();
-        });
-
-        // 테스트용
-        btn_location.setOnClickListener(v -> {
-            btn_location.setEnabled(false);
-            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-            startActivity(intent);
         });
     }
 
@@ -183,6 +157,9 @@ public class LoginActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             Log.d("파이어베이스", "연동 성공");
+                            Toast.makeText(LoginActivity.this, "구글 및 파이어베이스 연결 성공", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                            startActivity(intent);
                         } else {
                             Log.e("파이어베이스", "연동 실패");
                         }
@@ -263,7 +240,6 @@ public class LoginActivity extends AppCompatActivity {
 
     private void parsingEnd() {
         if (parse_Lend && parse_Dpstry) {
-            btn_location.setVisibility(View.VISIBLE);
             customProgressDialog.dismiss();
         }
     }
