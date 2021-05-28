@@ -61,9 +61,9 @@ public class Fragment_Kakao extends Fragment implements MapView.POIItemEventList
                              Bundle savedInstanceState) {
         mLendDBHelper = new LendDBHelper(getContext());
         mDpstryDBHelper = new DpstryDBHelper(getContext());
-//        Bundle bundle = getArguments();
-//        mLatitude = bundle.getDouble("latitude");
-//        mLongitude = bundle.getDouble("longitude");
+        Bundle bundle = getArguments();
+        mLatitude = bundle.getDouble("latitude");
+        mLongitude = bundle.getDouble("longitude");
 
         // findViewById를 위한 View 재 할당
         View v = inflater.inflate(R.layout.fragment__kakao, container, false);
@@ -75,7 +75,7 @@ public class Fragment_Kakao extends Fragment implements MapView.POIItemEventList
 
         // 센터포인트 설정
         //MapPoint.mapPointWithGeoCoord(Double.valueOf(bcyclDpstryData.get(0).getLatitude()), Double.valueOf(bcyclDpstryData.get(0).getLongitude())),true
-        mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(37.4821, 126.7651),true);
+        mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(mLatitude, mLongitude),true);
 
         // 줌 정도 설정
         mapView.setZoomLevel(2,true);

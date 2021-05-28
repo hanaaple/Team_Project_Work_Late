@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.FragmentManager;
 
 import android.Manifest;
 import android.content.Context;
@@ -72,10 +73,10 @@ public class MainActivity extends AppCompatActivity implements AddItemListener {
 
         Fragment_Kakao fragment_kakao = new Fragment_Kakao();
 
-//        Bundle bundle_kakao = new Bundle();
-//        bundle_kakao.putDouble("latitude",mlocation.getLatitude());
-//        bundle_kakao.putDouble("longitude",mlocation.getLongitude());
-//        fragment_kakao.setArguments(bundle_kakao);
+        Bundle bundle_kakao = new Bundle();
+        bundle_kakao.putDouble("latitude",mlocation.getLatitude());
+        bundle_kakao.putDouble("longitude",mlocation.getLongitude());
+        fragment_kakao.setArguments(bundle_kakao);
         //첫 화면 띄우기
         getSupportFragmentManager().beginTransaction().add(R.id.frame_container,fragment_kakao).commit();
 
@@ -86,10 +87,10 @@ public class MainActivity extends AppCompatActivity implements AddItemListener {
                 switch (item.getItemId()){
                     case R.id.action_1 :
                         Fragment_Kakao fragment_kakao = new Fragment_Kakao();
-//                        Bundle bundle_kakao = new Bundle();
-//                        bundle_kakao.putDouble("latitude",mlocation.getLatitude());
-//                        bundle_kakao.putDouble("longitude",mlocation.getLongitude());
-//                        fragment_kakao.setArguments(bundle_kakao);
+                        Bundle bundle_kakao = new Bundle();
+                        bundle_kakao.putDouble("latitude",mlocation.getLatitude());
+                        bundle_kakao.putDouble("longitude",mlocation.getLongitude());
+                        fragment_kakao.setArguments(bundle_kakao);
                         addItem.clear();
                         getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,fragment_kakao).commit();
                         break;
@@ -110,7 +111,7 @@ public class MainActivity extends AppCompatActivity implements AddItemListener {
         mBottomNavigationView=findViewById(R.id.bottom_navigation);
     }
     private void InitializeGPS(){
-        final LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        final LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         //위도가 바뀔때마다 사용되는 Listioner
         LocationListener locationListener = new LocationListener() {
             @Override
@@ -124,12 +125,23 @@ public class MainActivity extends AppCompatActivity implements AddItemListener {
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1, locationListener);
             if (locationManager != null) {
                 Log.d("GPS", "Tracking 가능");
-                Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                if (location != null) {
-                    mlocation = location;
+                List<String> providers = locationManager.getProviders(true);
+                for (String provider: providers){
+                    Location location = locationManager.getLastKnownLocation(provider);
+                    if (location == null){
+                        continue;
+                    }
+                    if (mlocation == null || location.getAccuracy() < mlocation.getAccuracy()) {
+                        mlocation = location;
+                    }
                 }
             }
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+//        super.onBackPressed();
     }
 
     @Override

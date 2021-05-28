@@ -160,6 +160,8 @@ public class LoginActivity extends AppCompatActivity {
                             Log.d("파이어베이스", "연동 성공");
                             Toast.makeText(LoginActivity.this, "구글 및 파이어베이스 연결 성공", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(intent);
                         } else {
                             Toast.makeText(LoginActivity.this, "파이어베이스 연결 실패", Toast.LENGTH_SHORT).show();
