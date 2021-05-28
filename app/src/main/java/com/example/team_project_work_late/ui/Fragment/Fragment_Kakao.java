@@ -175,7 +175,6 @@ public class Fragment_Kakao extends Fragment implements MapView.POIItemEventList
                             fragment_review.setArguments(bundle_review);
                             bundle_review.putString("ItemName", lendMarker.getItem().getBcyclLendNm());
                             getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, fragment_review).commit();
-//                            getActivity().getSupportFragmentManager().beginTransaction().addToBackStack().commit();
                             break;
                         }
                         case 2:{
