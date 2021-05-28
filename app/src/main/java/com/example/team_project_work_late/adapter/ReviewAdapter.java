@@ -1,14 +1,10 @@
 package com.example.team_project_work_late.adapter;
 
 import android.app.AlertDialog;
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,7 +19,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.team_project_work_late.R;
 import com.example.team_project_work_late.model.ReviewItem;
-import com.example.team_project_work_late.ui.Fragment.Fragment_Review;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -123,13 +118,13 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
             ratingBar = view.findViewById(R.id.ratingBar);
             userImage = view.findViewById(R.id.userImage);
             view.setOnLongClickListener(v -> {
-                String[] arr = {"리뷰 삭제"};
+                String[] arr = {"리뷰 삭제", "취소"};
                 AlertDialog.Builder dialog = new AlertDialog.Builder(context);
                 dialog.setItems(arr, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         switch (which){
-                            case 0: {
+                            case 0:
                                 FirebaseAuth mAuth = FirebaseAuth.getInstance();
                                 DatabaseReference mRef = FirebaseDatabase.getInstance().getReference();
                                 if (mAuth == null) {
@@ -145,7 +140,9 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
                                 }
                                 Toast.makeText(context, "리뷰 삭제가 완료되었습니다.", Toast.LENGTH_SHORT).show();
                                 break;
-                            }
+                            case 1:
+                                dialog.dismiss();
+                                break;
                         }
                     }
                 });
