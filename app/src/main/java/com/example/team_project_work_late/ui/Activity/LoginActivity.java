@@ -146,6 +146,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         } else {
             Log.e("구글", "로그인 실패");
+            Toast.makeText(LoginActivity.this, "구글 로그인 실패", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -161,6 +162,7 @@ public class LoginActivity extends AppCompatActivity {
                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                             startActivity(intent);
                         } else {
+                            Toast.makeText(LoginActivity.this, "파이어베이스 연결 실패", Toast.LENGTH_SHORT).show();
                             Log.e("파이어베이스", "연동 실패");
                         }
                     }

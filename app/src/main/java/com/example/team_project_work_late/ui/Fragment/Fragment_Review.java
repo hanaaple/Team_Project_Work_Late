@@ -37,8 +37,6 @@ public class Fragment_Review extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mAuth = FirebaseAuth.getInstance();
-        mRef = FirebaseDatabase.getInstance().getReference();
     }
 
     @Override
@@ -47,17 +45,17 @@ public class Fragment_Review extends Fragment {
         View view = inflater.inflate(R.layout.fragment_review, container, false);
         mBtn_write = (Button) view.findViewById(R.id.write_review);
         mRView = (RecyclerView) view.findViewById(R.id.review_list);
-        mRef = FirebaseDatabase.getInstance().getReference();
+        String itemName = getArguments().getString("ItemName").replaceAll("[^\\uAC00-\\uD7A3xfe0-9a-zA-Z\\\\s]", "");
+        mRef = FirebaseDatabase.getInstance().getReference().child("Review").child(itemName);
         mAuth = FirebaseAuth.getInstance();
-        String itemName = getArguments().getString("ItemName");
         LoadReview(itemName, view);
 
 
         mBtn_write.setOnClickListener(v -> {
-            mRef.child("Review").get().addOnCompleteListener(task -> {
+            mRef.get().addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
                     Boolean isAlreadyReviewed = false;
-                    for (DataSnapshot data : task.getResult().child(itemName).getChildren()) {
+                    for (DataSnapshot data : task.getResult().getChildren()) {
                         if (data.getKey().equals(mAuth.getUid())) {
                             Toast.makeText(getContext(), "이미 리뷰를 하였습니다.", Toast.LENGTH_SHORT).show();
                             isAlreadyReviewed = true;
@@ -86,11 +84,12 @@ public class Fragment_Review extends Fragment {
                             reviewItem.setPhotoURL(mAuth.getCurrentUser().getPhotoUrl().toString());
                             if (mAuth == null) {
                                 Log.e("파이어베이스", "연동 오류");
+                                Toast.makeText(getContext(), "파이어베이스 연동 오류입니다.", Toast.LENGTH_SHORT).show();
                             } else {
-                                mRef.child("Review").child(itemName).child(mAuth.getUid()).child("닉네임").setValue(reviewItem.getUserName());
-                                mRef.child("Review").child(itemName).child(mAuth.getUid()).child("내용").setValue(reviewItem.getContents());
-                                mRef.child("Review").child(itemName).child(mAuth.getUid()).child("평점").setValue(reviewItem.getRating());
-                                mRef.child("Review").child(itemName).child(mAuth.getUid()).child("사진 URL").setValue(reviewItem.getPhotoURL());
+                                mRef.child(mAuth.getUid()).child("닉네임").setValue(reviewItem.getUserName());
+                                mRef.child(mAuth.getUid()).child("내용").setValue(reviewItem.getContents());
+                                mRef.child(mAuth.getUid()).child("평점").setValue(reviewItem.getRating());
+                                mRef.child(mAuth.getUid()).child("사진 URL").setValue(reviewItem.getPhotoURL());
                                 mRAdapter.addItem(reviewItem);
                                 mRView.smoothScrollToPosition(0);
                                 bottomSheetDialog.dismiss();
@@ -110,11 +109,11 @@ public class Fragment_Review extends Fragment {
             mRView.setHasFixedSize(true);
             mRView.setAdapter(mRAdapter);
         }
-        mRef.child("Review").get().addOnCompleteListener(
+        mRef.get().addOnCompleteListener(
                 task -> {
                     if (task.isSuccessful()) {
                         mRAdapter.InitialCount();
-                        for (DataSnapshot data : task.getResult().child(itemName).getChildren()) {
+                        for (DataSnapshot data : task.getResult().getChildren()) {
                             ReviewItem reviewItem = new ReviewItem();
                             reviewItem.setUID(data.getKey());
                             reviewItem.setUserName(data.child("닉네임").getValue().toString());
