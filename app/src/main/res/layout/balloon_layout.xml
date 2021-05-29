@@ -23,7 +23,7 @@
             android:textColor="?android:attr/textColorPrimary"
             android:textSize="12sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"/>
 
         <TextView
             android:id="@+id/ball_tv_set"
@@ -38,12 +38,14 @@
 
         <TextView
             android:id="@+id/ball_tv_address"
-            android:layout_width="wrap_content"
+            android:layout_width="180dp"
             android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:singleLine="true"
             android:text="주소"
             android:textSize="10sp"
             app:layout_constraintStart_toStartOf="@+id/ball_tv_name"
-            app:layout_constraintTop_toBottomOf="@+id/ball_tv_name" />
+            app:layout_constraintTop_toBottomOf="@+id/ball_tv_name"/>
 
         <TextView
             android:id="@+id/ball_tv_touch"
