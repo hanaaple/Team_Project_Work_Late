@@ -9,8 +9,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="411dp"
+        android:layout_height="664dp"
         android:layout_marginBottom="4dp"
         android:background="@drawable/detailbox"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -22,8 +22,8 @@
             android:id="@+id/tv_dialog_bcyclLendNm"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="60dp"
-            android:layout_marginTop="48dp"
+            android:layout_marginStart="48dp"
+            android:layout_marginTop="60dp"
             android:fontFamily="@font/kopubworld_dotum_bold"
             android:text="대여소 이름"
             android:textColor="@color/black"
@@ -35,7 +35,7 @@
             android:id="@+id/tv_dialog_lnmadr"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="4dp"
             android:fontFamily="@font/kopubworld_dotum_bold"
             android:text="주소"
             android:textColor="@color/black"
@@ -47,20 +47,32 @@
             android:id="@+id/tv_dialog_operHm"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="30dp"
             android:fontFamily="@font/kopubworld_dotum_bold"
-            android:text="운영시간:"
+            android:text="운영시간 :"
             android:textColor="@color/black"
             android:textSize="15sp"
             app:layout_constraintStart_toStartOf="@id/tv_dialog_lnmadr"
             app:layout_constraintTop_toBottomOf="@id/tv_dialog_lnmadr" />
 
         <TextView
+            android:id="@+id/tv_dialog_rstde"
+            android:layout_width="230dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:fontFamily="@font/kopubworld_dotum_medium"
+            android:text="휴무일"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            app:layout_constraintStart_toStartOf="@+id/tv_dialog_operHm_input"
+            app:layout_constraintTop_toBottomOf="@+id/tv_dialog_operHm_input" />
+
+        <TextView
             android:id="@+id/tv_dialog_operHm_input"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="30dp"
             android:fontFamily="@font/kopubworld_dotum_medium"
             android:text="운영시간"
             android:textColor="@color/black"
@@ -69,25 +81,12 @@
             app:layout_constraintTop_toBottomOf="@id/tv_dialog_lnmadr" />
 
         <TextView
-            android:id="@+id/tv_dialog_rstde"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
-            android:fontFamily="@font/kopubworld_dotum_bold"
-            android:text="휴무일"
-            android:textColor="@color/black"
-            android:textSize="15sp"
-            app:layout_constraintStart_toStartOf="@+id/tv_dialog_operHm_input"
-            app:layout_constraintTop_toBottomOf="@+id/tv_dialog_operHm_input" />
-
-        <TextView
             android:id="@+id/tv_dialog_chrgeSe"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:fontFamily="@font/kopubworld_dotum_bold"
-            android:text="이용 요금 정보:"
+            android:text="이용요금 :"
             android:textColor="@color/black"
             android:textSize="15sp"
             app:layout_constraintStart_toStartOf="@id/tv_dialog_operHm"
@@ -95,12 +94,13 @@
 
         <TextView
             android:id="@+id/tv_dialog_bcyclUseCharge"
-            android:layout_width="wrap_content"
+            android:layout_width="230dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="16dp"
             android:fontFamily="@font/kopubworld_dotum_medium"
-            android:text="이용요금정보"
+            android:maxLines="10"
+            android:text="이용요금 정보"
             android:textColor="@color/black"
             android:textSize="15sp"
             app:layout_constraintStart_toEndOf="@+id/tv_dialog_chrgeSe"
@@ -110,14 +110,14 @@
             android:id="@+id/cb_dialog_airInjector"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="15dp"
             android:enabled="false"
             android:fontFamily="@font/kopubworld_dotum_medium"
             android:text="공기 주입기 비치"
             android:textColor="@color/black"
             android:textSize="15sp"
-            app:layout_constraintStart_toStartOf="@id/tv_dialog_chrgeSe"
-            app:layout_constraintTop_toBottomOf="@id/tv_dialog_chrgeSe" />
+            app:layout_constraintStart_toStartOf="@+id/tv_dialog_phoneNumber"
+            app:layout_constraintTop_toBottomOf="@+id/tv_dialog_phoneNumber_input" />
 
         <CheckBox
             android:id="@+id/cb_dialog_repairStand"
@@ -135,39 +135,38 @@
             android:id="@+id/tv_dialog_phoneNumber"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="12dp"
             android:fontFamily="@font/kopubworld_dotum_bold"
-            android:text="전화번호:"
+            android:text="전화번호 :"
             android:textColor="@color/black"
             android:textSize="15sp"
-            app:layout_constraintStart_toStartOf="@id/cb_dialog_repairStand"
-            app:layout_constraintTop_toBottomOf="@id/cb_dialog_repairStand" />
+            app:layout_constraintStart_toStartOf="@+id/tv_dialog_chrgeSe"
+            app:layout_constraintTop_toBottomOf="@+id/tv_dialog_bcyclUseCharge" />
 
         <TextView
             android:id="@+id/tv_dialog_phoneNumber_input"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="12dp"
             android:fontFamily="@font/kopubworld_dotum_medium"
             android:text="010-0000-0000"
             android:textColor="@color/black"
             android:textSize="15sp"
             app:layout_constraintStart_toEndOf="@+id/tv_dialog_phoneNumber"
-            app:layout_constraintTop_toBottomOf="@id/cb_dialog_repairStand" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_dialog_bcyclUseCharge" />
 
         <RelativeLayout
             android:id="@+id/dialog_map_view"
             android:layout_width="match_parent"
             android:layout_height="175dp"
             android:layout_marginStart="60dp"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="32dp"
             android:layout_marginEnd="60dp"
-            android:layout_marginBottom="16dp"
-            app:layout_constraintBottom_toBottomOf="@+id/constraintLayout2"
             app:layout_constraintEnd_toEndOf="@+id/constraintLayout2"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/constraintLayout2"
-            app:layout_constraintTop_toBottomOf="@+id/tv_dialog_phoneNumber" />
+            app:layout_constraintTop_toBottomOf="@+id/cb_dialog_repairStand" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 

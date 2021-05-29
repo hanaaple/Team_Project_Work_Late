@@ -24,7 +24,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="24dp"
         android:fontFamily="@font/kopubworld_dotum_bold"
         android:singleLine="true"
         android:text="대여소명"
@@ -35,58 +35,58 @@
 
     <TextView
         android:id="@+id/tv_lnmadr"
-        android:layout_width="wrap_content"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="2dp"
         android:fontFamily="@font/kopubworld_dotum_light"
-        android:singleLine="true"
         android:text="도로명주소"
         android:textColor="@color/black"
         android:textSize="15sp"
-        app:layout_constraintStart_toEndOf="@+id/btn_select"
-        app:layout_constraintTop_toBottomOf="@+id/tv_bcyclLendNm" />
+        app:layout_constraintStart_toStartOf="@+id/tv_bcyclLendNm"
+        app:layout_constraintTop_toBottomOf="@+id/tv_bcyclLendNm"
+        android:singleLine = "true"
+        android:ellipsize="end"
+        />
 
     <TextView
         android:id="@+id/tv_operHm"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
+        android:layout_marginTop="6dp"
         android:fontFamily="@font/kopubworld_dotum_light"
         android:text="운영시간"
         android:textColor="@color/black"
         android:textSize="15sp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/tv_bcyclLendSe"
-        app:layout_constraintTop_toBottomOf="@+id/tv_lnmadr"
-        app:layout_constraintVertical_bias="0.209" />
-
-    <TextView
-        android:id="@+id/tv_rstde"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:fontFamily="@font/kopubworld_dotum_light"
-        android:text="휴무일"
-        android:textColor="@color/black"
-        android:textSize="15sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/tv_operHm"
-        app:layout_constraintTop_toBottomOf="@+id/tv_lnmadr"
-        app:layout_constraintVertical_bias="0.209" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_lnmadr" />
 
     <TextView
         android:id="@+id/tv_bcyclLendSe"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
+        android:layout_marginTop="6dp"
         android:fontFamily="@font/kopubworld_dotum_light"
         android:text="유형"
         android:textColor="@color/black"
         android:textSize="15sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/btn_select"
+        app:layout_constraintStart_toStartOf="@+id/tv_bcyclLendNm"
+        app:layout_constraintTop_toBottomOf="@+id/tv_lnmadr" />
+
+    <TextView
+        android:id="@+id/tv_rstde"
+        android:layout_width="130dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="6dp"
+        android:fontFamily="@font/kopubworld_dotum_light"
+        android:text="휴무일"
+        android:textColor="@color/black"
+        android:textSize="15sp"
+        app:layout_constraintStart_toEndOf="@+id/tv_operHm"
         app:layout_constraintTop_toBottomOf="@+id/tv_lnmadr"
-        app:layout_constraintVertical_bias="0.209" />
+        android:singleLine = "true"
+        android:ellipsize="end"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

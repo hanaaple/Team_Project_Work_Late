@@ -10,12 +10,25 @@
         android:id="@+id/constraintLayout2"
         android:layout_width="match_parent"
         android:layout_height="500dp"
-        android:layout_marginBottom="40dp"
+        android:layout_marginBottom="4dp"
         android:background="@drawable/detailbox"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent">
+
+        <TextView
+            android:id="@+id/title_writeReview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="52dp"
+            android:layout_marginTop="56dp"
+            android:fontFamily="@font/kopubworld_dotum_bold"
+            android:text="리뷰 작성"
+            android:textColor="#000000"
+            android:textSize="25dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <RatingBar
             android:id="@+id/write_ratingbar"
@@ -23,7 +36,7 @@
             android:layout_width="236dp"
             android:layout_height="47dp"
             android:layout_marginStart="52dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="4dp"
             android:indeterminate="false"
             android:max="5"
             android:numStars="5"
@@ -34,41 +47,16 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
-        <Button
-            android:id="@+id/cancelButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="4dp"
-            android:text="취소"
-            app:layout_constraintBottom_toTopOf="@+id/SaveButton"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.891"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="1.0" />
-
-        <Button
-            android:id="@+id/SaveButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="저장"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.891"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.816" />
-
         <TextView
             android:id="@+id/textView3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="52dp"
-            android:layout_marginTop="92dp"
+            android:layout_marginTop="112dp"
             android:fontFamily="@font/kopubworld_dotum_bold"
             android:text="평점"
             android:textColor="#000000"
-            android:textSize="20sp"
+            android:textSize="18dp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -80,30 +68,56 @@
             android:fontFamily="@font/kopubworld_dotum_bold"
             android:text="내용"
             android:textColor="#000000"
-            android:textSize="20sp"
+            android:textSize="18dp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.138"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.445" />
+            app:layout_constraintVertical_bias="0.488" />
 
         <EditText
             android:id="@+id/InputText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="235dp"
+            android:layout_height="94dp"
             android:layout_marginTop="8dp"
+            android:background="@drawable/review_inputwindow"
             android:fontFamily="@font/kopubworld_dotum_light"
+            android:gravity="left"
             android:hint="내용을 입력하세요"
             android:textColor="#000000"
             android:textColorHint="#61000000"
-            android:textSize="16sp"
+            android:textSize="15sp"
             android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.185"
-            app:layout_constraintStart_toStartOf="parent"
+
+            app:layout_constraintStart_toStartOf="@+id/textView5"
             app:layout_constraintTop_toBottomOf="@+id/textView5" />
+
+        <Button
+            android:id="@+id/SaveButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="저장"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.919"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.913" />
+
+        <Button
+            android:id="@+id/cancelButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="208dp"
+            android:text="취소"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/SaveButton"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.913" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
